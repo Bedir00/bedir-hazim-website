@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speisekarten-CI-Prüfung</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Speisekarten<span>·CI</span></div>
+  <div class="topbar-actions">
+    <span id="queue-info" class="muted"></span>
+    <button class="btn ghost" id="btn-import">URLs massenhaft importieren</button>
+    <a class="btn ghost" href="/api/export/report.csv">Gesamtreport (CSV)</a>
+    <a class="btn ghost" href="/api/export/redesigns.zip">Alle Redesigns (ZIP)</a>
+  </div>
+</header>
+<div id="banner" class="banner" hidden></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2>Kunden</h2>
+      <button class="btn small" id="btn-new-client">+ Neu</button>
+    </div>
+    <ul id="client-list" class="client-list"></ul>
+  </aside>
+
+  <main id="main">
+    <div class="empty-state" id="empty-state">
+      <h1>Speisekarten massenhaft auf CI prüfen</h1>
+      <ol>
+        <li>Kunden anlegen und CI hinterlegen (Farben, Schriften, Logo, Regeln).</li>
+        <li>Beliebig viele Karten hochladen – PDF, Foto/Scan oder URL.</li>
+        <li>Jede Karte wird einzeln geprüft, bewertet und im CI neu gesetzt (PDF + Web).</li>
+      </ol>
+      <button class="btn" id="btn-new-client-2">Ersten Kunden anlegen</button>
+    </div>
+
+    <section id="client-view" hidden>
+      <div class="client-head">
+        <div>
+          <h1 id="client-title"></h1>
+          <div id="client-stats" class="muted"></div>
+        </div>
+        <nav class="tabs">
+          <button class="tab active" data-tab="menus">Speisekarten</button>
+          <button class="tab" data-tab="ci">CI-Profil</button>
+        </nav>
+      </div>
+
+      <!-- Speisekarten -->
+      <div class="tab-panel" data-panel="menus">
+        <form id="upload-form" class="upload card">
+          <label class="dropzone" id="dropzone">
+            <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff">
+            <strong>Dateien hierher ziehen</strong> oder klicken – PDFs, Fotos, Scans (mehrere möglich)
+            <span id="file-count" class="muted"></span>
+          </label>
+          <textarea id="url-input" rows="3" placeholder="Oder URLs von Online-Speisekarten – eine pro Zeile"></textarea>
+          <div class="row end">
+            <button class="btn" type="submit" id="btn-upload">Prüfen starten</button>
+          </div>
+        </form>
+
+        <div class="toolbar">
+          <div class="filters">
+            <select id="filter-status">
+              <option value="">Alle Status</option>
+              <option value="done">Fertig</option>
+              <option value="processing">In Arbeit</option>
+              <option value="queued">Wartend</option>
+              <option value="error">Fehler</option>
+            </select>
+            <select id="sort">
+              <option value="new">Neueste zuerst</option>
+              <option value="score-asc">Schlechteste zuerst</option>
+              <option value="score-desc">Beste zuerst</option>
+            </select>
+          </div>
+          <div class="row">
+            <button class="btn ghost small" id="btn-retry-errors">Fehler erneut prüfen</button>
+            <button class="btn ghost small" id="btn-reprocess-all">Alle neu prüfen</button>
+            <a class="btn ghost small" id="link-client-csv">Report (CSV)</a>
+            <a class="btn ghost small" id="link-client-zip">Redesigns (ZIP)</a>
+          </div>
+        </div>
+        <table class="menus">
+          <thead><tr><th>Quelle</th><th>Status</th><th>CI-Score</th><th>Verstöße</th><th></th></tr></thead>
+          <tbody id="menu-rows"></tbody>
+        </table>
+      </div>
+
+      <!-- CI-Profil -->
+      <div class="tab-panel" data-panel="ci" hidden>
+        <div class="ci-grid">
+          <form id="ci-form" class="card ci-form"></form>
+          <div class="card preview">
+            <div class="row between">
+              <h3>Vorschau im CI</h3>
+              <div class="seg">
+                <button type="button" class="seg-btn active" data-preview="print">Druck</button>
+                <button type="button" class="seg-btn" data-preview="web">Web</button>
+              </div>
+            </div>
+            <iframe id="ci-preview" title="CI-Vorschau"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Kunde anlegen -->
+<dialog id="dlg-client">
+  <form method="dialog" id="new-client-form" class="dialog-body">
+    <h2>Neuer Kunde</h2>
+    <label>Restaurantname <input name="restaurant_name" required autofocus></label>
+    <p class="muted">Die übrige CI (Farben, Schriften, Logo, Regeln) stellst du danach im Tab „CI-Profil“ ein.</p>
+    <div class="row end">
+      <button class="btn ghost" value="cancel" formnovalidate>Abbrechen</button>
+      <button class="btn" value="ok">Anlegen</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Massenimport -->
+<dialog id="dlg-import">
+  <form method="dialog" id="import-form" class="dialog-body">
+    <h2>URLs massenhaft importieren</h2>
+    <p class="muted">Eine Zeile pro Karte: <code>Kundenname;URL</code>. Kunden müssen bereits angelegt sein. Alternativ eine CSV-Datei.</p>
+    <textarea name="text" rows="8" placeholder="Trattoria Roma;https://trattoria-roma.de/speisekarte&#10;Café Nord;https://cafe-nord.de/karte.pdf"></textarea>
+    <input type="file" name="file" accept=".csv,.txt">
+    <div id="import-result" class="muted"></div>
+    <div class="row end">
+      <button class="btn ghost" value="cancel" formnovalidate>Schließen</button>
+      <button class="btn" value="ok">Importieren</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Detailansicht -->
+<dialog id="dlg-menu" class="wide">
+  <div class="dialog-body">
+    <div class="row between">
+      <h2 id="menu-title"></h2>
+      <button class="btn ghost small" id="btn-close-menu">Schließen</button>
+    </div>
+    <div id="menu-detail"></div>
+  </div>
+</dialog>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
