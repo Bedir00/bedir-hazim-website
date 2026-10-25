@@ -1,0 +1,98 @@
+{% assign is_home = false %}{% if section.settings.mode == 'home' %}{% assign is_home = true %}{% endif %}
+{% capture home_url %}{{ routes.root_url }}?preview_theme_id={{ theme.id }}{% endcapture %}
+<div class="hg-stream" data-home-gym data-mode="{{ section.settings.mode }}" data-added="{{ 'home_gym.stream.added' | t }}" data-removed="{{ 'home_gym.stream.removed' | t }}" data-storage-error="{{ 'home_gym.stream.storage_error' | t }}">
+<header class="hg-header"><a class="hg-brand" href="{{ home_url }}" aria-label="{{ section.settings.brand | escape }} · {{ 'home_gym.stream.home' | t }}">{{ section.settings.brand | escape }}<span>.</span></a>
+<nav class="hg-top-nav" aria-label="{{ 'home_gym.stream.nav' | t }}"><a href="{{ home_url }}" {% if is_home %}aria-current="page"{% endif %}>{{ 'home_gym.stream.home' | t }}</a><a href="{{ home_url }}#training">{{ 'home_gym.stream.browse' | t }}</a>{% if is_home %}<button type="button" data-list-toggle aria-pressed="false">{{ 'home_gym.stream.saved' | t }}<span data-list-count></span></button>{% else %}<a href="{{ home_url }}&amp;list=1#training">{{ 'home_gym.stream.saved' | t }}</a>{% endif %}</nav>
+<div class="hg-header-tools">{% if is_home %}<label class="hg-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><span class="hg-sr-only">{{ 'home_gym.stream.search' | t }}</span><input type="search" data-search-input placeholder="{{ 'home_gym.stream.search_placeholder' | t }}" autocomplete="off"></label>{% endif %}<a class="hg-header-trial" href="#termin">{{ section.settings.cta | escape }}</a></div>
+</header>
+<section class="hg-billboard {% unless is_home %}hg-billboard--detail{% endunless %}">
+<div class="hg-backdrop" data-hero-backdrop>{% unless is_home %}{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 2200 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600, 1000, 1600, 2200', sizes: '100vw', class: 'hg-hero-image' }}{% else %}<img class="hg-hero-image" src="{{ section.settings.hero_asset | asset_url }}" width="1200" height="800" fetchpriority="high" alt="">{% endif %}{% endunless %}{% if section.settings.hero_mp4_url != blank %}<div class="hg-video-layer" data-hero-video-layer><video data-hero-native autoplay muted loop playsinline preload="auto" width="1240" height="692" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"><source src="{{ section.settings.hero_mp4_url | escape }}" type="video/mp4"></video></div>{% endif %}</div>
+<div class="hg-billboard-copy hg-shell">{% unless is_home %}<a class="hg-back-link" href="{{ home_url }}#training">← {{ 'home_gym.stream.back' | t }}</a>{% endunless %}
+<p class="hg-kicker">{% if is_home %}{{ section.settings.hero_kicker | escape }}{% else %}{{ section.settings.location_label | escape }}{% endif %}</p>
+<h1>{{ section.settings.headline | escape }}<span>.</span></h1>
+{% if is_home %}{% render 'hg-paths', section: section %}{% endif %}
+{% unless is_home %}<div class="hg-meta"><span>{{ 'home_gym.stream.open' | t }}</span><span>{{ 'home_gym.stream.level' | t }}</span><span class="hg-meta-label">{{ section.settings.city | escape }}</span></div>
+<p class="hg-hero-lede">{% if section.settings.hero_lede != blank %}{{ section.settings.hero_lede | escape }}{% else %}{{ section.settings.description | escape }}{% endif %}</p>{% endunless %}
+<div class="hg-hero-actions"><a class="hg-cta" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↗</span></a>{% unless is_home %}{% if section.settings.video != blank %}<a class="hg-secondary" href="#vorschau">{{ 'home_gym.stream.video_title' | t }}</a>{% endif %}{% endunless %}</div>
+<p class="hg-hero-note">{{ 'home_gym.stream.free' | t }}</p></div>
+{% if section.settings.hero_mp4_url != blank %}<div class="hg-hero-video-controls" data-hero-controls hidden>
+<button type="button" data-hero-sound aria-pressed="false" aria-label="{{ 'home_gym.stream.video_unmute' | t }}" data-label-unmute="{{ 'home_gym.stream.video_unmute' | t }}" data-label-mute="{{ 'home_gym.stream.video_mute' | t }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 4 5 9H2v6h3l6 5z"/><path class="hg-sound-off" d="m16 9 6 6m0-6-6 6"/><path class="hg-sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button>
+</div>{% endif %}</section>
+{% if is_home %}
+<section id="training" class="hg-library" data-library>
+<div class="hg-library-top hg-shell"><h2 class="hg-library-title" data-main-title data-default-title="{{ section.settings.row_training | escape }}" data-saved-title="{{ 'home_gym.stream.saved' | t }}">{{ section.settings.row_training | escape }}</h2><div class="hg-filters" role="group" aria-label="{{ 'home_gym.stream.browse' | t }}"><button type="button" data-filter="all" aria-pressed="true">{{ 'home_gym.stream.all' | t }}</button>{% assign categories = 'einstieg,kurse,kampfsport,hyrox,flexibel' | split: ',' %}{% for category in categories %}{% assign category_label = 'home_gym.focus.' | append: category %}<button type="button" data-filter="{{ category }}" aria-pressed="false">{{ category_label | t }}</button>{% endfor %}</div></div>
+{% assign shelves = 'training,start' | split: ',' %}{% for shelf in shelves %}
+<section class="hg-shelf {% if shelf == 'start' %}hg-shelf--portrait{% endif %}" data-shelf>
+<div class="hg-shelf-heading hg-shell">{% if shelf == 'training' %}<h3 class="hg-shelf-subtitle">{{ 'home_gym.stream.visit' | t }}</h3>{% else %}<h2>{{ section.settings.row_start | escape }}</h2>{% endif %}<div class="hg-rail-controls"><button type="button" data-rail-prev aria-label="{{ 'home_gym.stream.prev' | t }}" aria-controls="hg-rail-{{ section.id }}-{{ shelf }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><button type="button" data-rail-next aria-label="{{ 'home_gym.stream.next' | t }}" aria-controls="hg-rail-{{ section.id }}-{{ shelf }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button></div></div>
+<div id="hg-rail-{{ section.id }}-{{ shelf }}" class="hg-rail" data-rail tabindex="0" role="region" aria-label="{% if shelf == 'training' %}{{ section.settings.row_training | escape }}{% else %}{{ section.settings.row_start | escape }}{% endif %}">{% for block in section.blocks %}{% if block.type == 'path' and block.settings.shelf == shelf %}{% capture card_prefix %}{{ section.id }}-{{ shelf }}{% endcapture %}{% render 'hg-card', block: block, prefix: card_prefix %}{% endif %}{% endfor %}</div>
+</section>{% endfor %}
+<div class="hg-empty hg-shell" data-empty hidden><p data-empty-search>{{ 'home_gym.stream.empty' | t }}</p><p data-empty-saved hidden>{{ 'home_gym.stream.saved_empty' | t }}</p><button type="button" class="hg-secondary" data-reset>{{ 'home_gym.stream.reset' | t }}</button></div>
+<p class="hg-list-note hg-shell" data-list-note hidden>{{ 'home_gym.stream.session_saved' | t }}</p>
+</section>
+<section class="hg-steps-section hg-shell" id="ablauf"><p class="hg-kicker">{{ 'home_gym.stream.step_label' | t }}</p><h2>{{ 'home_gym.stream.steps' | t }}</h2><div class="hg-steps-grid">{% for block in section.blocks %}{% if block.type == 'step' %}<article class="hg-step" {{ block.shopify_attributes }}><span class="hg-step-number">{{ block.settings.number | escape }}</span><div><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.description | escape }}</p></div></article>{% endif %}{% endfor %}</div></section>
+{% else %}
+<section class="hg-detail-content hg-shell"><div><p class="hg-kicker">{{ 'home_gym.stream.solution' | t }}</p><h2>{{ section.settings.solution | escape }}<span class="hg-accent">.</span></h2><div class="hg-gains">{% for block in section.blocks %}{% if block.type == 'gain' %}<article {{ block.shopify_attributes }}><span class="hg-gain-mark" aria-hidden="true">✓</span><div><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.description | escape }}</p></div></article>{% endif %}{% endfor %}</div></div><aside class="hg-pains"><h3>{{ 'home_gym.stream.pains' | t }}</h3><ul>{% for block in section.blocks %}{% if block.type == 'pain' %}<li {{ block.shopify_attributes }}>{{ block.settings.description | escape }}</li>{% endif %}{% endfor %}</ul><a class="hg-secondary" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↗</span></a></aside></section>
+{% if section.settings.video != blank %}<section id="vorschau" class="hg-video-section hg-shell"><h2>{{ 'home_gym.stream.video_title' | t }}</h2>{{ section.settings.video | video_tag: controls: true, preload: 'none', image_size: '1200x', class: 'hg-video' }}</section>{% endif %}
+{% endif %}
+{% if is_home and section.settings.show_offer %}<section class="hg-offer hg-shell"><div><p class="hg-kicker">{{ 'home_gym.stream.offer' | t }}</p><h2>{{ 'home_gym.stream.offer_text' | t }}</h2></div><p class="hg-offer-price"><span>{{ 'home_gym.stream.only' | t }}</span>{{ 'home_gym.stream.offer_price' | t }}</p>{% if section.settings.offer_terms != blank %}<p class="hg-offer-terms">{{ section.settings.offer_terms | escape }}</p>{% endif %}</section>{% endif %}
+{% render 'hg-contact', section: section %}
+{% unless is_home %}<section class="hg-shelf hg-related" data-shelf><div class="hg-shelf-heading hg-shell"><h2>{{ 'home_gym.stream.related' | t }}</h2><div class="hg-rail-controls"><button type="button" data-rail-prev aria-label="{{ 'home_gym.stream.prev' | t }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><button type="button" data-rail-next aria-label="{{ 'home_gym.stream.next' | t }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button></div></div><div class="hg-rail" data-rail tabindex="0" role="region" aria-label="{{ 'home_gym.stream.related' | t }}">{% for block in section.blocks %}{% if block.type == 'path' and block.settings.shelf == 'training' and block.settings.destination != section.settings.mode %}{% capture card_prefix %}{{ section.id }}-related{% endcapture %}{% render 'hg-card', block: block, prefix: card_prefix %}{% endif %}{% endfor %}</div></section>{% endunless %}
+<footer class="hg-footer hg-shell"><div><a class="hg-brand" href="{{ home_url }}">{{ section.settings.brand | escape }}<span>.</span></a><p>{% if section.settings.address != blank %}{{ section.settings.address | escape }}<br>{% endif %}{{ section.settings.opening_hours | escape }}</p>{% if section.settings.phone != blank %}<a href="tel:{{ section.settings.phone | remove: ' ' | escape }}">{{ section.settings.phone | escape }}</a>{% endif %}</div><nav aria-label="{{ 'home_gym.stream.footer' | t }}">{% if section.settings.schedule_url != blank %}<a href="{{ section.settings.schedule_url }}">{{ 'home_gym.stream.schedule' | t }}</a>{% endif %}{% if section.settings.legal_url != blank %}<a href="{{ section.settings.legal_url }}">{{ 'home_gym.stream.legal' | t }}</a>{% elsif shop.legal_notice != blank %}<a href="{{ shop.legal_notice.url }}">{{ 'home_gym.stream.legal' | t }}</a>{% endif %}{% if section.settings.privacy_url != blank %}<a href="{{ section.settings.privacy_url }}">{{ 'home_gym.stream.privacy' | t }}</a>{% elsif shop.privacy_policy != blank %}<a href="{{ shop.privacy_policy.url }}">{{ 'home_gym.stream.privacy' | t }}</a>{% endif %}</nav></footer>
+<nav class="hg-bottom-nav" aria-label="{{ 'home_gym.stream.nav' | t }}"><a href="{{ home_url }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m3 10 9-7 9 7v11h-7v-7h-4v7H3z"/></svg><span>{{ 'home_gym.stream.home' | t }}</span></a><a href="{{ home_url }}#training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>{{ 'home_gym.stream.browse' | t }}</span></a>{% if is_home %}<button type="button" data-list-toggle aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>{{ 'home_gym.stream.saved' | t }}</span></button>{% else %}<a href="{{ home_url }}&amp;list=1#training"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>{{ 'home_gym.stream.saved' | t }}</span></a>{% endif %}</nav>
+<p class="hg-sr-only" data-announcement role="status" aria-live="polite"></p>
+</div>
+{% schema %}
+{"name":"Home Gym Streaming","tag":"div","class":"hg-page",
+"settings":[
+{"type":"select","id":"mode","label":"Seitenvariante","options":[{"value":"home","label":"Startseite"},{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"home"},
+{"type":"text","id":"brand","label":"Name","default":"Home Gym"},
+{"type":"text","id":"location_label","label":"Unterzeile","default":"ehemals Fitpark · Löhne"},
+{"type":"text","id":"phone","label":"Telefonnummer"},
+{"type":"text","id":"city","label":"Ort","default":"Löhne"},
+{"type":"header","content":"Einstieg und Medien"},
+{"type":"text","id":"headline","label":"Überschrift","default":"Egal, wo du startest"},
+{"type":"textarea","id":"description","label":"Beschreibung","default":"Vom ersten Training bis zum Wettkampf. Geräte, Kurse, Kampfsport und Functional unter einem Dach in Löhne."},
+{"type":"text","id":"solution","label":"Lösung – Landingpage","default":"Wir nehmen dich an die Hand"},
+{"type":"text","id":"cta","label":"Button-Text","default":"Probetraining anfragen"},
+{"type":"image_picker","id":"image","label":"Trainingsfoto"},
+{"type":"video","id":"video","label":"Trainingsvideo"},
+{"type":"header","content":"Aktion auf der Startseite"},
+{"type":"checkbox","id":"show_offer","label":"3-Euro-Aktion anzeigen","default":false},
+{"type":"textarea","id":"offer_terms","label":"Aktionsbedingungen"},
+{"type":"header","content":"Kontakt und Footer"},
+{"type":"text","id":"address","label":"Adresse"},
+{"type":"text","id":"opening_hours","label":"Öffnungs- und Betreuungszeiten","default":"Training 24/7 · Betreute Zeiten folgen"},
+{"type":"url","id":"schedule_url","label":"Kursplan (PDF)"},
+{"type":"url","id":"legal_url","label":"Impressum-Link"},
+{"type":"url","id":"privacy_url","label":"Datenschutz-Link"},
+{"type":"checkbox","id":"sticky_cta","label":"Fixierten Anfragebutton anzeigen","default":true},
+{"type":"header","content":"Streaming-Oberfläche"},
+{"type":"text","id":"hero_asset","label":"Standard-Hintergrund","info":"Theme-Dateiname. Ein oben gewähltes Trainingsfoto hat Vorrang.","default":"hg-floor.webp"},
+{"type":"text","id":"hero_kicker","label":"Text über der Überschrift","default":"Dein nächstes Kapitel"},
+{"type":"textarea","id":"hero_lede","label":"Kurztext unter der Überschrift"},
+{"type":"text","id":"row_training","label":"Titel der Trainingsreihe","default":"Finde dein Training"},
+{"type":"text","id":"row_start","label":"Titel der Einstiegsreihe","default":"Dein Anfang. Dein Tempo."},
+{"type":"url","id":"hero_mp4_url","label":"Hero-Video (MP4)","info":"Direkter MP4-Link. Startet stumm und läuft in einer Endlosschleife."},
+{"type":"header","content":"Zielgruppen-Buttons im Hero"},
+{"type":"text","id":"path_1_label","label":"Button 1 – Text","default":"Anfänger"},
+{"type":"text","id":"path_1_sub","label":"Button 1 – Unterzeile","default":"Wir finden gemeinsam deine Stärken"},
+{"type":"select","id":"path_1_view","label":"Button 1 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"einstieg"},
+{"type":"text","id":"path_2_label","label":"Button 2 – Text","default":"For Ladies"},
+{"type":"text","id":"path_2_sub","label":"Button 2 – Unterzeile","default":"LADYPARK, Kurse uvm."},
+{"type":"select","id":"path_2_view","label":"Button 2 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"kurse"},
+{"type":"text","id":"path_3_label","label":"Button 3 – Text","default":"Boxing"},
+{"type":"text","id":"path_3_sub","label":"Button 3 – Unterzeile","default":"Mit deutschem Meister Mentor"},
+{"type":"select","id":"path_3_view","label":"Button 3 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"kampfsport"},
+{"type":"text","id":"path_4_label","label":"Button 4 – Text","default":"Profi-Sportler"},
+{"type":"text","id":"path_4_sub","label":"Button 4 – Unterzeile","default":"HYROX, MATRIX GERÄTE oder MAX. RECOVERN"},
+{"type":"select","id":"path_4_view","label":"Button 4 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"hyrox"}
+],
+"blocks":[
+{"type":"path","name":"Trainingskachel","settings":[{"type":"text","id":"question","label":"Frage"},{"type":"textarea","id":"answer","label":"Antwort"},{"type":"select","id":"destination","label":"Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"einstieg"},{"type":"text","id":"card_title","label":"Titel der Kachel"},{"type":"text","id":"tag","label":"Kurzlabel"},{"type":"image_picker","id":"image","label":"Kachelbild"},{"type":"text","id":"asset","label":"Standard-Bilddatei","default":"hg-floor.webp"},{"type":"select","id":"shelf","label":"Themenreihe","options":[{"value":"training","label":"Trainingsbereiche"},{"value":"start","label":"Für deinen Einstieg"}],"default":"training"}]},
+{"type":"step","name":"Schritt zum Probetraining","settings":[{"type":"text","id":"number","label":"Nummer","default":"1"},{"type":"text","id":"title","label":"Titel"},{"type":"textarea","id":"description","label":"Beschreibung"}]},
+{"type":"pain","name":"Ausgangssituation","settings":[{"type":"textarea","id":"description","label":"Beschreibung"}]},
+{"type":"gain","name":"Vorteil","settings":[{"type":"text","id":"title","label":"Titel"},{"type":"textarea","id":"description","label":"Beschreibung"}]}
+],
+"presets":[{"name":"Home Gym Website"}]}
+{% endschema %}
+
