@@ -10,5 +10,5 @@ Renders an editable Home Gym training tile.
 {% else %}<img class="hg-card-image" src="{{ block.settings.asset | asset_url }}" width="800" height="533" loading="lazy" alt="">{% endif %}
 <span class="hg-card-brand" aria-hidden="true">HG<span>.</span></span>
 <div class="hg-poster-title"><span class="hg-tag">{{ block.settings.tag | escape }}</span><h3 id="{{ prefix }}-{{ block.id }}">{{ block.settings.card_title | default: block.settings.question | escape }}</h3><span class="hg-poster-cta">{{ 'home_gym.stream.more' | t }} <span aria-hidden="true">↗</span></span></div>
-</a><div class="hg-card-bottom"><p>{{ block.settings.answer | escape }}</p><button class="hg-save" type="button" data-save="{{ block.id }}" aria-pressed="false" aria-label="{{ 'home_gym.stream.save' | t: title: block.settings.card_title | escape }}" data-label-add="{{ 'home_gym.stream.save' | t: title: block.settings.card_title | escape }}" data-label-remove="{{ 'home_gym.stream.remove' | t: title: block.settings.card_title | escape }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+</a><div class="hg-card-bottom"><p>{{ block.settings.answer | escape }}</p></div>
 </article>

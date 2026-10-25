@@ -52,9 +52,11 @@
         "compare0": {"type": "compare", "settings": {"other": "Vertrag unterschreiben, bevor du das Studio kennst.", "home": "Erst kostenlos probetrainieren, dann entscheiden."}},
         "compare1": {"type": "compare", "settings": {"other": "Mitgliedschaft verkauft, danach bist du allein.", "home": "Persönliche Einweisung, bis du dich sicher fühlst."}},
         "compare2": {"type": "compare", "settings": {"other": "Ein Standardplan für alle.", "home": "Ein Plan für dein Ziel, deine Zeit und dein Level."}},
-        "compare3": {"type": "compare", "settings": {"other": "Trainingszeiten, die nicht in deinen Alltag passen.", "home": "24/7 geöffnet: Du trainierst, wann es dir passt."}}
+        "compare3": {"type": "compare", "settings": {"other": "Trainingszeiten, die nicht in deinen Alltag passen.", "home": "24/7 geöffnet: Du trainierst, wann es dir passt."}},
+        "review0": {"type": "review", "settings": {"quote": "Ich war noch nie in einem Studio. Nach der Einweisung wusste ich genau, was ich tun muss, ohne mich dumm zu fühlen.", "name": "Laura", "detail": "Einstieg", "rating": 5, "image": "shopify://shop_images/hg-review-laura.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Ich hatte Respekt davor, in meinem Alter neu anzufangen. Das Team war so geduldig, dass ich mich vom ersten Tag an wohlgefühlt habe.", "name": "Gabi", "detail": "Einstieg mit 58", "rating": 5, "image": "shopify://shop_images/hg-review-gabi.jpg"}}
       },
-      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "pain3", "gain0", "gain1", "gain2", "gain3", "compare0", "compare1", "compare2", "compare3"]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "pain3", "gain0", "gain1", "gain2", "gain3", "compare0", "compare1", "compare2", "compare3", "review0", "review1"]
     }
   },
   "order": ["home_gym"]

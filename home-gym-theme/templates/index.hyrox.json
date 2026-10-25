@@ -52,9 +52,11 @@
         "compare0": {"type": "compare", "settings": {"other": "Geräte für Bodybuilding, kein Sled, kein SkiErg.", "home": "Sleds, Rig, Rudergeräte und SkiErg."}},
         "compare1": {"type": "compare", "settings": {"other": "Zwischen Bänken und Kabelzügen ist kein Platz.", "home": "Eine große Functional-Fläche für dein Workout."}},
         "compare2": {"type": "compare", "settings": {"other": "Du trainierst allein.", "home": "Hyrox- und CrossFit-Workouts in der Gruppe."}},
-        "compare3": {"type": "compare", "settings": {"other": "Feste Öffnungszeiten.", "home": "24/7 Zugang."}}
+        "compare3": {"type": "compare", "settings": {"other": "Feste Öffnungszeiten.", "home": "24/7 Zugang."}},
+        "review0": {"type": "review", "settings": {"quote": "Sled, SkiErg, Rig: Hier finde ich alles, was ich für mein Rennen brauche.", "name": "Marco", "detail": "Hyrox", "rating": 5, "image": "shopify://shop_images/hg-review-marco.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Die Gruppen-Workouts auf der Functional-Fläche pushen mich mehr als jedes Training allein.", "name": "Steffi", "detail": "Functional", "rating": 5, "image": "shopify://shop_images/hg-review-steffi.jpg"}}
       },
-      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "pain3", "gain0", "gain1", "gain2", "gain3", "compare0", "compare1", "compare2", "compare3"]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "pain3", "gain0", "gain1", "gain2", "gain3", "compare0", "compare1", "compare2", "compare3", "review0", "review1"]
     }
   },
   "order": ["home_gym"]

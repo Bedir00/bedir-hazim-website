@@ -51,9 +51,11 @@
         "compare0": {"type": "compare", "settings": {"other": "Sandsack in der Ecke, keiner korrigiert dich.", "home": "Coaches, die selbst kämpfen, korrigieren deine Technik."}},
         "compare1": {"type": "compare", "settings": {"other": "Kein Ring, keine Matte.", "home": "Boxring und Matten für Boxen und BJJ."}},
         "compare2": {"type": "compare", "settings": {"other": "Sparring mit wechselnden Fremden.", "home": "Eine feste Gruppe, die dich jedes Training fordert."}},
-        "compare3": {"type": "compare", "settings": {"other": "Verein und Gym getrennt bezahlen.", "home": "Kampfsport und Krafttraining in einer Mitgliedschaft."}}
+        "compare3": {"type": "compare", "settings": {"other": "Verein und Gym getrennt bezahlen.", "home": "Kampfsport und Krafttraining in einer Mitgliedschaft."}},
+        "review0": {"type": "review", "settings": {"quote": "Endlich Sparringspartner auf meinem Level und Coaches, die jede Technik korrigieren.", "name": "Deniz", "detail": "Boxen", "rating": 5, "image": "shopify://shop_images/hg-review-deniz.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Als Frau im BJJ war ich erst unsicher. Die Gruppe hat mich vom ersten Training an aufgenommen.", "name": "Aylin", "detail": "BJJ", "rating": 5, "image": "shopify://shop_images/hg-review-aylin.jpg"}}
       },
-      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "compare3"]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "compare3", "review0", "review1"]
     }
   },
   "order": ["home_gym"]

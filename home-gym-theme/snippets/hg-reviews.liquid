@@ -1,0 +1,19 @@
+{% doc %}
+Renders member reviews, one card per "Bewertung" block. While the section's example
+setting is on, every card carries a visible "Beispiel" label so placeholder content
+is never presented as a real review.
+@param {object} section - Home Gym section
+{% enddoc %}
+<style>.hg-reviews{padding-block:64px;border-top:1px solid var(--line)}.hg-reviews h2{font-size:clamp(32px,3.3vw,48px);line-height:1.05;text-transform:uppercase;font-weight:900;font-stretch:125%;letter-spacing:-.03em;max-width:16em;margin-bottom:12px}.hg-reviews-note{font-size:13px;color:#8d8d87;margin-bottom:32px}.hg-reviews-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;max-width:1240px}.hg-review{position:relative;height:100%;margin:0;display:flex;flex-direction:column;gap:20px;padding:28px;border-radius:8px;background:#141416;border:1px solid #232327}.hg-review-stars{display:flex;gap:3px;color:var(--accent)}.hg-review-stars svg{width:18px;height:18px}.hg-review-stars .is-empty{color:#3a3a3f}.hg-review blockquote{margin:0;font-size:18px;line-height:1.55;color:#ecece6;flex:1}.hg-review figcaption{display:flex;align-items:center;gap:14px}.hg-review-avatar{flex:none;width:56px;height:56px;border-radius:50%;object-fit:cover;background:#232327;border:2px solid #ffb40066}.hg-review-name{display:block;font-size:15px;font-weight:800}.hg-review-detail{display:block;font-size:13px;color:#9d9d97;margin-top:2px}.hg-review-example{position:absolute;top:14px;right:14px;padding:4px 8px;border-radius:3px;border:1px dashed #77756e;color:#b5b5ad;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}@media(max-width:749px){.hg-reviews{padding-block:44px}.hg-reviews h2{font-size:30px}.hg-reviews-note{margin-bottom:22px}.hg-review{padding:22px}.hg-review blockquote{font-size:16px}}</style>
+{%- assign reviews = section.blocks | where: 'type', 'review' -%}
+{% if reviews.size > 0 %}
+<section class="hg-reviews hg-shell" aria-labelledby="hg-reviews-heading-{{ section.id }}">
+{% if section.settings.reviews_kicker != blank %}<p class="hg-kicker">{{ section.settings.reviews_kicker | escape }}</p>{% endif %}
+<h2 id="hg-reviews-heading-{{ section.id }}">{{ section.settings.reviews_title | escape }}<span class="hg-accent">.</span></h2>
+{% if section.settings.reviews_example %}<p class="hg-reviews-note">{{ section.settings.reviews_example_note | escape }}</p>{% endif %}
+<ul class="hg-reviews-grid">{% for review in reviews %}{% assign rating = review.settings.rating | default: 5 %}<li {{ review.shopify_attributes }}><figure class="hg-review">{% if section.settings.reviews_example %}<span class="hg-review-example">{{ section.settings.reviews_example_label | escape }}</span>{% endif %}
+<span class="hg-review-stars" role="img" aria-label="{{ rating }} / 5">{% for star in (1..5) %}<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {% if star > rating %}class="is-empty"{% endif %}><path d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z"/></svg>{% endfor %}</span>
+<blockquote>{{ review.settings.quote | escape }}</blockquote>
+<figcaption>{% if review.settings.image != blank %}{{ review.settings.image | image_url: width: 160, height: 160, crop: 'center' | image_tag: class: 'hg-review-avatar', loading: 'lazy', width: 56, height: 56, alt: '' }}{% endif %}<span><span class="hg-review-name">{{ review.settings.name | escape }}</span>{% if review.settings.detail != blank %}<span class="hg-review-detail">{{ review.settings.detail | escape }}</span>{% endif %}</span></figcaption></figure></li>{% endfor %}</ul>
+</section>
+{% endif %}

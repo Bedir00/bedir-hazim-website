@@ -50,9 +50,11 @@
         "compare0": {"type": "compare", "settings": {"other": "Eine Fläche für alle: Du fühlst dich beobachtet.", "home": "Ein eigener Bereich nur für Frauen."}},
         "compare1": {"type": "compare", "settings": {"other": "Du trainierst allein und anonym.", "home": "Feste Gruppen, die auf dich warten."}},
         "compare2": {"type": "compare", "settings": {"other": "Kurs gebucht, aber keiner zeigt dir die Übungen.", "home": "Ein Trainer gibt den Ablauf vor, du machst einfach mit."}},
-        "compare3": {"type": "compare", "settings": {"other": "Erst Vertrag, dann ausprobieren.", "home": "Kurs kostenlos schnuppern, dann entscheiden."}}
+        "compare3": {"type": "compare", "settings": {"other": "Erst Vertrag, dann ausprobieren.", "home": "Kurs kostenlos schnuppern, dann entscheiden."}},
+        "review0": {"type": "review", "settings": {"quote": "Der feste Kurs am Dienstag ist mein Termin mit mir selbst. Allein hätte ich längst aufgehört.", "name": "Sabine", "detail": "Kurse", "rating": 5, "image": "shopify://shop_images/hg-review-sabine.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Im Ladies-Bereich trainiere ich in Ruhe, ohne dass mir jemand über die Schulter schaut.", "name": "Lena", "detail": "Ladies-Bereich", "rating": 5, "image": "shopify://shop_images/hg-review-lena.jpg"}}
       },
-      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "compare3"]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "compare3", "review0", "review1"]
     }
   },
   "order": ["home_gym"]

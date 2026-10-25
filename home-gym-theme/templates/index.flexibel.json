@@ -49,9 +49,11 @@
         "gain2": {"type": "gain", "settings": {"title": "Nah dran", "description": "Mitten in Löhne, schnell erreichbar aus Bad Oeynhausen und Herford."}},
         "compare0": {"type": "compare", "settings": {"other": "Öffnungszeiten, die nicht zu deiner Schicht passen.", "home": "24/7 geöffnet, auch nachts und am Wochenende."}},
         "compare1": {"type": "compare", "settings": {"other": "Lange Pläne, die du nie schaffst.", "home": "Pläne, die in 45 Minuten passen."}},
-        "compare2": {"type": "compare", "settings": {"other": "Studio am anderen Ende der Stadt.", "home": "Mitten in Löhne, schnell da aus Bad Oeynhausen und Herford."}}
+        "compare2": {"type": "compare", "settings": {"other": "Studio am anderen Ende der Stadt.", "home": "Mitten in Löhne, schnell da aus Bad Oeynhausen und Herford."}},
+        "review0": {"type": "review", "settings": {"quote": "Nach der Spätschicht noch trainieren? Hier geht das auch um 23 Uhr. Das war vorher nirgends möglich.", "name": "Nadine", "detail": "24/7 Training, Schichtdienst", "rating": 5, "image": "shopify://shop_images/hg-review-nadine.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Mit zwei Kindern trainiere ich, wenn die Kleinen schlafen. 45 Minuten, dann bin ich wieder zu Hause.", "name": "Kim", "detail": "24/7 Training", "rating": 5, "image": "shopify://shop_images/hg-review-kim.jpg"}}
       },
-      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2"]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "review0", "review1"]
     }
   },
   "order": ["home_gym"]

@@ -1,0 +1,16 @@
+{% doc %}
+Renders the home page section that explains what changed from Fitpark to Home Gym,
+one card per "Neuerung" block, with a button to the trial form.
+@param {object} section - Home Gym section
+{% enddoc %}
+<style>.hg-renewal{padding-block:56px 64px}.hg-renewal-panel{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;padding:48px;border-radius:10px;background:radial-gradient(80% 120% at 0% 0%,rgba(255,180,0,.12),rgba(255,180,0,0) 60%),#111113;border:1px solid #ffb40033}.hg-renewal h2{font-size:clamp(32px,3.3vw,50px);line-height:1.02;text-transform:uppercase;font-weight:900;font-stretch:125%;letter-spacing:-.03em;margin-bottom:20px}.hg-renewal h2 s{color:#77756e;text-decoration-thickness:4px;text-decoration-color:var(--accent)}.hg-renewal-text{font-size:16px;line-height:1.65;color:var(--muted);max-width:30em;margin-bottom:28px}.hg-renewal-list{list-style:none;margin:0;padding:0;display:grid;gap:12px;align-content:start}.hg-renewal-item{display:flex;gap:18px;padding:22px 24px;border-radius:6px;background:#18181b}.hg-renewal-badge{flex:none;align-self:flex-start;padding:5px 9px;border-radius:3px;background:var(--accent);color:#050506;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.hg-renewal-item h3{font-size:19px;margin-bottom:6px}.hg-renewal-item p{font-size:15px;line-height:1.6;color:var(--muted)}@media(max-width:989px){.hg-renewal-panel{grid-template-columns:minmax(0,1fr);gap:32px;padding:32px}}@media(max-width:749px){.hg-renewal{padding-block:36px 40px}.hg-renewal-panel{padding:24px 20px}.hg-renewal h2{font-size:30px}.hg-renewal-text{font-size:14px}.hg-renewal-item{padding:16px 18px;gap:14px}.hg-renewal-item h3{font-size:16px}.hg-renewal-item p{font-size:14px}.hg-renewal .hg-cta{width:100%}}</style>
+{%- assign items = section.blocks | where: 'type', 'renewal' -%}
+{% if section.settings.renewal_title != blank %}
+<section id="neu" class="hg-renewal hg-shell" aria-labelledby="hg-renewal-heading-{{ section.id }}">
+<div class="hg-renewal-panel"><div>{% if section.settings.renewal_kicker != blank %}<p class="hg-kicker">{{ section.settings.renewal_kicker | escape }}</p>{% endif %}
+<h2 id="hg-renewal-heading-{{ section.id }}">{% if section.settings.renewal_old_name != blank %}{% capture old_name %}<s>{{ section.settings.renewal_old_name | escape }}</s>{% endcapture %}{{ section.settings.renewal_title | escape | replace: section.settings.renewal_old_name, old_name }}{% else %}{{ section.settings.renewal_title | escape }}{% endif %}<span class="hg-accent">.</span></h2>
+{% if section.settings.renewal_text != blank %}<p class="hg-renewal-text">{{ section.settings.renewal_text | escape }}</p>{% endif %}
+<a class="hg-cta" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↓</span></a></div>
+{% if items.size > 0 %}<ul class="hg-renewal-list">{% for item in items %}<li class="hg-renewal-item" {{ item.shopify_attributes }}><span class="hg-renewal-badge">{{ section.settings.renewal_badge | escape }}</span><div><h3>{{ item.settings.title | escape }}</h3>{% if item.settings.description != blank %}<p>{{ item.settings.description | escape }}</p>{% endif %}</div></li>{% endfor %}</ul>{% endif %}
+</div></section>
+{% endif %}

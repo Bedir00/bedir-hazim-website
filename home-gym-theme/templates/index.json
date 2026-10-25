@@ -17,7 +17,7 @@
         "brand": "Home Gym",
         "location_label": "ehemals Fitpark · Löhne",
         "city": "Löhne",
-        "headline": "Wir sind bereit, wenn du es bist",
+        "headline": "Dein Gym in Löhne. 24/7 geöffnet",
         "description": "",
         "solution": "Wir nehmen dich an die Hand",
         "cta": "Probetraining anfragen",
@@ -32,156 +32,27 @@
         "hero_mp4_url": "https://cdn.shopify.com/videos/c/o/v/278b14178e464733ade9b46732dd776f.mp4"
       },
       "blocks": {
-        "training_0": {
-          "type": "path",
-          "settings": {
-            "destination": "einstieg",
-            "card_title": "Geräte & Kraft",
-            "tag": "In deinem Tempo",
-            "question": "Geräte & Kraft",
-            "answer": "Ein Plan und eine Einweisung, die zu dir passen.",
-            "asset": "hg-egym.webp",
-            "shelf": "training"
-          }
-        },
-        "training_1": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Kurse & Cycling",
-            "tag": "Gemeinsam trainieren",
-            "question": "Kurse & Cycling",
-            "answer": "Finde den Kurs, auf den du dich freust.",
-            "asset": "hg-cycling.webp",
-            "shelf": "training"
-          }
-        },
-        "training_2": {
-          "type": "path",
-          "settings": {
-            "destination": "kampfsport",
-            "card_title": "Boxen & BJJ",
-            "tag": "Technik & Team",
-            "question": "Boxen & BJJ",
-            "answer": "Lerne das Training und die Menschen dahinter kennen.",
-            "asset": "hg-boxing.webp",
-            "shelf": "training"
-          }
-        },
-        "training_3": {
-          "type": "path",
-          "settings": {
-            "destination": "hyrox",
-            "card_title": "Hyrox & Functional",
-            "tag": "Dein nächstes Ziel",
-            "question": "Hyrox & Functional",
-            "answer": "Platz für dein Workout. Und Menschen, die dich fordern.",
-            "asset": "hg-floor.webp",
-            "shelf": "training"
-          }
-        },
-        "training_4": {
-          "type": "path",
-          "settings": {
-            "destination": "flexibel",
-            "card_title": "24/7 Training",
-            "tag": "Passt in deinen Alltag",
-            "question": "24/7 Training",
-            "answer": "Vor der Schicht oder nach Feierabend: deine Zeit zählt.",
-            "asset": "hg-upper.webp",
-            "shelf": "training"
-          }
-        },
-        "training_5": {
-          "type": "path",
-          "settings": {
-            "destination": "einstieg",
-            "card_title": "Dein erster Tag",
-            "tag": "Du musst nichts können",
-            "question": "Dein erster Tag",
-            "answer": "Wir zeigen dir alles und gehen den Anfang mit dir.",
-            "asset": "hg-weights.webp",
-            "shelf": "start"
-          }
-        },
-        "training_6": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Zusammen geht mehr",
-            "tag": "Für alle, die Anschluss suchen",
-            "question": "Zusammen geht mehr",
-            "answer": "Ein fester Termin. Ein gemeinsames Training.",
-            "asset": "hg-classes.webp",
-            "shelf": "start"
-          }
-        },
-        "training_7": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Dein Bereich",
-            "tag": "Ladies",
-            "question": "Dein Bereich",
-            "answer": "In Ruhe ankommen und im eigenen Bereich trainieren.",
-            "asset": "hg-ladies.webp",
-            "shelf": "start"
-          }
-        },
-        "training_8": {
-          "type": "path",
-          "settings": {
-            "destination": "flexibel",
-            "card_title": "Zeit für dich",
-            "tag": "Auch mit vollem Kalender",
-            "question": "Zeit für dich",
-            "answer": "Finde einen Rhythmus, der zu deinem Leben passt.",
-            "asset": "hg-upper.webp",
-            "shelf": "start"
-          }
-        },
-        "step0": {
-          "type": "step",
-          "settings": {
-            "number": "1",
-            "title": "Anfrage senden",
-            "description": "Name, Telefon, E-Mail und Wunschzeit. So können wir deinen Termin abstimmen."
-          }
-        },
-        "step1": {
-          "type": "step",
-          "settings": {
-            "number": "2",
-            "title": "Wir rufen an",
-            "description": "Wir bestätigen deinen Termin persönlich."
-          }
-        },
-        "step2": {
-          "type": "step",
-          "settings": {
-            "number": "3",
-            "title": "Vorbeikommen",
-            "description": "Führung, Einweisung, erstes Training. Danach entscheidest du."
-          }
-        }
+        "training_0": {"type": "path", "settings": {"destination": "einstieg", "card_title": "Geräte & Kraft", "tag": "In deinem Tempo", "question": "Geräte & Kraft", "answer": "Ein Plan und eine Einweisung, die zu dir passen.", "asset": "hg-egym.webp", "shelf": "training"}},
+        "training_1": {"type": "path", "settings": {"destination": "kurse", "card_title": "Kurse & Cycling", "tag": "Gemeinsam trainieren", "question": "Kurse & Cycling", "answer": "Finde den Kurs, auf den du dich freust.", "asset": "hg-cycling.webp", "shelf": "training"}},
+        "training_2": {"type": "path", "settings": {"destination": "kampfsport", "card_title": "Boxen & BJJ", "tag": "Technik & Team", "question": "Boxen & BJJ", "answer": "Lerne das Training und die Menschen dahinter kennen.", "asset": "hg-boxing.webp", "shelf": "training"}},
+        "training_3": {"type": "path", "settings": {"destination": "hyrox", "card_title": "Hyrox & Functional", "tag": "Dein nächstes Ziel", "question": "Hyrox & Functional", "answer": "Platz für dein Workout. Und Menschen, die dich fordern.", "asset": "hg-floor.webp", "shelf": "training"}},
+        "training_4": {"type": "path", "settings": {"destination": "flexibel", "card_title": "24/7 Training", "tag": "Passt in deinen Alltag", "question": "24/7 Training", "answer": "Vor der Schicht oder nach Feierabend: deine Zeit zählt.", "asset": "hg-upper.webp", "shelf": "training"}},
+        "training_5": {"type": "path", "settings": {"destination": "einstieg", "card_title": "Dein erster Tag", "tag": "Du musst nichts können", "question": "Dein erster Tag", "answer": "Wir zeigen dir alles und gehen den Anfang mit dir.", "asset": "hg-weights.webp", "shelf": "start"}},
+        "training_6": {"type": "path", "settings": {"destination": "kurse", "card_title": "Zusammen geht mehr", "tag": "Für alle, die Anschluss suchen", "question": "Zusammen geht mehr", "answer": "Ein fester Termin. Ein gemeinsames Training.", "asset": "hg-classes.webp", "shelf": "start"}},
+        "training_7": {"type": "path", "settings": {"destination": "kurse", "card_title": "Dein Bereich", "tag": "Ladies", "question": "Dein Bereich", "answer": "In Ruhe ankommen und im eigenen Bereich trainieren.", "asset": "hg-ladies.webp", "shelf": "start"}},
+        "training_8": {"type": "path", "settings": {"destination": "flexibel", "card_title": "Zeit für dich", "tag": "Auch mit vollem Kalender", "question": "Zeit für dich", "answer": "Finde einen Rhythmus, der zu deinem Leben passt.", "asset": "hg-upper.webp", "shelf": "start"}},
+        "renewal0": {"type": "renewal", "settings": {"title": "Neues Team", "description": "Neue Gesichter auf der Fläche und an der Theke. Ein Team, das sich Zeit für dich nimmt."}},
+        "renewal1": {"type": "renewal", "settings": {"title": "Komplett renoviert", "description": "Das ganze Studio ist frisch renoviert: hell, sauber und modern."}},
+        "renewal2": {"type": "renewal", "settings": {"title": "Neue Geräte", "description": "Moderne Geräte für Kraft, Cardio und Functional, unter anderem von Matrix."}},
+        "review0": {"type": "review", "settings": {"quote": "Ich hatte Respekt davor, in meinem Alter neu anzufangen. Das Team war so geduldig, dass ich mich vom ersten Tag an wohlgefühlt habe.", "name": "Gabi", "detail": "Einstieg mit 58", "rating": 5, "image": "shopify://shop_images/hg-review-gabi.jpg"}},
+        "review1": {"type": "review", "settings": {"quote": "Endlich Sparringspartner auf meinem Level und Coaches, die jede Technik korrigieren.", "name": "Deniz", "detail": "Boxen", "rating": 5, "image": "shopify://shop_images/hg-review-deniz.jpg"}},
+        "review2": {"type": "review", "settings": {"quote": "Nach der Spätschicht noch trainieren? Hier geht das auch um 23 Uhr. Das war vorher nirgends möglich.", "name": "Nadine", "detail": "24/7 Training, Schichtdienst", "rating": 5, "image": "shopify://shop_images/hg-review-nadine.jpg"}},
+        "step0": {"type": "step", "settings": {"number": "1", "title": "Anfrage senden", "description": "Name, Telefon, E-Mail und Wunschzeit. So können wir deinen Termin abstimmen."}},
+        "step1": {"type": "step", "settings": {"number": "2", "title": "Wir rufen an", "description": "Wir bestätigen deinen Termin persönlich."}},
+        "step2": {"type": "step", "settings": {"number": "3", "title": "Vorbeikommen", "description": "Führung, Einweisung, erstes Training. Danach entscheidest du."}}
       },
-      "block_order": [
-        "training_0",
-        "training_1",
-        "training_2",
-        "training_3",
-        "training_4",
-        "training_5",
-        "training_6",
-        "training_7",
-        "training_8",
-        "step0",
-        "step1",
-        "step2"
-      ]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "renewal0", "renewal1", "renewal2", "review0", "review1", "review2", "step0", "step1", "step2"]
     }
   },
-  "order": [
-    "home_gym"
-  ]
+  "order": ["home_gym"]
 }
