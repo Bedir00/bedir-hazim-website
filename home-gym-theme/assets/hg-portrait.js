@@ -15,8 +15,11 @@
     };
     video.muted = true;
     video.defaultMuted = true;
+    let heardFromStart = false;
     sound?.addEventListener('click', () => {
       video.muted = !video.muted;
+      // The first unmute restarts the video so the voice-over is heard from the beginning.
+      if (!video.muted && !heardFromStart) { heardFromStart = true; video.currentTime = 0; }
       if (!video.muted) play();
       sound.setAttribute('aria-pressed', String(!video.muted));
       sound.setAttribute('aria-label', video.muted ? sound.dataset.labelUnmute : sound.dataset.labelMute);

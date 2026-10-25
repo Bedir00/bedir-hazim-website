@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;font-weight:100 900;font-stretch:62% 125%;src:url(archivo.woff2) format('woff2')}
+:root{--accent:#ffb400;--ink:#f2f2ec;--muted:#b5b5ad}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#050506}
+body{font-family:Archivo,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(70% 38% at 50% 31%,rgba(255,180,0,.10),rgba(255,180,0,0) 70%),radial-gradient(120% 80% at 50% 40%,#111114 0%,#050506 70%)}
+canvas{position:absolute;inset:0;width:1080px;height:1920px}
+#grain{position:absolute;inset:-64px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
+#vignette{position:absolute;inset:0;background:radial-gradient(130% 90% at 50% 42%,transparent 55%,rgba(0,0,0,.55) 100%);pointer-events:none}
+.brand{position:absolute;left:84px;top:96px;font-size:46px;font-weight:900;font-stretch:125%;letter-spacing:-.05em;text-transform:uppercase}
+.brand span,.acc{color:var(--accent)}
+.place{position:absolute;right:84px;top:108px;font-size:24px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.layer{position:absolute;left:84px;right:84px;top:1110px}
+.kicker{display:flex;align-items:center;gap:18px;font-size:28px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:34px}
+.kicker:before{content:"";width:56px;height:3px;background:var(--accent)}
+.hook{font-size:118px;line-height:.98;font-weight:900;font-stretch:125%;letter-spacing:-.035em;text-transform:uppercase}
+.hook .w{display:inline-block;margin-right:.18em}
+.claim{font-size:80px;line-height:1.02;font-weight:900;font-stretch:125%;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:54px}
+.points{list-style:none;display:flex;flex-direction:column;gap:26px}
+.points li{display:flex;align-items:center;gap:26px;font-size:46px;font-weight:600;letter-spacing:-.01em;color:#e7e7e1}
+.points li i{flex:none;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);font-style:normal;font-size:30px;font-weight:900}
+.cta-k{font-size:30px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.cta-big{font-size:112px;line-height:.95;font-weight:900;font-stretch:112%;letter-spacing:-.035em;text-transform:uppercase;margin-bottom:56px}
+.btn{display:inline-flex;align-items:center;gap:22px;background:var(--accent);color:#050506;border-radius:8px;padding:30px 46px;font-size:44px;font-weight:800;box-shadow:0 0 0 0 rgba(255,180,0,.0)}
+.note{margin-top:34px;font-size:30px;color:var(--muted);font-weight:500}
+.ring{position:absolute;inset:-10px;border-radius:14px;border:2px solid var(--accent)}
+</style></head>
+<body><div id="stage"><canvas id="gl" width="1080" height="1920"></canvas><canvas id="grain" width="1208" height="2048"></canvas><div id="vignette"></div>
+<div class="brand" id="brand">Home Gym<span>.</span></div><div class="place" id="place">Löhne</div>
+<div class="layer" id="sceneA"><p class="kicker" id="kickerA"></p><h1 class="hook" id="hook"></h1></div>
+<div class="layer" id="sceneB"><h2 class="claim" id="claim"></h2><ul class="points" id="points"></ul></div>
+<div class="layer" id="sceneC"><p class="cta-k" id="ctaK">Kostenlos &amp; unverbindlich</p><h2 class="cta-big" id="ctaBig">Dein Probe&shy;training<span class="acc">.</span></h2><div style="position:relative;display:inline-block" id="btnWrap"><span class="ring" id="ring"></span><span class="btn" id="btn">Jetzt anfragen <span style="font-size:40px">↓</span></span></div><p class="note" id="note">Home Gym · ehemals Fitpark · Löhne</p></div>
+</div>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const W = 1080, H = 1920;
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.45;
+const camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 100);
+camera.position.set(0, 0, 8);
+const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-3, 4, 5); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffb400, 5.0); rim.position.set(4, 2, -4); scene.add(rim);
+const rim2 = new THREE.DirectionalLight(0xffb400, 1.6); rim2.position.set(-4, -1, -3); scene.add(rim2);
+scene.add(new THREE.AmbientLight(0xffffff, 0.12));
+
+const graphite = new THREE.MeshPhysicalMaterial({ color: 0x2b2b30, metalness: 0.9, roughness: 0.3, clearcoat: 0.4, clearcoatRoughness: 0.25 });
+const matte = new THREE.MeshPhysicalMaterial({ color: 0x1d1d21, metalness: 0.15, roughness: 0.55, clearcoat: 0.5, clearcoatRoughness: 0.4 });
+const amber = new THREE.MeshStandardMaterial({ color: new THREE.Color('#ffb400'), emissive: new THREE.Color('#c27a00'), emissiveIntensity: 0.25, metalness: 0.5, roughness: 0.38 });
+const steel = new THREE.MeshStandardMaterial({ color: 0x8a8a90, metalness: 1, roughness: 0.22 });
+
+function build(kind) {
+  const g = new THREE.Group();
+  const add = (geo, mat, f) => { const m = new THREE.Mesh(geo, mat); f && f(m); g.add(m); return m; };
+  if (kind === 'dumbbell') {
+    for (const s of [-1, 1]) {
+      add(new THREE.CylinderGeometry(0.62, 0.62, 0.62, 6), graphite, m => { m.rotation.z = Math.PI / 2; m.position.x = s * 1.05; });
+      add(new THREE.CylinderGeometry(0.3, 0.3, 0.66, 6), amber, m => { m.rotation.z = Math.PI / 2; m.position.x = s * 1.05; m.scale.set(1, 1.0, 1); });
+      add(new THREE.CylinderGeometry(0.2, 0.2, 0.12, 32), steel, m => { m.rotation.z = Math.PI / 2; m.position.x = s * 0.68; });
+    }
+    add(new THREE.CylinderGeometry(0.13, 0.13, 1.4, 32), steel, m => { m.rotation.z = Math.PI / 2; });
+    add(new THREE.CylinderGeometry(0.145, 0.145, 0.7, 32), matte, m => { m.rotation.z = Math.PI / 2; });
+  } else if (kind === 'rings') {
+    const r = [[1.15, graphite], [0.92, amber], [0.69, graphite]];
+    r.forEach(([rad, mat], i) => add(new THREE.TorusGeometry(rad, i === 1 ? 0.07 : 0.085, 32, 160), mat, m => { m.userData.spin = i; }));
+    add(new THREE.SphereGeometry(0.2, 48, 48), steel);
+  } else if (kind === 'bag') {
+    add(new THREE.CapsuleGeometry(0.55, 1.5, 16, 48), matte);
+    add(new THREE.CylinderGeometry(0.575, 0.575, 0.16, 64, 1, true), amber, m => { m.position.y = 0.45; });
+    add(new THREE.CylinderGeometry(0.575, 0.575, 0.05, 64, 1, true), amber, m => { m.position.y = 0.2; });
+    add(new THREE.CylinderGeometry(0.3, 0.42, 0.12, 48), steel, m => { m.position.y = 1.32; });
+    const top = new THREE.Vector3(0, 2.6, 0);
+    for (let i = 0; i < 4; i++) {
+      const a = i * Math.PI / 2 + Math.PI / 4, base = new THREE.Vector3(Math.cos(a) * 0.3, 1.36, Math.sin(a) * 0.3);
+      const len = base.distanceTo(top), mid = base.clone().add(top).multiplyScalar(0.5);
+      add(new THREE.CylinderGeometry(0.018, 0.018, len, 8), steel, m => { m.position.copy(mid); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), top.clone().sub(base).normalize()); });
+    }
+    add(new THREE.TorusGeometry(0.09, 0.025, 12, 32), steel, m => { m.position.copy(top); });
+    add(new THREE.CylinderGeometry(0.018, 0.018, 3, 8), steel, m => { m.position.y = 4.1; });
+    g.userData.pivot = 2.6;
+  } else if (kind === 'kettlebell') {
+    add(new THREE.SphereGeometry(0.8, 64, 64), graphite, m => { m.scale.set(1, 0.94, 1); });
+    add(new THREE.CylinderGeometry(0.5, 0.5, 0.12, 64), graphite, m => { m.position.y = -0.72; });
+    add(new THREE.TorusGeometry(0.805, 0.03, 16, 128), amber, m => { m.rotation.x = Math.PI / 2; m.position.y = -0.05; });
+    add(new THREE.TorusGeometry(0.5, 0.11, 32, 96, Math.PI), matte, m => { m.position.y = 0.68; });
+    for (const s of [-1, 1]) add(new THREE.CylinderGeometry(0.11, 0.13, 0.4, 32), matte, m => { m.position.set(s * 0.5, 0.55, 0); });
+  } else if (kind === 'clock') {
+    add(new THREE.TorusGeometry(1.1, 0.09, 32, 160), graphite);
+    add(new THREE.CylinderGeometry(1.06, 1.06, 0.06, 96), matte, m => { m.rotation.x = Math.PI / 2; m.position.z = -0.06; });
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * Math.PI * 2, big = i % 3 === 0;
+      add(new THREE.BoxGeometry(big ? 0.07 : 0.04, big ? 0.22 : 0.13, 0.05), i === 0 ? amber : steel, m => { m.position.set(Math.sin(a) * 0.86, Math.cos(a) * 0.86, 0.02); m.rotation.z = -a; });
+    }
+    const hour = new THREE.Group(); hour.add(new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.5, 0.05), steel)); hour.children[0].position.y = 0.22; hour.position.z = 0.05; g.add(hour);
+    const minute = new THREE.Group(); minute.add(new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.78, 0.04), amber)); minute.children[0].position.y = 0.36; minute.position.z = 0.09; g.add(minute);
+    add(new THREE.CylinderGeometry(0.07, 0.07, 0.14, 32), steel, m => { m.rotation.x = Math.PI / 2; m.position.z = 0.1; });
+    g.userData.hands = { hour, minute };
+  }
+  const box = new THREE.Box3().setFromObject(g);
+  const size = box.getSize(new THREE.Vector3());
+  if (kind === 'bag') { const s = 1.32 / 2.3; g.scale.setScalar(s); }
+  else { const s = (kind === 'kettlebell' ? 1.4 : 1.55) / Math.max(size.x, size.y); g.scale.setScalar(s); }
+  return g;
+}
+
+// soft contact shadow
+const sc = document.createElement('canvas'); sc.width = sc.height = 256;
+const sctx = sc.getContext('2d'); const grd = sctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+grd.addColorStop(0, 'rgba(0,0,0,.85)'); grd.addColorStop(1, 'rgba(0,0,0,0)'); sctx.fillStyle = grd; sctx.fillRect(0, 0, 256, 256);
+const shadow = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 0.5), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+scene.add(shadow);
+const glow = document.createElement('canvas'); glow.width = glow.height = 256;
+const gctx = glow.getContext('2d'); const gg = gctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+gg.addColorStop(0, 'rgba(255,180,0,.55)'); gg.addColorStop(1, 'rgba(255,180,0,0)'); gctx.fillStyle = gg; gctx.fillRect(0, 0, 256, 256);
+const floorGlow = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 0.7), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(glow), transparent: true, depthWrite: false, opacity: 0.35, blending: THREE.AdditiveBlending }));
+scene.add(floorGlow);
+
+// static film grain, shifted per frame
+const grain = document.getElementById('grain').getContext('2d');
+const img = grain.createImageData(1208, 2048); let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+for (let i = 0; i < img.data.length; i += 4) { const v = rnd() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+grain.putImageData(img, 0, 0);
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const easeOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const easeInOut = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const show = (el, t, tin, tout, { dy = 36, dur = 0.75, blur = 6 } = {}) => {
+  const a = easeOut((t - tin) / dur), b = tout == null ? 0 : easeInOut((t - tout) / 0.45);
+  const o = a * (1 - b);
+  el.style.opacity = o.toFixed(3);
+  el.style.transform = `translateY(${((1 - a) * dy - b * 24).toFixed(2)}px)`;
+  el.style.filter = o < 0.999 ? `blur(${((1 - a) * blur + b * 4).toFixed(2)}px)` : 'none';
+};
+
+let cfg, tl, obj;
+window.setup = async (c, timeline) => {
+  cfg = c; tl = timeline;
+  document.getElementById('kickerA').textContent = c.kicker;
+  const hook = c.hook.replace(/[?.]$/, '');
+  const end = c.hook.slice(-1);
+  document.getElementById('hook').innerHTML = hook.split(' ').map(w => `<span class="w">${w}</span>`).join('') .replace(/<\/span>$/, `<span class="acc">${end}</span></span>`);
+  document.getElementById('claim').innerHTML = c.claim.replace(/\.$/, '<span class="acc">.</span>');
+  document.getElementById('points').innerHTML = c.points.map(p => `<li><i>✓</i><span>${p}</span></li>`).join('');
+  obj = build(c.object); scene.add(obj);
+  await document.fonts.ready;
+};
+
+window.frame = t => {
+  const { s1, s2, end } = tl;
+  // 3D object: calm float, slow turn, lifts slightly for the CTA
+  const intro = easeOut(t / 1.4), toCta = easeInOut((t - (s2 - 0.3)) / 1.2);
+  const baseY = 0.74 + 0.1 * toCta;
+  const sc = (0.9 + 0.1 * intro) * (1 - 0.2 * toCta);
+  obj.position.y = baseY + Math.sin(t * 1.1) * 0.035 - (1 - intro) * 0.25;
+  obj.scale.setScalar(obj.userData.base ?? (obj.userData.base = obj.scale.x));
+  obj.scale.multiplyScalar(sc);
+  const kind = cfg.object;
+  if (kind === 'dumbbell') { obj.rotation.set(0.32 + Math.sin(t * .5) * .05, -0.5 + t * 0.32, 0.12); }
+  else if (kind === 'rings') { obj.rotation.set(0.35, t * 0.2, 0); obj.children.forEach(m => { if (m.userData.spin === 0) m.rotation.set(t * 0.35, 0, 0); if (m.userData.spin === 1) m.rotation.set(0, t * 0.45, 0.6); if (m.userData.spin === 2) m.rotation.set(1.1, -t * 0.3, 0); }); }
+  else if (kind === 'bag') { obj.rotation.set(0, t * 0.25, Math.sin(t * 0.9) * 0.05); obj.position.y += -0.12; }
+  else if (kind === 'kettlebell') { obj.rotation.set(0.18, -0.6 + t * 0.3, 0); }
+  else if (kind === 'clock') { obj.rotation.set(0.08, Math.sin(t * 0.35) * 0.5, 0); obj.userData.hands.minute.rotation.z = -t / end * Math.PI * 2; obj.userData.hands.hour.rotation.z = -1.0 - t / end * Math.PI / 6; }
+  shadow.position.set(0, baseY - 0.95 * sc - (kind === 'bag' ? 0.62 : 0), -0.3); shadow.scale.setScalar(sc * (1 - Math.sin(t * 1.1) * .03));
+  floorGlow.position.copy(shadow.position); floorGlow.position.z -= 0.05; floorGlow.scale.setScalar(sc);
+  shadow.visible = floorGlow.visible = kind !== 'bag';
+  const fade = Math.min(easeOut(t / 0.6), 1 - easeInOut((t - (end - 0.45)) / 0.45));
+  document.getElementById('stage').style.opacity = fade.toFixed(3);
+  renderer.render(scene, camera);
+
+  show(document.getElementById('brand'), t, 0.1, null, { dy: 0 });
+  show(document.getElementById('place'), t, 0.2, null, { dy: 0 });
+  show(document.getElementById('kickerA'), t, 0.25, s1 - 0.55);
+  document.querySelectorAll('#hook .w').forEach((w, i) => show(w, t, 0.45 + i * 0.09, s1 - 0.55, { dy: 50 }));
+  show(document.getElementById('claim'), t, s1, s2 - 0.55);
+  const pts = document.querySelectorAll('#points li');
+  const step = Math.min(0.75, (s2 - s1 - 1.6) / pts.length);
+  pts.forEach((li, i) => show(li, t, s1 + 0.7 + i * step, s2 - 0.55, { dy: 28 }));
+  show(document.getElementById('ctaK'), t, s2, null);
+  show(document.getElementById('ctaBig'), t, s2 + 0.15, null, { dy: 50 });
+  show(document.getElementById('btnWrap'), t, s2 + 0.65, null);
+  show(document.getElementById('note'), t, s2 + 0.95, null, { dy: 20 });
+  const pulse = (t - s2 - 1.4) % 1.8;
+  const ring = document.getElementById('ring');
+  ring.style.opacity = t > s2 + 1.4 ? (0.7 * (1 - easeOut(pulse / 1.4))).toFixed(3) : 0;
+  ring.style.transform = `scale(${1 + 0.08 * easeOut(pulse / 1.4)})`;
+  const gx = Math.floor(rnd() * 64), gy = Math.floor(rnd() * 64);
+  document.getElementById('grain').style.transform = `translate(${gx}px,${gy}px)`;
+};
+window.ready = true;
+</script></body></html>

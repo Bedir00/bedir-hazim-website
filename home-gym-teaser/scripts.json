@@ -1,0 +1,82 @@
+{
+ "einstieg": {
+  "kicker": "Einstieg",
+  "hook": "Du willst anfangen?",
+  "claim": "Wir nehmen dich an die Hand.",
+  "points": [
+   "Persönliche Einweisung",
+   "Ein Plan, der zu dir passt",
+   "Leute wie du"
+  ],
+  "object": "dumbbell",
+  "vo": [
+   "Du willst anfangen, weißt aber nicht wie?",
+   "Bei Hohm Dschimm nehmen wir dich an die Hand. Mit persönlicher Einweisung und einem Plan, der zu dir passt.",
+   "Dein Probetraining ist kostenlos. Melde dich jetzt direkt hier an."
+  ]
+ },
+ "kurse": {
+  "kicker": "Kurse & Ladies",
+  "hook": "Allein macht's keinen Spaß?",
+  "claim": "Trainier mit uns.",
+  "points": [
+   "Feste Kurse jede Woche",
+   "Eigener Ladies-Bereich",
+   "Gemeinsam dranbleiben"
+  ],
+  "object": "rings",
+  "vo": [
+   "Allein trainieren macht dir keinen Spaß?",
+   "Dann trainier mit uns. Feste Kurse jede Woche und ein eigener Bereich nur für Frauen.",
+   "Schnupper kostenlos rein. Melde dich jetzt direkt hier an."
+  ]
+ },
+ "kampfsport": {
+  "kicker": "Boxen & BJJ",
+  "hook": "Du suchst Partner?",
+  "claim": "Hier wirst du gefordert.",
+  "points": [
+   "Erfahrene Trainer",
+   "Partner auf Augenhöhe",
+   "Ring & Matte unter einem Dach"
+  ],
+  "object": "bag",
+  "vo": [
+   "Du suchst Trainingspartner, die dich fordern?",
+   "Boxen und Kampfsport bei Hohm Dschimm. Erfahrene Trainer, starke Partner, Boxring und Matten unter einem Dach.",
+   "Dein Probetraining ist kostenlos. Melde dich jetzt direkt hier an."
+  ]
+ },
+ "hyrox": {
+  "kicker": "Hyrox & Functional",
+  "hook": "Nicht für Hyrox gebaut?",
+  "claim": "Unser Studio schon.",
+  "points": [
+   "Große Functional-Fläche",
+   "Workouts wie im Wettkampf",
+   "24/7 Zugang"
+  ],
+  "object": "kettlebell",
+  "vo": [
+   "Dein Studio ist nicht für Hyrox gebaut?",
+   "Unseres schon. Eine große Functional-Fläche mit allem, was du für dein Rennen brauchst.",
+   "Teste die Fläche kostenlos. Melde dich jetzt direkt hier an."
+  ]
+ },
+ "flexibel": {
+  "kicker": "24/7 Training",
+  "hook": "Keine Zeit fürs Training?",
+  "claim": "Trainiere rund um die Uhr.",
+  "points": [
+   "24/7 geöffnet",
+   "Pläne für 45 Minuten",
+   "Mitten in Löhne"
+  ],
+  "object": "clock",
+  "vo": [
+   "Zwischen Job und Familie bleibt keine Zeit?",
+   "Bei uns trainierst du rund um die Uhr. Sieben Tage die Woche, mit kurzen Plänen, die in deinen Alltag passen.",
+   "Dein Probetraining ist kostenlos. Melde dich jetzt direkt hier an."
+  ]
+ }
+}
