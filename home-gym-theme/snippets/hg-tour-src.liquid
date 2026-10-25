@@ -1,0 +1,19 @@
+{% doc %}
+Outputs the Google Maps embed URL from a pasted link or from the full iframe code
+Google Maps offers under "Teilen → Karte einbetten". Outputs nothing when the value
+is not a Google Maps embed, so only Google Maps can be loaded in the tour dialog.
+@param {string} value - Embed URL or iframe code from Google Maps
+@example
+{% capture tour_src %}{% render 'hg-tour-src', value: section.settings.tour_entrance %}{% endcapture %}
+{% enddoc %}
+{%- liquid
+  assign src = value | strip
+  if src contains 'src="'
+    assign src = src | split: 'src="' | last | split: '"' | first | strip
+  endif
+  assign src = src | replace: '&amp;', '&'
+  assign src_prefix = src | slice: 0, 34
+  if src_prefix == 'https://www.google.com/maps/embed?'
+    echo src
+  endif
+-%}

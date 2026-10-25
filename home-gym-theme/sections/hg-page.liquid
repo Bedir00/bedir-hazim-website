@@ -13,12 +13,13 @@
 {% if is_home %}{% render 'hg-paths', section: section %}{% endif %}
 {% unless is_home %}<div class="hg-meta"><span>{{ 'home_gym.stream.open' | t }}</span><span>{{ 'home_gym.stream.level' | t }}</span><span class="hg-meta-label">{{ section.settings.city | escape }}</span></div>
 <p class="hg-hero-lede">{% if section.settings.hero_lede != blank %}{{ section.settings.hero_lede | escape }}{% else %}{{ section.settings.description | escape }}{% endif %}</p>{% endunless %}
-<div class="hg-hero-actions"><a class="hg-cta" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↗</span></a>{% unless is_home %}{% if section.settings.video != blank %}<a class="hg-secondary" href="#vorschau">{{ 'home_gym.stream.video_title' | t }}</a>{% endif %}{% endunless %}</div>
+<div class="hg-hero-actions"><a class="hg-cta" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↗</span></a>{% if is_home %}{% capture entrance_src %}{% render 'hg-tour-src', value: section.settings.tour_entrance %}{% endcapture %}{% if entrance_src != blank and section.settings.tour_entrance_label != blank %}<a class="hg-secondary hg-tour-entrance" href="{{ entrance_src | escape }}" target="_blank" rel="noopener" data-tour-open data-tour-title="{{ section.settings.tour_entrance_label | escape }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 10.2c.3.6.5 1.2.5 1.8 0 2.5-4 4.5-9 4.5s-9-2-9-4.5 4-4.5 9-4.5c1.5 0 2.9.2 4.1.5"/><path d="m14.6 6.1 2 1.9-2.4 1.4"/><circle cx="12" cy="12" r="1.4"/></svg>{{ section.settings.tour_entrance_label | escape }}</a>{% endif %}{% endif %}{% unless is_home %}{% if section.settings.video != blank %}<a class="hg-secondary" href="#vorschau">{{ 'home_gym.stream.video_title' | t }}</a>{% endif %}{% endunless %}</div>
 <p class="hg-hero-note">{{ 'home_gym.stream.free' | t }}</p></div>
 {% if section.settings.hero_mp4_url != blank %}<div class="hg-hero-video-controls" data-hero-controls hidden>
 <button type="button" data-hero-sound aria-pressed="false" aria-label="{{ 'home_gym.stream.video_unmute' | t }}" data-label-unmute="{{ 'home_gym.stream.video_unmute' | t }}" data-label-mute="{{ 'home_gym.stream.video_mute' | t }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 4 5 9H2v6h3l6 5z"/><path class="hg-sound-off" d="m16 9 6 6m0-6-6 6"/><path class="hg-sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button>
 </div>{% endif %}</section>
 {% if is_home %}
+{% render 'hg-tour', section: section %}
 <section id="training" class="hg-library" data-library>
 <div class="hg-library-top hg-shell"><h2 class="hg-library-title" data-main-title data-default-title="{{ section.settings.row_training | escape }}" data-saved-title="{{ 'home_gym.stream.saved' | t }}">{{ section.settings.row_training | escape }}</h2><div class="hg-filters" role="group" aria-label="{{ 'home_gym.stream.browse' | t }}"><button type="button" data-filter="all" aria-pressed="true">{{ 'home_gym.stream.all' | t }}</button>{% assign categories = 'einstieg,kurse,kampfsport,hyrox,flexibel' | split: ',' %}{% for category in categories %}{% assign category_label = 'home_gym.focus.' | append: category %}<button type="button" data-filter="{{ category }}" aria-pressed="false">{{ category_label | t }}</button>{% endfor %}</div></div>
 {% assign shelves = 'training,start' | split: ',' %}{% for shelf in shelves %}
@@ -73,19 +74,29 @@
 {"type":"text","id":"row_training","label":"Titel der Trainingsreihe","default":"Finde dein Training"},
 {"type":"text","id":"row_start","label":"Titel der Einstiegsreihe","default":"Dein Anfang. Dein Tempo."},
 {"type":"url","id":"hero_mp4_url","label":"Hero-Video (MP4)","info":"Direkter MP4-Link. Startet stumm und läuft in einer Endlosschleife."},
+{"type":"header","content":"360°-Rundgang (Google Maps)"},
+{"type":"paragraph","content":"In Google Maps das Panorama öffnen (Street View oder 360°-Foto aus dem Unternehmensprofil), dann Teilen → Karte einbetten → HTML kopieren und hier einfügen. Der reine Link aus dem iframe-Code funktioniert auch."},
+{"type":"text","id":"tour_entrance","label":"Rundgang ab Eingang","info":"Startet den allgemeinen Rundgang am Eingang. Wird auch für Buttons ohne eigenen Rundgang genutzt.","default":"https://www.google.com/maps/embed?pb=!4v1761400000000!6m8!1m7!1sfutQrKuIUSNUjxz1KaAx2g!2m2!1d52.20655921069202!2d8.780214647228256!3f228!4f0!5f0.7820865974627469"},
+{"type":"text","id":"tour_entrance_label","label":"Text des Eingangs-Buttons","default":"360° Rundgang ab Eingang"},
+{"type":"text","id":"tour_label","label":"Text unter den Zielgruppen-Buttons","default":"360° Rundgang"},
+{"type":"text","id":"tour_note","label":"Hinweis im Rundgang","default":"Der Rundgang wird von Google Maps geladen. Es gelten die Datenschutzhinweise von Google."},
 {"type":"header","content":"Zielgruppen-Buttons im Hero"},
 {"type":"text","id":"path_1_label","label":"Button 1 – Text","default":"Anfänger"},
 {"type":"text","id":"path_1_sub","label":"Button 1 – Unterzeile","default":"Wir finden gemeinsam deine Stärken"},
 {"type":"select","id":"path_1_view","label":"Button 1 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"einstieg"},
+{"type":"text","id":"path_1_tour","label":"Button 1 – 360°-Rundgang","info":"Google-Maps-Einbettung dieses Bereichs. Leer lassen, um den Rundgang ab Eingang zu zeigen."},
 {"type":"text","id":"path_2_label","label":"Button 2 – Text","default":"For Ladies"},
 {"type":"text","id":"path_2_sub","label":"Button 2 – Unterzeile","default":"LADYPARK, Kurse uvm."},
 {"type":"select","id":"path_2_view","label":"Button 2 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"kurse"},
+{"type":"text","id":"path_2_tour","label":"Button 2 – 360°-Rundgang","info":"Google-Maps-Einbettung dieses Bereichs. Leer lassen, um den Rundgang ab Eingang zu zeigen."},
 {"type":"text","id":"path_3_label","label":"Button 3 – Text","default":"Boxing"},
 {"type":"text","id":"path_3_sub","label":"Button 3 – Unterzeile","default":"Mit deutschem Meister Mentor"},
 {"type":"select","id":"path_3_view","label":"Button 3 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"kampfsport"},
+{"type":"text","id":"path_3_tour","label":"Button 3 – 360°-Rundgang","info":"Google-Maps-Einbettung dieses Bereichs. Leer lassen, um den Rundgang ab Eingang zu zeigen."},
 {"type":"text","id":"path_4_label","label":"Button 4 – Text","default":"Profi-Sportler"},
 {"type":"text","id":"path_4_sub","label":"Button 4 – Unterzeile","default":"HYROX, MATRIX GERÄTE oder MAX. RECOVERN"},
-{"type":"select","id":"path_4_view","label":"Button 4 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"hyrox"}
+{"type":"select","id":"path_4_view","label":"Button 4 – Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"hyrox"},
+{"type":"text","id":"path_4_tour","label":"Button 4 – 360°-Rundgang","info":"Google-Maps-Einbettung dieses Bereichs. Leer lassen, um den Rundgang ab Eingang zu zeigen."}
 ],
 "blocks":[
 {"type":"path","name":"Trainingskachel","settings":[{"type":"text","id":"question","label":"Frage"},{"type":"textarea","id":"answer","label":"Antwort"},{"type":"select","id":"destination","label":"Landingpage","options":[{"value":"einstieg","label":"Einstieg"},{"value":"kurse","label":"Kurse & Ladies"},{"value":"kampfsport","label":"Boxen & BJJ"},{"value":"hyrox","label":"Hyrox & Functional"},{"value":"flexibel","label":"24/7 Training"}],"default":"einstieg"},{"type":"text","id":"card_title","label":"Titel der Kachel"},{"type":"text","id":"tag","label":"Kurzlabel"},{"type":"image_picker","id":"image","label":"Kachelbild"},{"type":"text","id":"asset","label":"Standard-Bilddatei","default":"hg-floor.webp"},{"type":"select","id":"shelf","label":"Themenreihe","options":[{"value":"training","label":"Trainingsbereiche"},{"value":"start","label":"Für deinen Einstieg"}],"default":"training"}]},
