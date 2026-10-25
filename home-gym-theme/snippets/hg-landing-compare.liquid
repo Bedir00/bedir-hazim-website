@@ -1,0 +1,16 @@
+{% doc %}
+Renders the comparison table of a Home Gym landing page: other gyms on the left,
+Home Gym on the right, one row per "Vergleich" block, then a button to the trial form.
+@param {object} section - Home Gym section
+{% enddoc %}
+<style>.hg-compare{padding-block:64px;border-top:1px solid var(--line)}.hg-compare h2{font-size:clamp(32px,3.3vw,48px);line-height:1.05;text-transform:uppercase;font-weight:900;font-stretch:125%;letter-spacing:-.03em;max-width:16em;margin-bottom:36px}.hg-compare-table{width:100%;max-width:1100px;border-collapse:separate;border-spacing:0;table-layout:fixed}.hg-compare-table th{padding:18px 24px;text-align:start;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8d8d87;border-bottom:1px solid var(--line)}.hg-compare-table th.hg-compare-home{font-size:22px;letter-spacing:-.04em;font-weight:900;font-stretch:125%;color:#f2f2ec;background:rgba(255,180,0,.08);border-radius:8px 8px 0 0;border-bottom-color:#ffb40055}.hg-compare-table td{padding:18px 24px;vertical-align:top;font-size:16px;line-height:1.5;border-bottom:1px solid var(--line)}.hg-compare-table td:first-child{color:#9d9d97}.hg-compare-table td.hg-compare-home{color:#f2f2ec;font-weight:600;background:rgba(255,180,0,.08);border-bottom-color:#ffb40026}.hg-compare-table tr:last-child td.hg-compare-home{border-radius:0 0 8px 8px;border-bottom:0}.hg-compare-cell{display:flex;gap:12px}.hg-compare-mark{flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;font-size:11px;font-weight:900;line-height:1}td:first-child .hg-compare-mark{border:1px solid #55555a;color:#8d8d87}td.hg-compare-home .hg-compare-mark{background:var(--accent);color:#050506}.hg-compare-cta{margin-top:32px}@media(max-width:749px){.hg-compare{padding-block:44px}.hg-compare h2{font-size:30px;margin-bottom:24px}.hg-compare-table th{padding:12px 10px;font-size:10px;letter-spacing:.1em}.hg-compare-table th.hg-compare-home{font-size:15px}.hg-compare-table td{padding:14px 10px;font-size:13px}.hg-compare-cell{flex-direction:column;gap:8px}.hg-compare-cta{width:100%;margin-top:24px}}</style>
+{%- assign rows = section.blocks | where: 'type', 'compare' -%}
+{% if rows.size > 0 %}
+<section class="hg-compare hg-shell" aria-labelledby="hg-compare-heading-{{ section.id }}">
+<p class="hg-kicker">{{ section.settings.compare_kicker | escape }}</p>
+<h2 id="hg-compare-heading-{{ section.id }}">{{ section.settings.compare_title | escape }}<span class="hg-accent">.</span></h2>
+<table class="hg-compare-table"><thead><tr><th scope="col">{{ section.settings.compare_other_label | escape }}</th><th scope="col" class="hg-compare-home">{{ section.settings.brand | escape }}<span class="hg-accent">.</span></th></tr></thead>
+<tbody>{% for row in rows %}<tr {{ row.shopify_attributes }}><td><span class="hg-compare-cell"><span class="hg-compare-mark" aria-hidden="true">✕</span><span>{{ row.settings.other | escape }}</span></span></td><td class="hg-compare-home"><span class="hg-compare-cell"><span class="hg-compare-mark" aria-hidden="true">✓</span><span>{{ row.settings.home | escape }}</span></span></td></tr>{% endfor %}</tbody></table>
+<a class="hg-cta hg-compare-cta" href="#termin">{{ section.settings.cta | escape }} <span aria-hidden="true">↓</span></a>
+</section>
+{% endif %}

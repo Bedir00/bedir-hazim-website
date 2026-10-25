@@ -32,174 +32,28 @@
         "row_start": "Dein Anfang. Dein Tempo."
       },
       "blocks": {
-        "training_0": {
-          "type": "path",
-          "settings": {
-            "destination": "einstieg",
-            "card_title": "Geräte & Kraft",
-            "tag": "In deinem Tempo",
-            "question": "Geräte & Kraft",
-            "answer": "Ein Plan und eine Einweisung, die zu dir passen.",
-            "asset": "hg-egym.webp",
-            "shelf": "training"
-          }
-        },
-        "training_1": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Kurse & Cycling",
-            "tag": "Gemeinsam trainieren",
-            "question": "Kurse & Cycling",
-            "answer": "Finde den Kurs, auf den du dich freust.",
-            "asset": "hg-cycling.webp",
-            "shelf": "training"
-          }
-        },
-        "training_2": {
-          "type": "path",
-          "settings": {
-            "destination": "kampfsport",
-            "card_title": "Boxen & BJJ",
-            "tag": "Technik & Team",
-            "question": "Boxen & BJJ",
-            "answer": "Lerne das Training und die Menschen dahinter kennen.",
-            "asset": "hg-boxing.webp",
-            "shelf": "training"
-          }
-        },
-        "training_3": {
-          "type": "path",
-          "settings": {
-            "destination": "hyrox",
-            "card_title": "Hyrox & Functional",
-            "tag": "Dein nächstes Ziel",
-            "question": "Hyrox & Functional",
-            "answer": "Platz für dein Workout. Und Menschen, die dich fordern.",
-            "asset": "hg-floor.webp",
-            "shelf": "training"
-          }
-        },
-        "training_4": {
-          "type": "path",
-          "settings": {
-            "destination": "flexibel",
-            "card_title": "24/7 Training",
-            "tag": "Passt in deinen Alltag",
-            "question": "24/7 Training",
-            "answer": "Vor der Schicht oder nach Feierabend: deine Zeit zählt.",
-            "asset": "hg-upper.webp",
-            "shelf": "training"
-          }
-        },
-        "training_5": {
-          "type": "path",
-          "settings": {
-            "destination": "einstieg",
-            "card_title": "Dein erster Tag",
-            "tag": "Du musst nichts können",
-            "question": "Dein erster Tag",
-            "answer": "Wir zeigen dir alles und gehen den Anfang mit dir.",
-            "asset": "hg-weights.webp",
-            "shelf": "start"
-          }
-        },
-        "training_6": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Zusammen geht mehr",
-            "tag": "Für alle, die Anschluss suchen",
-            "question": "Zusammen geht mehr",
-            "answer": "Ein fester Termin. Ein gemeinsames Training.",
-            "asset": "hg-classes.webp",
-            "shelf": "start"
-          }
-        },
-        "training_7": {
-          "type": "path",
-          "settings": {
-            "destination": "kurse",
-            "card_title": "Dein Bereich",
-            "tag": "Ladies",
-            "question": "Dein Bereich",
-            "answer": "In Ruhe ankommen und im eigenen Bereich trainieren.",
-            "asset": "hg-ladies.webp",
-            "shelf": "start"
-          }
-        },
-        "training_8": {
-          "type": "path",
-          "settings": {
-            "destination": "flexibel",
-            "card_title": "Zeit für dich",
-            "tag": "Auch mit vollem Kalender",
-            "question": "Zeit für dich",
-            "answer": "Finde einen Rhythmus, der zu deinem Leben passt.",
-            "asset": "hg-upper.webp",
-            "shelf": "start"
-          }
-        },
-        "pain0": {
-          "type": "pain",
-          "settings": {
-            "description": "Ohne feste Termine bleibst du nicht dran."
-          }
-        },
-        "pain1": {
-          "type": "pain",
-          "settings": {
-            "description": "Auf der Trainingsfläche fühlst du dich beobachtet."
-          }
-        },
-        "pain2": {
-          "type": "pain",
-          "settings": {
-            "description": "Du weißt nicht, was du allein überhaupt trainieren sollst."
-          }
-        },
-        "gain0": {
-          "type": "gain",
-          "settings": {
-            "title": "Feste Kurse jede Woche",
-            "description": "Ein Trainer gibt den Ablauf vor, du machst einfach mit."
-          }
-        },
-        "gain1": {
-          "type": "gain",
-          "settings": {
-            "title": "Eigener Ladies-Bereich",
-            "description": "Trainiere in Ruhe, in einem Bereich nur für Frauen."
-          }
-        },
-        "gain2": {
-          "type": "gain",
-          "settings": {
-            "title": "Gemeinsam dranbleiben",
-            "description": "In der Gruppe kommst du wieder, weil andere auf dich warten."
-          }
-        }
+        "training_0": {"type": "path", "settings": {"destination": "einstieg", "card_title": "Geräte & Kraft", "tag": "In deinem Tempo", "question": "Geräte & Kraft", "answer": "Ein Plan und eine Einweisung, die zu dir passen.", "asset": "hg-egym.webp", "shelf": "training"}},
+        "training_1": {"type": "path", "settings": {"destination": "kurse", "card_title": "Kurse & Cycling", "tag": "Gemeinsam trainieren", "question": "Kurse & Cycling", "answer": "Finde den Kurs, auf den du dich freust.", "asset": "hg-cycling.webp", "shelf": "training"}},
+        "training_2": {"type": "path", "settings": {"destination": "kampfsport", "card_title": "Boxen & BJJ", "tag": "Technik & Team", "question": "Boxen & BJJ", "answer": "Lerne das Training und die Menschen dahinter kennen.", "asset": "hg-boxing.webp", "shelf": "training"}},
+        "training_3": {"type": "path", "settings": {"destination": "hyrox", "card_title": "Hyrox & Functional", "tag": "Dein nächstes Ziel", "question": "Hyrox & Functional", "answer": "Platz für dein Workout. Und Menschen, die dich fordern.", "asset": "hg-floor.webp", "shelf": "training"}},
+        "training_4": {"type": "path", "settings": {"destination": "flexibel", "card_title": "24/7 Training", "tag": "Passt in deinen Alltag", "question": "24/7 Training", "answer": "Vor der Schicht oder nach Feierabend: deine Zeit zählt.", "asset": "hg-upper.webp", "shelf": "training"}},
+        "training_5": {"type": "path", "settings": {"destination": "einstieg", "card_title": "Dein erster Tag", "tag": "Du musst nichts können", "question": "Dein erster Tag", "answer": "Wir zeigen dir alles und gehen den Anfang mit dir.", "asset": "hg-weights.webp", "shelf": "start"}},
+        "training_6": {"type": "path", "settings": {"destination": "kurse", "card_title": "Zusammen geht mehr", "tag": "Für alle, die Anschluss suchen", "question": "Zusammen geht mehr", "answer": "Ein fester Termin. Ein gemeinsames Training.", "asset": "hg-classes.webp", "shelf": "start"}},
+        "training_7": {"type": "path", "settings": {"destination": "kurse", "card_title": "Dein Bereich", "tag": "Ladies", "question": "Dein Bereich", "answer": "In Ruhe ankommen und im eigenen Bereich trainieren.", "asset": "hg-ladies.webp", "shelf": "start"}},
+        "training_8": {"type": "path", "settings": {"destination": "flexibel", "card_title": "Zeit für dich", "tag": "Auch mit vollem Kalender", "question": "Zeit für dich", "answer": "Finde einen Rhythmus, der zu deinem Leben passt.", "asset": "hg-upper.webp", "shelf": "start"}},
+        "pain0": {"type": "pain", "settings": {"description": "Ohne feste Termine bleibst du nicht dran."}},
+        "pain1": {"type": "pain", "settings": {"description": "Auf der Trainingsfläche fühlst du dich beobachtet."}},
+        "pain2": {"type": "pain", "settings": {"description": "Allein fehlt dir die Motivation und das Training fällt aus."}},
+        "gain0": {"type": "gain", "settings": {"title": "Feste Kurse jede Woche", "description": "Ein Trainer gibt den Ablauf vor, du machst einfach mit."}},
+        "gain1": {"type": "gain", "settings": {"title": "Eigener Ladies-Bereich", "description": "Trainiere in Ruhe, in einem Bereich nur für Frauen."}},
+        "gain2": {"type": "gain", "settings": {"title": "Gemeinsam dranbleiben", "description": "In der Gruppe kommst du wieder, weil andere auf dich warten."}},
+        "compare0": {"type": "compare", "settings": {"other": "Eine Fläche für alle: Du fühlst dich beobachtet.", "home": "Ein eigener Bereich nur für Frauen."}},
+        "compare1": {"type": "compare", "settings": {"other": "Du trainierst allein und anonym.", "home": "Feste Gruppen, die auf dich warten."}},
+        "compare2": {"type": "compare", "settings": {"other": "Kurs gebucht, aber keiner zeigt dir die Übungen.", "home": "Ein Trainer gibt den Ablauf vor, du machst einfach mit."}},
+        "compare3": {"type": "compare", "settings": {"other": "Erst Vertrag, dann ausprobieren.", "home": "Kurs kostenlos schnuppern, dann entscheiden."}}
       },
-      "block_order": [
-        "training_0",
-        "training_1",
-        "training_2",
-        "training_3",
-        "training_4",
-        "training_5",
-        "training_6",
-        "training_7",
-        "training_8",
-        "pain0",
-        "pain1",
-        "pain2",
-        "gain0",
-        "gain1",
-        "gain2"
-      ]
+      "block_order": ["training_0", "training_1", "training_2", "training_3", "training_4", "training_5", "training_6", "training_7", "training_8", "pain0", "pain1", "pain2", "gain0", "gain1", "gain2", "compare0", "compare1", "compare2", "compare3"]
     }
   },
-  "order": [
-    "home_gym"
-  ]
+  "order": ["home_gym"]
 }

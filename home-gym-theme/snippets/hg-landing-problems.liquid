@@ -1,0 +1,22 @@
+{% doc %}
+Renders the problem and solution section of a Home Gym landing page. The n-th
+"Ausgangssituation" block is shown next to the n-th "Vorteil" block.
+@param {object} section - Home Gym section
+{% enddoc %}
+<style>.hg-ps{padding-block:64px;border-top:1px solid var(--line)}.hg-ps h2{font-size:clamp(32px,3.3vw,48px);line-height:1.05;text-transform:uppercase;font-weight:900;font-stretch:125%;letter-spacing:-.03em;max-width:16em;margin-bottom:36px}.hg-ps-labels,.hg-ps-row{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1.15fr);align-items:stretch}.hg-ps-labels{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8d8d87;margin-bottom:12px}.hg-ps-labels span:last-child{grid-column:3;color:var(--accent)}.hg-ps-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}.hg-ps-problem,.hg-ps-solution{display:flex;gap:14px;padding:22px 24px;border-radius:6px}.hg-ps-problem{background:#111113;color:#b5b5ad;font-size:16px;line-height:1.55}.hg-ps-solution{background:#18181b;border:1px solid #ffb40033}.hg-ps-solution h3{font-size:18px;margin-bottom:6px}.hg-ps-solution p{font-size:15px;line-height:1.6;color:var(--muted)}.hg-ps-mark{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:13px;font-weight:900;line-height:1}.hg-ps-problem .hg-ps-mark{border:1px solid #55555a;color:#8d8d87}.hg-ps-solution .hg-ps-mark{background:var(--accent);color:#050506}.hg-ps-arrow{display:grid;place-items:center;color:var(--accent)}.hg-ps-arrow svg{width:22px;height:22px}@media(max-width:749px){.hg-ps{padding-block:44px}.hg-ps h2{font-size:30px;margin-bottom:24px}.hg-ps-labels{display:none}.hg-ps-row{grid-template-columns:minmax(0,1fr)}.hg-ps-list{gap:22px}.hg-ps-problem,.hg-ps-solution{padding:16px 18px}.hg-ps-problem{font-size:14px}.hg-ps-solution h3{font-size:16px}.hg-ps-solution p{font-size:14px}.hg-ps-arrow{height:30px}.hg-ps-arrow svg{transform:rotate(90deg)}}</style>
+{%- liquid
+  assign pains = section.blocks | where: 'type', 'pain'
+  assign gains = section.blocks | where: 'type', 'gain'
+  assign rows = pains.size
+  if gains.size > rows
+    assign rows = gains.size
+  endif
+-%}
+{% if rows > 0 %}
+<section class="hg-ps hg-shell" aria-labelledby="hg-ps-heading-{{ section.id }}">
+<p class="hg-kicker">{{ 'home_gym.stream.solution' | t }}</p>
+<h2 id="hg-ps-heading-{{ section.id }}">{{ section.settings.solution | escape }}<span class="hg-accent">.</span></h2>
+<div class="hg-ps-labels" aria-hidden="true"><span>{{ 'home_gym.stream.pains' | t }}</span><span>{{ section.settings.brand | escape }}</span></div>
+<ul class="hg-ps-list">{% for i in (1..rows) %}{% assign n = forloop.index0 %}{% assign pain = pains[n] %}{% assign gain = gains[n] %}<li class="hg-ps-row">{% if pain %}<div class="hg-ps-problem" {{ pain.shopify_attributes }}><span class="hg-ps-mark" aria-hidden="true">✕</span><p>{{ pain.settings.description | escape }}</p></div>{% else %}<div></div>{% endif %}<span class="hg-ps-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m-5-6 6 6-6 6"/></svg></span>{% if gain %}<div class="hg-ps-solution" {{ gain.shopify_attributes }}><span class="hg-ps-mark" aria-hidden="true">✓</span><div><h3>{{ gain.settings.title | escape }}</h3>{% if gain.settings.description != blank %}<p>{{ gain.settings.description | escape }}</p>{% endif %}</div></div>{% endif %}</li>{% endfor %}</ul>
+</section>
+{% endif %}
