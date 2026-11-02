@@ -6,33 +6,31 @@
 <link rel="stylesheet" href="fonts-inline.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1080px;height:1920px;overflow:hidden;background:#020202}
-#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#020202;font-family:'Poppins',sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#050505}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#050505;font-family:'Poppins',sans-serif;color:#e2e2e2;-webkit-font-smoothing:antialiased}
 #content{position:absolute;inset:0}
 #glc{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
 #ov{position:absolute;inset:0}
 #flash{position:absolute;inset:0;background:#fff;opacity:0}
-#scan{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,transparent 1px,transparent 3px)}
-#vign{position:absolute;inset:0;background:radial-gradient(ellipse 80% 62% at 50% 50%,rgba(0,0,0,0) 45%,rgba(0,0,0,.62) 100%)}
+#scan{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.22) 0,rgba(0,0,0,.22) 1px,transparent 1px,transparent 3px)}
+#vign{position:absolute;inset:0;background:radial-gradient(ellipse 80% 62% at 50% 50%,rgba(0,0,0,0) 45%,rgba(0,0,0,.55) 100%)}
 #grain{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:.03;mix-blend-mode:screen}
 .scene{position:absolute;inset:0;display:none}
 .c{position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap}
 .in{display:inline-block}
-.caps{font-weight:500;text-transform:uppercase;letter-spacing:.32em;color:#e9e9e9;text-shadow:0 0 10px rgba(255,255,255,.25)}
+.caps{font-weight:500;text-transform:uppercase;letter-spacing:.32em;color:#bcbcbc;text-shadow:0 0 8px rgba(255,255,255,.1)}
 .caps .in{padding-left:.32em}
-.head{font-weight:800;line-height:1;text-transform:uppercase;text-shadow:0 0 18px rgba(255,255,255,.38),0 0 50px rgba(255,255,255,.14)}
-.sub{font-weight:700;text-transform:uppercase;letter-spacing:.03em;text-shadow:0 0 14px rgba(255,255,255,.3)}
+.head{font-weight:800;line-height:1;text-transform:uppercase;color:#e0e0e0;text-shadow:0 0 12px rgba(255,255,255,.14)}
+.sub{font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#e0e0e0;text-shadow:0 0 10px rgba(255,255,255,.12)}
 #logo{position:absolute;left:390px;top:172px;width:300px;height:auto;opacity:0}
-/* HUD */
-#hud{position:absolute;inset:0;display:none}
-.h-lab{position:absolute;left:150px;top:1424px;font-weight:500;font-size:20px;letter-spacing:.28em;color:#bdbdbd}
-.h-val{position:absolute;right:150px;top:1410px;font-weight:800;font-size:40px;line-height:1;text-shadow:0 0 14px rgba(255,255,255,.4)}
-.h-track{position:absolute;left:150px;top:1478px;width:780px;height:4px;background:rgba(255,255,255,.16)}
-.h-fill{position:absolute;left:150px;top:1478px;height:4px;width:0;background:#fff;box-shadow:0 0 12px rgba(255,255,255,.75),0 0 26px rgba(255,255,255,.3)}
-.h-mark{position:absolute;top:1471px;width:18px;height:18px;border:2px solid rgba(255,255,255,.45);background:#020202}
-.h-gift{position:absolute;top:1500px;width:200px;margin-left:-100px;text-align:center;font-weight:800;font-size:32px;line-height:1;white-space:nowrap}
-.h-min{position:absolute;top:1540px;width:220px;margin-left:-110px;text-align:center;font-weight:500;font-size:17px;letter-spacing:.24em;color:#a9a9a9;white-space:nowrap}
-.cta{position:absolute;left:300px;top:1368px;width:480px;height:100px;background:#fff;color:#050505;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:32px;letter-spacing:.22em;box-shadow:0 0 30px rgba(255,255,255,.2)}
+/* structured redeem steps */
+.fstep{position:absolute;left:100px;width:880px;height:100px;display:flex;align-items:center;gap:30px}
+.fnum{flex:none;width:86px;height:86px;border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:30px;letter-spacing:.06em;color:#dcdcdc}
+.ftxt{min-width:0}
+.ft{font-weight:700;font-size:40px;line-height:1.1;color:#e0e0e0;white-space:nowrap}
+.fs{font-weight:500;font-size:17px;letter-spacing:.26em;text-transform:uppercase;color:#9a9a9a;margin-top:10px;white-space:nowrap}
+.fdiv{position:absolute;left:100px;width:880px;height:1px;background:rgba(255,255,255,.16);transform-origin:0 50%}
+.cta{position:absolute;left:300px;top:1368px;width:480px;height:100px;background:#dcdcdc;color:#111;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:32px;letter-spacing:.22em;box-shadow:0 0 24px rgba(255,255,255,.12)}
 .cta span{padding-left:.22em}
 </style>
 </head>
@@ -41,9 +39,9 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#020202}
   <defs>
     <filter id="ca" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
       <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
-      <feOffset in="r" dx="-1.5" dy="0" result="ro"/>
+      <feOffset in="r" dx="-1.3" dy="0" result="ro"/>
       <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="c"/>
-      <feOffset in="c" dx="1.5" dy="0" result="co"/>
+      <feOffset in="c" dx="1.3" dy="0" result="co"/>
       <feBlend in="ro" in2="co" mode="screen"/>
     </filter>
     <filter id="gl" x="-4%" y="-2%" width="108%" height="104%" color-interpolation-filters="sRGB">
@@ -71,7 +69,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#020202}
     <div id="ov">
       <img id="logo" src="logo.svg" alt="Home Deluxe">
       <div class="scene" id="oA">
-        <div id="a_line" style="position:absolute;left:0;top:959px;width:1080px;height:2px;background:rgba(255,255,255,.75);transform:scaleX(0)"></div>
+        <div id="a_line" style="position:absolute;left:0;top:959px;width:1080px;height:2px;background:rgba(255,255,255,.6);transform:scaleX(0)"></div>
         <div class="c caps" id="a_cap" style="top:1000px;font-size:34px"><span class="in">Wir schenken dir bis zu</span></div>
       </div>
       <div class="scene" id="oB">
@@ -82,31 +80,21 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#020202}
         <div class="c head" id="b_l4" style="top:736px;font-size:84px"><span class="in">unser Geschenk.</span></div>
       </div>
       <div class="scene" id="oF">
-        <div class="c caps" id="f_lab" style="top:396px;font-size:30px"><span class="in">So löst du ein</span></div>
-        <div class="c head" id="f_l1" style="top:450px;font-size:74px"><span class="in">Code im Warenkorb</span></div>
-        <div class="c head" id="f_l2" style="top:528px;font-size:74px"><span class="in">eingeben –</span></div>
-        <div class="c head" id="f_l3" style="top:620px;font-size:74px"><span class="in">Geschenk wird</span></div>
-        <div class="c head" id="f_l4" style="top:698px;font-size:74px"><span class="in">direkt abgezogen.</span></div>
+        <div class="c caps" id="f_lab" style="top:384px;font-size:28px"><span class="in">So löst du ein</span></div>
+        <div class="fstep" id="f_s1" style="top:440px">
+          <div class="fnum" id="f_n1">01</div>
+          <div class="ftxt"><div class="ft" id="f_t1">Code im Warenkorb eingeben</div><div class="fs">BLACK15 · BLACK75 · BLACK150</div></div>
+        </div>
+        <div class="fdiv" id="f_dv" style="top:562px"></div>
+        <div class="fstep" id="f_s2" style="top:584px">
+          <div class="fnum" id="f_n2">02</div>
+          <div class="ftxt"><div class="ft" id="f_t2">Geschenk wird direkt abgezogen</div><div class="fs">Sofort im Warenkorb sichtbar</div></div>
+        </div>
       </div>
       <div class="scene" id="oG">
         <div class="cta" id="g_cta"><span>JETZT SICHERN</span></div>
-        <div class="c caps" id="g_url" style="top:1496px;font-size:30px;color:#fff"><span class="in">homedeluxe.de</span></div>
-        <div class="c caps" id="g_fine" style="top:1548px;font-size:17px;letter-spacing:.2em;color:#9a9a9a"><span class="in" style="padding-left:.2em">Nur in der Black Week · 20.–26.11. · Code im Warenkorb eingeben</span></div>
-      </div>
-      <div id="hud">
-        <div class="h-lab">WARENKORB</div>
-        <div class="h-val" id="h_val">0,00&nbsp;€</div>
-        <div class="h-track"></div>
-        <div class="h-fill" id="h_fill"></div>
-        <div class="h-mark" id="h_k1" style="left:401px"></div>
-        <div class="h-mark" id="h_k2" style="left:661px"></div>
-        <div class="h-mark" id="h_k3" style="left:921px"></div>
-        <div class="h-gift" id="h_g1" style="left:410px">15&nbsp;€</div>
-        <div class="h-gift" id="h_g2" style="left:670px">75&nbsp;€</div>
-        <div class="h-gift" id="h_g3" style="left:930px">150&nbsp;€</div>
-        <div class="h-min" style="left:410px">AB 100 €</div>
-        <div class="h-min" style="left:670px">AB 500 €</div>
-        <div class="h-min" style="left:930px">AB 1.000 €</div>
+        <div class="c caps" id="g_url" style="top:1496px;font-size:30px;color:#dcdcdc"><span class="in">homedeluxe.de</span></div>
+        <div class="c caps" id="g_fine" style="top:1548px;font-size:17px;letter-spacing:.2em;color:#8e8e8e"><span class="in" style="padding-left:.2em">Nur in der Black Week · 20.–26.11. · Code im Warenkorb eingeben</span></div>
       </div>
     </div>
   </div>
@@ -131,15 +119,16 @@ import { OutputPass } from './vendor/examples/jsm/postprocessing/OutputPass.js';
 
 /* =================== shop data (homedeluxe.de, Stand 02.11.2026) =================== */
 const PRODUCTS = [
-  { key: 'cozy',  name: 'Sitzsack mit Hocker COZY', variant: 'Beige · Cord',          price: 189, uvp: 279, img: 'img/cozy.png' },
-  { key: 'amiri', name: 'Couchtisch Marmor AMIRI XXL', variant: 'Schwarz · Marmoroptik', price: 399, uvp: 579, img: 'img/amiri.png' },
-  { key: 'loma',  name: 'Hängesessel faltbar LOMA', variant: '2-Sitzer · Beige',      price: 429, uvp: 579, img: 'img/loma.png' },
+  { key: 'cozy',  name: 'Sitzsack mit Hocker COZY',    variant: 'Beige · Cord',          price: 189, uvp: 279, img: 'img/cozy.png',  rim: .18 },
+  { key: 'amiri', name: 'Couchtisch Marmor AMIRI XXL', variant: 'Schwarz · Marmoroptik', price: 399, uvp: 579, img: 'img/amiri.png', rim: .55 },
+  { key: 'loma',  name: 'Hängesessel faltbar LOMA',    variant: '2-Sitzer · Beige',      price: 429, uvp: 579, img: 'img/loma.png',  rim: .24 },
 ];
 const TIERS = [
-  { gift: 15,  min: '100 €',   minV: 100,  code: 'BLACK15' },
-  { gift: 75,  min: '500 €',   minV: 500,  code: 'BLACK75' },
-  { gift: 150, min: '1.000 €', minV: 1000, code: 'BLACK150' },
+  { gift: 15,  min: '100 €',   code: 'BLACK15' },
+  { gift: 75,  min: '500 €',   code: 'BLACK75' },
+  { gift: 150, min: '1.000 €', code: 'BLACK150' },
 ];
+const SUMS = [189, 588, 1017];
 
 /* =================== helpers =================== */
 const FPS = 30, W = 1080, H = 1920;
@@ -150,7 +139,7 @@ const E = {
   out: x => 1 - Math.pow(1 - x, 3),
   outQ: x => 1 - Math.pow(1 - x, 4),
   inOut: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
-  back: x => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  back: x => { const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
   inQ: x => x * x * x,
 };
 const prog = (t, t0, d) => clamp((t - t0) / d);
@@ -162,14 +151,17 @@ const de = (v, dec = 0) => {
 };
 const eur = v => de(v, 2) + ' €';
 
-/* =================== glitch timeline =================== */
+/* =================== timeline: hard cuts hidden inside glitches =================== */
+const CUT = { AB: 5.9, BS: 10.867, S12: 16.9, S23: 22.3, SF: 27.833, FG: 33.333 };
+const SC = { A: [0, CUT.AB], B: [CUT.AB, CUT.BS], S: [CUT.BS, CUT.SF], F: [CUT.SF, CUT.FG], G: [CUT.FG, 999] };
+const OUT = .12;
 const GL = [
-  { t: 1.22, s: .9 }, { t: 4.27, s: 1 }, { t: 5.0, s: .3, d: .1 },
-  { t: 5.85, s: 1 }, { t: 10.8, s: 1 },
-  { t: 13.35, s: .7 }, { t: 15.03, s: .7 }, { t: 16.9, s: .9 },
-  { t: 19.55, s: .7 }, { t: 20.78, s: .7 }, { t: 22.3, s: .9 },
-  { t: 24.85, s: .75 }, { t: 26.28, s: .75 }, { t: 27.8, s: 1 },
-  { t: 30.85, s: .7 }, { t: 33.3, s: 1 }, { t: 34.05, s: .7 }, { t: 36.6, s: .4, d: .2 }, { t: 37.45, s: .25, d: .1 }
+  { t: 1.22, s: .7 }, { t: 4.27, s: .6 }, { t: 5.0, s: .2, d: .1 },
+  { t: CUT.AB - .067, s: .85 }, { t: CUT.BS - .067, s: .85 },
+  { t: 13.35, s: .35 }, { t: CUT.S12 - .067, s: .75 },
+  { t: 19.55, s: .35 }, { t: CUT.S23 - .067, s: .75 },
+  { t: 24.85, s: .35 }, { t: CUT.SF - .067, s: .85 },
+  { t: 30.85, s: .35 }, { t: CUT.FG - .067, s: .85 }, { t: 34.05, s: .35 }, { t: 36.6, s: .25, d: .2 }, { t: 37.45, s: .18, d: .1 }
 ];
 const PAT = [1, .55, .95, .3, .7, .15, .4, 0, .2, 0];
 function glitchAt(t) {
@@ -182,32 +174,29 @@ function glitchAt(t) {
 }
 
 /* =================== 2D overlay helpers =================== */
-const SC = { A: [0, 5.85], B: [5.95, 10.8], S: [10.9, 27.8], F: [27.9, 33.3], G: [33.4, 999] };
-const OUT = .2;
-function winState(t, [a, b]) { if (t < a || t >= b + OUT) return -1; return t >= b ? clamp((t - b) / OUT) : 0; }
+function winState(t, [a, b]) { if (t < a || t >= b) return -1; return t >= b - OUT ? clamp((t - (b - OUT)) / OUT) : 0; }
 function ovScene(id, t, win) {
   const el = $(id), q = winState(t, win);
   if (q < 0) { el.style.display = 'none'; return false; }
   el.style.display = 'block';
-  el.style.opacity = 1 - q; el.style.filter = q > 0 ? `blur(${q * 18}px)` : 'none';
+  el.style.opacity = 1 - q; el.style.filter = q > 0 ? `blur(${q * 16}px)` : 'none';
   return true;
 }
 function bin(el, t, tin, o = {}) {
   if (typeof el === 'string') el = $(el);
   const dur = o.dur ?? .45, blur = o.blur ?? 22, dy = o.dy ?? 0, dx = o.dx ?? 0, sc = o.sc ?? 1;
   const p = clamp((t - tin) / dur), e = E.out(p);
-  el.style.opacity = t < tin ? 0 : clamp(p * 1.6);
+  el.style.opacity = t < tin ? 0 : clamp(p * 1.6) * (o.max ?? 1);
   const b = (1 - e) * blur;
   el.style.filter = b > .25 ? `blur(${b.toFixed(2)}px)` : 'none';
   el.style.transform = `translate(${(1 - e) * dx}px,${(1 - e) * dy}px) scale(${sc + (1 - sc) * e})`;
   return p;
 }
-function fit(el, maxW) {
-  const inner = el.querySelector('.in') || el;
+function fit(el, maxW, inner) {
+  inner = inner || el.querySelector('.in') || el;
   let fs = parseFloat(getComputedStyle(el).fontSize);
   while (inner.getBoundingClientRect().width > maxW && fs > 12) { fs -= 1; el.style.fontSize = fs + 'px'; }
 }
-// stage overlay texts (built here)
 (function () {
   const ov = $('ov');
   TIERS.forEach((tr, k) => {
@@ -217,7 +206,7 @@ function fit(el, maxW) {
       <div class="c caps" id="s${k}_lab" style="top:384px;font-size:28px"><span class="in">Stufe ${k + 1} von 3</span></div>
       <div class="c sub" id="s${k}_min" style="top:426px;font-size:56px"><span class="in">Ab ${tr.min} Bestellwert</span></div>
       <div class="c caps" id="s${k}_sch" style="top:516px;font-size:28px"><span class="in">schenken wir dir</span></div>`;
-    ov.insertBefore(d, $('hud'));
+    ov.appendChild(d);
   });
 })();
 
@@ -229,18 +218,18 @@ function fx(t, frame) {
     const sgn = hash(frame, 3) > .5 ? 1 : -1;
     $('gl_turb').setAttribute('seed', String(1 + (frame % 97)));
     $('gl_turb').setAttribute('baseFrequency', `0 ${(.008 + hash(frame, 5) * .02).toFixed(4)}`);
-    $('gl_disp').setAttribute('scale', (g * 110).toFixed(1));
-    $('gl_r').setAttribute('dx', (sgn * (1.5 + g * 16)).toFixed(1));
-    $('gl_r').setAttribute('dy', (g * 5 * (hash(frame, 7) - .3)).toFixed(1));
-    $('gl_c').setAttribute('dx', (-sgn * (1.5 + g * 12)).toFixed(1));
-    $('gl_blur').setAttribute('stdDeviation', `${(g * 9).toFixed(1)} 0`);
+    $('gl_disp').setAttribute('scale', (g * 85).toFixed(1));
+    $('gl_r').setAttribute('dx', (sgn * (1.3 + g * 13)).toFixed(1));
+    $('gl_r').setAttribute('dy', (g * 4 * (hash(frame, 7) - .3)).toFixed(1));
+    $('gl_c').setAttribute('dx', (-sgn * (1.3 + g * 9)).toFixed(1));
+    $('gl_blur').setAttribute('stdDeviation', `${(g * 6).toFixed(1)} 0`);
     content.style.filter = 'url(#gl)';
-    content.style.transform = `translateX(${((hash(frame, 9) - .5) * g * 26).toFixed(1)}px)`;
+    content.style.transform = `translateX(${((hash(frame, 9) - .5) * g * 20).toFixed(1)}px)`;
   } else {
     content.style.filter = 'url(#ca)';
     content.style.transform = 'none';
   }
-  $('flash').style.opacity = (g * .045).toFixed(3);
+  $('flash').style.opacity = (g * .03).toFixed(3);
   return g;
 }
 const gctx = $('grain').getContext('2d');
@@ -256,39 +245,39 @@ function drawGrain(frame) {
 }
 
 /* =================== THREE setup =================== */
-const renderer = new THREE.WebGLRenderer({ canvas: $("glc"), antialias: true, preserveDrawingBuffer: true });
+const renderer = new THREE.WebGLRenderer({ canvas: $('glc'), antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H, false);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x020202);
-scene.fog = new THREE.Fog(0x020202, 16, 34);
+scene.background = new THREE.Color(0x050505);
+scene.fog = new THREE.Fog(0x050505, 16, 34);
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 120);
-const U = H / (2 * 12 * Math.tan(THREE.MathUtils.degToRad(17.5)));   // px per world unit at distance 12
+const U = H / (2 * 12 * Math.tan(THREE.MathUtils.degToRad(17.5)));
 const wy = py => (960 - py) / U, wx = px => (px - 540) / U;
 const wyz = (py, z) => wy(py) * (12 - z) / 12;
 
 scene.add(new THREE.AmbientLight(0xffffff, .18));
-const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(3, 6, 9); scene.add(key);
+const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(3, 6, 9); scene.add(key);
 const fill = new THREE.DirectionalLight(0xffffff, .35); fill.position.set(-5, -2, 6); scene.add(fill);
-const rimL = new THREE.PointLight(0xffffff, 60, 40, 2); rimL.position.set(-6, 4, -3); scene.add(rimL);
-const rimR = new THREE.PointLight(0xffffff, 60, 40, 2); rimR.position.set(7, 3, -4); scene.add(rimR);
+const rimL = new THREE.PointLight(0xffffff, 55, 40, 2); rimL.position.set(-6, 4, -3); scene.add(rimL);
+const rimR = new THREE.PointLight(0xffffff, 55, 40, 2); rimR.position.set(7, 3, -4); scene.add(rimR);
 
 const composer = new EffectComposer(renderer);
 composer.setPixelRatio(1); composer.setSize(W, H);
 composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(540, 960), .3, .32, .9);
-composer.addPass(bloom);
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(540, 960), .12, .3, .95));
 composer.addPass(new OutputPass());
 
-/* materials */
-const matText = new THREE.MeshPhysicalMaterial({ color: 0xf0f0f0, roughness: .25, metalness: 0, clearcoat: 1, clearcoatRoughness: .08, emissive: 0x121212, envMapIntensity: .95 });
-const matBlack = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: .2, metalness: .2, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: 1.35 });
-const matStep = new THREE.MeshPhysicalMaterial({ color: 0x0a0a0a, roughness: .3, metalness: .1, clearcoat: .8, clearcoatRoughness: .1, envMapIntensity: .8 });
-const matRibbon = new THREE.MeshStandardMaterial({ color: 0xdedede, roughness: .4, emissive: 0x0c0c0c });
-const matGlowLine = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
+/* materials (white kept below pure white for softer contrast) */
+const matText = new THREE.MeshPhysicalMaterial({ color: 0xb6b6b6, roughness: .32, metalness: 0, clearcoat: .6, clearcoatRoughness: .12, envMapIntensity: .65 });
+const matBlack = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: .2, metalness: .2, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: 1.3 });
+const matPod = new THREE.MeshPhysicalMaterial({ color: 0x0c0c0c, roughness: .6, metalness: .1, clearcoat: .15, clearcoatRoughness: .4, envMapIntensity: .55 });
+const matStep = new THREE.MeshPhysicalMaterial({ color: 0x0b0b0b, roughness: .32, metalness: .1, clearcoat: .7, clearcoatRoughness: .12, envMapIntensity: .75 });
+const matRibbon = new THREE.MeshStandardMaterial({ color: 0xa8a8a8, roughness: .45 });
+const matGlowLine = new THREE.MeshBasicMaterial({ color: 0xd8d8d8, toneMapped: false });
 
 /* canvas textures */
 function canvasTex(w, h, draw) {
@@ -315,30 +304,35 @@ const texCone = canvasTex(8, 256, (x, w, h) => {
 }).tex;
 function plane(w, h, mat) { return new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); }
 function sprite(tex, w, h, opacity = 1, additive = true) {
-  const m = plane(w, h, new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending, toneMapped: false }));
-  return m;
+  return plane(w, h, new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity, depthWrite: false, blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending, toneMapped: false }));
 }
-function label(w, h, scale, draw) {
-  const ct = canvasTex(Math.round(w * scale), Math.round(h * scale), (x, cw, ch, ...a) => { x.save(); x.scale(scale, scale); draw(x, w, h, ...a); x.restore(); });
-  const mesh = plane(w / U, h / U, new THREE.MeshBasicMaterial({ map: ct.tex, transparent: true, depthWrite: false, toneMapped: false }));
+// textured plane of exact world size (wu × hu), drawn in design px (dw × dh) at given supersampling
+function panel(wu, hu, dw, dh, ss, draw, tint = 0xdddddd) {
+  const ct = canvasTex(Math.round(dw * ss), Math.round(dh * ss), (x, cw, ch, ...a) => { x.save(); x.scale(ss, ss); draw(x, dw, dh, ...a); x.restore(); });
+  const mesh = plane(wu, hu, new THREE.MeshBasicMaterial({ map: ct.tex, transparent: true, depthWrite: false, toneMapped: false, color: tint }));
   mesh.userData.ct = ct;
   return mesh;
 }
+function label(w, h, scale, draw, tint) { return panel(w / U, h / U, w, h, scale, draw, tint); }
 function spacedText(x, str, cx, y, ls) {
   x.letterSpacing = ls + 'px';
   const w = x.measureText(str).width - ls;
   x.textAlign = 'left'; x.fillText(str, cx - w / 2, y);
   x.letterSpacing = '0px';
 }
+function coneMesh(r) {
+  return new THREE.Mesh(new THREE.CylinderGeometry(.06, r, 4.3, 48, 1, true), new THREE.MeshBasicMaterial({ color: 0xffffff, alphaMap: texCone, transparent: true, opacity: .024, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false }));
+}
 
-/* =================== fonts & text geometry =================== */
+/* =================== fonts, text geometry, product meshes =================== */
 const ttf = new TTFLoader();
 const FONT = {};
 const geoCache = new Map();
+const bevel = (size, depth) => ({ curveSegments: 6, bevelEnabled: true, bevelThickness: depth * .14, bevelSize: size * .014, bevelSegments: 2 });
 function textGeo(str, size, depth, weight = 800) {
   const k = `${str}|${size}|${depth}|${weight}`;
   if (geoCache.has(k)) return geoCache.get(k);
-  const g = new TextGeometry(str, { font: FONT[weight], size, height: depth, depth, curveSegments: 6, bevelEnabled: true, bevelThickness: depth * .14, bevelSize: size * .014, bevelSegments: 2 });
+  const g = new TextGeometry(str, { font: FONT[weight], size, height: depth, depth, ...bevel(size, depth) });
   g.computeBoundingBox();
   const b = g.boundingBox;
   g.translate(-(b.min.x + b.max.x) / 2, -(b.min.y + b.max.y) / 2, -depth / 2);
@@ -346,10 +340,9 @@ function textGeo(str, size, depth, weight = 800) {
   return g;
 }
 function amountGeo(v, size, depth) {
-  // center horizontally on the full string but vertically on cap height, so swapping digits keeps the baseline
   const k = `amt|${v}|${size}|${depth}`;
   if (geoCache.has(k)) return geoCache.get(k);
-  const g = new TextGeometry(`${v} €`, { font: FONT[800], size, height: depth, depth, curveSegments: 6, bevelEnabled: true, bevelThickness: depth * .14, bevelSize: size * .014, bevelSegments: 2 });
+  const g = new TextGeometry(`${v} €`, { font: FONT[800], size, height: depth, depth, ...bevel(size, depth) });
   g.computeBoundingBox();
   const b = g.boundingBox;
   g.translate(-(b.min.x + b.max.x) / 2, -size * .36, -depth / 2);
@@ -364,7 +357,7 @@ function letterWord(str, size, depth) {
     const gl = font.data.glyphs[ch];
     const adv = (gl ? gl.ha : 500) * sc;
     if (ch !== ' ') {
-      const g = new TextGeometry(ch, { font, size, height: depth, depth, curveSegments: 6, bevelEnabled: true, bevelThickness: depth * .14, bevelSize: size * .014, bevelSegments: 2 });
+      const g = new TextGeometry(ch, { font, size, height: depth, depth, ...bevel(size, depth) });
       g.computeBoundingBox();
       const b = g.boundingBox, cx = (b.min.x + b.max.x) / 2;
       g.translate(-cx, -size * .36, -depth / 2);
@@ -388,6 +381,31 @@ function animLetters(word, t, t0, st, o) {
     L.mat.opacity = clamp(p * 2.4);
   });
 }
+const IMG = {};
+function rimTex(img, pad = 36, blur = 12) {
+  const c = document.createElement('canvas'); c.width = img.width + pad * 2; c.height = img.height + pad * 2;
+  const x = c.getContext('2d');
+  x.filter = `blur(${blur}px)`; x.drawImage(img, pad, pad); x.filter = 'none';
+  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  return { tex, sx: c.width / img.width, sy: c.height / img.height };
+}
+// product = cut-out photo + soft rim light + contact shadow; origin at the floor centre
+function productMesh(idx, ph) {
+  const p = PRODUCTS[idx], im = IMG[p.key], pw = ph * im.aspect;
+  const g = new THREE.Group();
+  const sh = sprite(texShadow, pw * 1.15, Math.min(.5, pw * .35), .85, false); sh.rotation.x = -Math.PI / 2; sh.position.y = .004; g.add(sh);
+  const holder = new THREE.Group(); holder.position.y = ph / 2 - .01; g.add(holder);
+  const rim = plane(pw * im.rim.sx, ph * im.rim.sy, new THREE.MeshBasicMaterial({ map: im.rim.tex, transparent: true, opacity: p.rim, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  rim.position.z = -.03; holder.add(rim);
+  const photo = plane(pw, ph, new THREE.MeshBasicMaterial({ map: im.tex, transparent: true, toneMapped: false, color: 0xdedede }));
+  holder.add(photo);
+  g.userData = { rim, photo, sh, holder, pw, ph, rimO: p.rim };
+  return g;
+}
+function setProductOpacity(g, o) {
+  g.userData.photo.material.opacity = o; g.userData.rim.material.opacity = g.userData.rimO * o; g.userData.sh.material.opacity = .85 * o;
+}
 
 /* =================== gift box =================== */
 const boxGeo = new RoundedBoxGeometry(1, 1, 1, 3, .06);
@@ -403,28 +421,75 @@ function giftBox() {
 }
 
 /* =================== particles =================== */
-const PN = 520;
+const PN = 480;
 const pPos = new Float32Array(PN * 3), pBase = [];
-for (let i = 0; i < PN; i++) pBase.push([(hash(i, 1) - .5) * 22, (hash(i, 2) - .5) * 26, -hash(i, 3) * 22 + 4, .03 + hash(i, 4) * .07]);
+for (let i = 0; i < PN; i++) pBase.push([(hash(i, 1) - .5) * 22, (hash(i, 2) - .5) * 26, -hash(i, 3) * 22 + 2, .03 + hash(i, 4) * .07]);
 const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
 const dotTex = radialTex('rgba(255,255,255,A)', 'rgba(255,255,255,0)', 1);
-const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: .05, map: dotTex, transparent: true, opacity: .55, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false }));
-scene.add(particles);
-function updateParticles(t, camPos) {
+scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ size: .045, map: dotTex, transparent: true, opacity: .38, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false })));
+function updateParticles(t, cp) {
   for (let i = 0; i < PN; i++) {
     const [x, y, z, v] = pBase[i];
     let yy = y + t * v * 4; yy = ((yy + 13) % 26 + 26) % 26 - 13;
-    pPos[i * 3] = x + camPos.x * .6 + Math.sin(t * .3 + i) * .15;
-    pPos[i * 3 + 1] = yy + camPos.y * .8;
-    pPos[i * 3 + 2] = z + camPos.z - 12;
+    pPos[i * 3] = x + cp.x * .6 + Math.sin(t * .3 + i) * .15;
+    pPos[i * 3 + 1] = yy + cp.y * .8;
+    pPos[i * 3 + 2] = z + cp.z - 12;
   }
   pGeo.attributes.position.needsUpdate = true;
 }
 
+/* =================== code plate (white coupon with letter-by-letter reveal) =================== */
+function codePlate(code, wu, hu) {
+  const g = new THREE.Group();
+  const card = new THREE.Mesh(new RoundedBoxGeometry(wu, hu, .05, 2, .018), new THREE.MeshPhysicalMaterial({ color: 0xcfcfcf, roughness: .45, clearcoat: .4, transparent: true }));
+  g.add(card);
+  const dw = 720, dh = Math.round(720 * hu / wu);
+  const face = panel(wu * .985, hu * .96, dw, dh, 2, (x, w, h, rev = code.length) => {
+    x.fillStyle = '#e9e9e9'; x.fillRect(0, 0, w, h);
+    x.setLineDash([9, 7]); x.strokeStyle = '#1a1a1a'; x.lineWidth = 2; x.strokeRect(10, 10, w - 20, h - 20); x.setLineDash([]);
+    x.fillStyle = '#5e5e5e'; x.font = '600 17px Poppins'; x.textBaseline = 'middle';
+    spacedText(x, 'CODE', 92, h / 2 + 1, 6);
+    x.fillStyle = '#bdbdbd'; x.fillRect(166, 26, 2, h - 52);
+    x.font = '800 58px Poppins'; x.fillStyle = '#111111'; x.textAlign = 'left';
+    const ls = 6, ws = [...code].map(ch => x.measureText(ch).width);
+    const total = ws.reduce((a, b) => a + b, 0) + ls * (code.length - 1);
+    let cx = 166 + (w - 166) / 2 - total / 2;
+    [...code].forEach((ch, i) => {
+      const a = clamp(rev - i);
+      if (a > 0) { x.globalAlpha = a; x.fillText(ch, cx, h / 2 + 4 + (1 - a) * 10); }
+      cx += ws[i] + ls;
+    });
+    x.globalAlpha = 1;
+  }, 0xd6d6d6);
+  face.position.z = .027; g.add(face);
+  g.userData = { card, face, code };
+  return g;
+}
+function setPlate(g, t, t0) {
+  const { card, face, code } = g.userData;
+  const p = prog(t, t0, .45);
+  g.visible = t >= t0;
+  card.material.opacity = clamp(p * 2.5); face.material.opacity = clamp(p * 2.5);
+  const rev = Math.round(clamp((t - t0 - .1) / .45) * code.length * 4) / 4;
+  if (face.userData.k !== rev) { face.userData.ct.redraw(rev); face.userData.k = rev; }
+  return p;
+}
+
 /* =================== build =================== */
 const G = {};
-const IMG = {};
 let ready = false;
+
+// staircase layouts: cumulative cart per step (index, height, x, z)
+const STAGE_SET = [
+  [[0, 1.0, 0, -.3]],
+  [[0, .82, -.68, -.45], [1, .56, .68, -.2]],
+  [[0, .72, -1.02, -.5], [1, .48, .02, -.12], [2, 1.18, 1.12, -.55]],
+];
+const OUT_SET = [
+  [[0, .5, 0, -.2]],
+  [[0, .44, -.26, -.35], [1, .28, .27, -.05]],
+  [[0, .38, -.33, -.4], [2, .66, .36, -.45], [1, .24, -.02, -.02]],
+];
 
 async function build() {
   const [f8, f7] = await Promise.all([ttf.loadAsync('fonts/Poppins-800.ttf'), ttf.loadAsync('fonts/Poppins-700.ttf')]);
@@ -433,7 +498,7 @@ async function build() {
   const tl = new THREE.TextureLoader();
   await Promise.all(PRODUCTS.map(async p => {
     const tex = await tl.loadAsync(p.img); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
-    IMG[p.key] = { tex, img: tex.image, aspect: tex.image.width / tex.image.height };
+    IMG[p.key] = { tex, img: tex.image, aspect: tex.image.width / tex.image.height, rim: rimTex(tex.image) };
   }));
 
   /* ---------- A: intro ---------- */
@@ -444,32 +509,28 @@ async function build() {
   A.bw.add(A.w1.group, A.w2.group);
   A.amtMat = matText.clone(); A.amtMat.transparent = true;
   A.amt = new THREE.Mesh(amountGeo(0, .78, .3), A.amtMat); A.root.add(A.amt);
-  A.gifts = [];
-  for (let i = 0; i < 18; i++) {
+  const GP = [[-1.55, 2.6, -1.5], [1.6, 2.45, -2.5], [-.95, 3.15, -4], [1.05, 3.2, -3], [-1.85, .3, -2], [1.85, -.35, -1.2], [-1.8, -1.05, -3.5],
+    [1.78, .55, -4], [-1.3, -2.0, -1], [1.35, -2.15, -2], [-.35, -2.95, -3], [.6, -3.35, -1.5], [-1.7, -3.2, -2.5], [1.75, -3.1, -3.5]];
+  A.gifts = GP.map(([xs, ys, z], i) => {
     const b = giftBox(); A.root.add(b);
-    const th = hash(i, 11) * Math.PI * 2, ph = (hash(i, 12) - .5) * 1.6;
-    const R = 2.6 + hash(i, 13) * 4.2;
-    A.gifts.push({ b, dir: new THREE.Vector3(Math.cos(th) * Math.cos(ph) * 1.0, Math.sin(ph) * 1.6 + (hash(i, 14) - .5) * .8, Math.sin(th) * 1.1), R, s: .3 + hash(i, 15) * .42, spin: new THREE.Vector3(hash(i, 16) * 2 - 1, hash(i, 17) * 2 - 1, hash(i, 18) * 2 - 1).multiplyScalar(1.6), t0: .12 + hash(i, 19) * .35, z0: -2 - hash(i, 20) * 3 });
-  }
+    const f = (11.7 - z) / 11.7;
+    return { b, to: new THREE.Vector3(xs * f, ys * f + .25, z), s: .3 + hash(i, 15) * .2, spin: new THREE.Vector3(hash(i, 16) * 2 - 1, hash(i, 17) * 2 - 1, hash(i, 18) * 2 - 1), t0: .15 + i * .028 };
+  });
 
-  /* ---------- B: product on turntable + shop tile ---------- */
+  /* ---------- B: COZY on turntable, shop tile free below ---------- */
   const B = G.B = { root: new THREE.Group() }; scene.add(B.root);
-  const cz = IMG.cozy, cH = 1.5, cW = cH * cz.aspect;
-  B.prodY = wy(1110);
-  B.prod = plane(cW, cH, new THREE.MeshBasicMaterial({ map: cz.tex, transparent: true, toneMapped: false, color: 0xeeeeee }));
-  B.prod.position.set(0, B.prodY, .25); B.root.add(B.prod);
-  B.podTop = B.prodY - cH / 2 + .02;
-  B.pod = new THREE.Mesh(new THREE.CylinderGeometry(1.42, 1.5, .22, 72), matBlack); B.pod.position.set(0, B.podTop - .11, 0); B.root.add(B.pod);
-  B.ring = new THREE.Mesh(new THREE.TorusGeometry(1.425, .009, 6, 128), matGlowLine); B.ring.rotation.x = Math.PI / 2; B.ring.position.set(0, B.podTop, 0); B.root.add(B.ring);
-  B.ticks = new THREE.Group(); B.ticks.position.set(0, B.podTop - .11, 0); B.root.add(B.ticks);
-  for (let i = 0; i < 36; i++) { const tk = new THREE.Mesh(new THREE.BoxGeometry(.012, .2, .03), matGlowLine); const a = i / 36 * Math.PI * 2; tk.position.set(Math.cos(a) * 1.47, 0, Math.sin(a) * 1.47); tk.rotation.y = -a; B.ticks.add(tk); }
-  B.shadow = sprite(texShadow, 2.6, .7, .9, false); B.shadow.rotation.x = -Math.PI / 2; B.shadow.position.set(0, B.podTop + .005, .1); B.root.add(B.shadow);
-  B.cone = new THREE.Mesh(new THREE.CylinderGeometry(.08, 1.45, 4.2, 48, 1, true), new THREE.MeshBasicMaterial({ color: 0xffffff, alphaMap: texCone, transparent: true, opacity: .045, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false }));
-  B.cone.position.set(0, B.podTop + 2.1, 0); B.root.add(B.cone);
-  B.glow = sprite(texGlow, 4.2, 3.0, .07); B.glow.position.set(0, B.prodY, -.6); B.root.add(B.glow);
+  const cH = 1.32;
+  B.floorY = wy(1040) - cH / 2;
+  B.prod = productMesh(0, cH); B.prod.position.set(0, B.floorY, .25); B.root.add(B.prod);
+  B.pod = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.36, .2, 72), matPod); B.pod.position.set(0, B.floorY - .1, 0); B.root.add(B.pod);
+  B.ring = new THREE.Mesh(new THREE.TorusGeometry(1.305, .007, 6, 128), matGlowLine); B.ring.rotation.x = Math.PI / 2; B.ring.position.set(0, B.floorY, 0); B.root.add(B.ring);
+  B.ticks = new THREE.Group(); B.ticks.position.set(0, B.floorY - .1, 0); B.root.add(B.ticks);
+  const tickMat = new THREE.MeshBasicMaterial({ color: 0x8a8a8a, toneMapped: false });
+  for (let i = 0; i < 36; i++) { const tk = new THREE.Mesh(new THREE.BoxGeometry(.012, .18, .03), tickMat); const a = i / 36 * Math.PI * 2; tk.position.set(Math.cos(a) * 1.35, 0, Math.sin(a) * 1.35); tk.rotation.y = -a; B.ticks.add(tk); }
+  B.cone = coneMesh(1.35); B.cone.position.set(0, B.floorY + 2.1, 0); B.root.add(B.cone);
   const p0 = PRODUCTS[0];
   B.tile = label(800, 168, 2, (x, w, h, state = 0, press = 0) => {
-    x.fillStyle = '#ffffff'; x.fillRect(0, 0, w, h);
+    x.fillStyle = '#f4f4f4'; x.fillRect(0, 0, w, h);
     x.fillStyle = '#0e2234'; x.font = '600 27px Poppins'; x.textBaseline = 'alphabetic'; x.fillText(p0.name, 30, 50);
     x.fillStyle = '#66727d'; x.font = '500 19px Poppins'; x.fillText(p0.variant + ' · homedeluxe.de', 30, 80);
     x.fillStyle = '#0e2234'; x.font = '800 44px Poppins'; x.fillText(eur(p0.price), 30, 138);
@@ -478,156 +539,143 @@ async function build() {
     const uw = x.measureText(u).width; x.fillRect(46 + pw, 128, uw, 2);
     const bx = 520, by = 44, bw = 250, bh = 84, s = 1 - press * .06;
     x.save(); x.translate(bx + bw / 2, by + bh / 2); x.scale(s, s);
-    x.fillStyle = state ? '#ffffff' : '#0e2234'; x.fillRect(-bw / 2, -bh / 2, bw, bh);
+    x.fillStyle = state ? '#f4f4f4' : '#0e2234'; x.fillRect(-bw / 2, -bh / 2, bw, bh);
     if (state) { x.strokeStyle = '#0e2234'; x.lineWidth = 3; x.strokeRect(-bw / 2 + 1.5, -bh / 2 + 1.5, bw - 3, bh - 3); }
-    x.fillStyle = state ? '#0e2234' : '#ffffff'; x.font = '600 19px Poppins';
+    x.fillStyle = state ? '#0e2234' : '#f4f4f4'; x.font = '600 19px Poppins';
     spacedText(x, state ? '✓  IM WARENKORB' : 'IN DEN WARENKORB', 0, 7, 2.4);
     x.restore();
-  });
-  B.tile.material.color.set(0xe6e6e6); B.tile.position.set(0, wy(1425), .9); B.root.add(B.tile);
-  B.tap = sprite(texGlow, .5, .5, 0); B.tap.position.set(wx(540 + 245), wy(1425), 1.0); B.root.add(B.tap);
+  }, 0xd4d4d4);
+  B.tileZ = 1.7; B.tileY = wyz(1478, B.tileZ);
+  B.tile.position.set(0, B.tileY, B.tileZ); B.root.add(B.tile);
+  B.tap = sprite(texGlow, .5, .5, 0); B.root.add(B.tap);
 
-  /* ---------- S: stairs ---------- */
+  /* ---------- S: staircase with cumulative cart ---------- */
   const S = G.S = { root: new THREE.Group(), steps: [] }; scene.add(S.root);
-  const STEP_OFF = new THREE.Vector3(3.7, 1.35, -2.3);
-  PRODUCTS.forEach((p, k) => {
+  const STEP_OFF = new THREE.Vector3(3.75, 1.35, -2.3);
+  const SW = 3.3, SH = 1.5, SD = 2.6;
+  for (let k = 0; k < 3; k++) {
     const st = { k, origin: STEP_OFF.clone().multiplyScalar(k) };
     const g = st.g = new THREE.Group(); g.position.copy(st.origin); S.root.add(g);
-    const topY = wyz(1150, .55);
-    st.topY = topY;
-    const box = new THREE.Mesh(new THREE.BoxGeometry(3.1, 1.5, 2.5), matStep); box.position.set(0, topY - .75, -.7); g.add(box);
-    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(box.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .28, toneMapped: false })); edges.position.copy(box.position); g.add(edges);
-    const lip = new THREE.Mesh(new THREE.BoxGeometry(3.1, .014, .014), matGlowLine); lip.position.set(0, topY, .55); g.add(lip);
-    // product
-    const im = IMG[p.key], ph = [1.22, .86, 1.4][k], pw = ph * im.aspect;
-    const prod = plane(pw, ph, new THREE.MeshBasicMaterial({ map: im.tex, transparent: true, toneMapped: false, color: 0xeeeeee }));
-    prod.position.set(0, topY + ph / 2 - .02, -.15); g.add(prod); st.prod = prod; st.ph = ph;
-    const sh = sprite(texShadow, pw * 1.15, .55, .9, false); sh.rotation.x = -Math.PI / 2; sh.position.set(0, topY + .004, -.1); g.add(sh); st.sh = sh;
-    const glow = sprite(texGlow, 4.2, 3.0, k === 1 ? .32 : .16); glow.position.set(0, topY + ph * .55, -1.0); g.add(glow); st.glow = glow;
-    const cone = new THREE.Mesh(new THREE.CylinderGeometry(.06, 1.35, 4.4, 48, 1, true), B.cone.material.clone()); cone.position.set(0, topY + 2.2, -.2); g.add(cone); st.cone = cone;
-    // product label on the step lip
-    const lab = label(760, 40, 2, x => {
-      x.fillStyle = 'rgba(255,255,255,.88)'; x.font = '500 17px Poppins'; x.textBaseline = 'middle';
-      spacedText(x, `${p.name.toUpperCase()}  ·  ${eur(p.price)}`, 380, 21, 3.2);
-    });
-    lab.position.set(0, wyz(1176, .62), .62); g.add(lab); st.lab = lab;
-    // amount
+    const topY = st.topY = wyz(1130, .6);
+    const box = new THREE.Mesh(new THREE.BoxGeometry(SW, SH, SD), matStep); box.position.set(0, topY - SH / 2, .6 - SD / 2); g.add(box);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(box.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .2, toneMapped: false })); edges.position.copy(box.position); g.add(edges);
+    const lip = new THREE.Mesh(new THREE.BoxGeometry(SW, .012, .012), matGlowLine); lip.position.set(0, topY, .6); g.add(lip);
+    st.content = new THREE.Group(); g.add(st.content);
+    // products of this stage (all items in the cart so far)
+    st.prods = STAGE_SET[k].map(([idx, h, x, z]) => { const m = productMesh(idx, h); m.position.set(x, topY, z); st.content.add(m); return { m, idx, x, z }; });
+    st.cone = coneMesh(1.6); st.cone.position.set(0, topY + 2.15, -.3); st.content.add(st.cone);
+    // receipt printed on the step front: all items, sum, code plate
+    st.face = panel(SW, SH, 880, 400, 2, (x, w, h, s = {}) => drawReceipt(x, w, h, k, s), 0xdadada);
+    st.face.position.set(0, topY - SH / 2, .602); st.content.add(st.face);
+    st.plate = codePlate(TIERS[k].code, 2.7, .42);
+    st.plate.position.set(0, topY - SH * (330 / 400), .63); st.content.add(st.plate);
+    // 3D gift amount
     st.amtMat = matText.clone(); st.amtMat.transparent = true;
-    st.amt = new THREE.Mesh(amountGeo(0, .86, .3), st.amtMat); st.amt.position.set(0, wyz(732, -.6), -.6); g.add(st.amt);
-    // coupon
-    const cp = st.coupon = new THREE.Group(); cp.position.set(0, wyz(1278, 1.0), 1.0); g.add(cp);
-    const card = new THREE.Mesh(new RoundedBoxGeometry(2.62 * 11 / 12, .5 * 11 / 12, .06, 2, .02), new THREE.MeshPhysicalMaterial({ color: 0xe8e8e8, roughness: .4, clearcoat: .5, emissive: 0x1a1a1a, transparent: true }));
-    cp.add(card); st.card = card;
-    const code = TIERS[k].code;
-    const face = label(660, 124, 2, (x, w, h, n = code.length, seed = 0) => {
-      x.fillStyle = '#ffffff'; x.fillRect(0, 0, w, h);
-      x.setLineDash([9, 7]); x.strokeStyle = '#0a0a0a'; x.lineWidth = 2; x.strokeRect(10, 10, w - 20, h - 20); x.setLineDash([]);
-      x.fillStyle = '#6b6b6b'; x.font = '600 18px Poppins'; x.textBaseline = 'middle';
-      spacedText(x, 'CODE', 92, h / 2 + 1, 6);
-      x.fillStyle = '#c9c9c9'; x.fillRect(166, 30, 2, h - 60);
-      const GLY = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-      let s = '';
-      for (let i = 0; i < code.length; i++) s += i < n ? code[i] : GLY[Math.floor(hash(seed * 31 + i, 7) * GLY.length)];
-      x.fillStyle = '#050505'; x.font = '800 64px Poppins';
-      spacedText(x, s, 166 + (w - 166) / 2, h / 2 + 4, 6);
-    });
-    face.position.z = .032; face.scale.setScalar(11 / 12); face.material.color.set(0xeeeeee); cp.add(face); st.face = face;
+    st.amt = new THREE.Mesh(amountGeo(0, .82, .3), st.amtMat); st.amt.position.set(0, wyz(738, -.6), -.6); st.content.add(st.amt);
     S.steps.push(st);
-  });
+  }
 
   /* ---------- F: checkout panel ---------- */
   const F = G.F = { root: new THREE.Group() }; scene.add(F.root);
-  F.panel = new THREE.Group(); F.panel.position.set(0, wy(1150), 0); F.panel.scale.setScalar(.94); F.root.add(F.panel);
+  F.panel = new THREE.Group(); F.panel.scale.setScalar(.94); F.root.add(F.panel);
   const pnW = 860, pnH = 640;
-  F.box = new THREE.Mesh(new RoundedBoxGeometry(pnW / U + .08, pnH / U + .08, .08, 3, .04), matBlack); F.box.position.z = -.05; F.panel.add(F.box);
-  F.edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(pnW / U + .08, pnH / U + .08, .001)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .5, toneMapped: false })); F.edge.position.z = .0; F.panel.add(F.edge);
-  F.face = label(pnW, pnH, 1.6, (x, w, h, st = {}) => drawCheckout(x, w, h, st));
+  const box = new THREE.Mesh(new RoundedBoxGeometry(pnW / U + .08, pnH / U + .08, .08, 3, .04), matBlack); box.position.z = -.05; F.panel.add(box);
+  F.panel.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(pnW / U + .08, pnH / U + .08, .001)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .4, toneMapped: false })));
+  F.face = label(pnW, pnH, 1.6, (x, w, h, st = {}) => drawCheckout(x, w, h, st), 0xdadada);
   F.face.position.z = .002; F.panel.add(F.face);
-  F.badgeG = new THREE.Group(); F.badgeG.position.set(wx(690) * 10.7 / 12, wyz(1548, 1.3), 1.3); F.root.add(F.badgeG);
+  F.badgeG = new THREE.Group(); F.badgeG.position.set(wx(612) * 10.7 / 12, wyz(1515, 1.3), 1.3); F.root.add(F.badgeG);
   F.badgeMat = matText.clone(); F.badgeMat.transparent = true;
   F.badge = new THREE.Mesh(textGeo('−150 €', .46, .22), F.badgeMat); F.badgeG.add(F.badge);
-  F.badgeLab = label(300, 40, 2, x => { x.fillStyle = '#fff'; x.font = '600 17px Poppins'; x.textBaseline = 'middle'; spacedText(x, 'GESCHENK BLACK150', 150, 21, 3.4); });
-  F.badgeLab.position.set(0, .4, 0); F.badgeLab.visible = false; F.badgeG.add(F.badgeLab);
 
-  /* ---------- G: outro ---------- */
+  /* ---------- G: outro = the same staircase, all three steps at once ---------- */
   const O = G.G = { root: new THREE.Group() }; scene.add(O.root);
-  O.w1 = letterWord('BLACK', .66, .24); O.w2 = letterWord('WEEK', .66, .24);
-  O.w1.group.position.set(0, wy(430), 0); O.w2.group.position.set(0, wy(588), 0);
+  O.w1 = letterWord('BLACK', .6, .22); O.w2 = letterWord('WEEK', .6, .22);
+  O.w1.group.position.set(0, 2.18, 0); O.w2.group.position.set(0, 1.64, 0);
   O.root.add(O.w1.group, O.w2.group);
-  O.peds = [];
-  const baseY = wy(1336), heights = [.98, 1.26, 1.56], xs = [-1.38, 0, 1.38];
-  PRODUCTS.forEach((p, k) => {
-    const pg = new THREE.Group(); pg.position.set(xs[k], 0, 0); O.root.add(pg);
-    const h = heights[k];
-    const ped = new THREE.Mesh(new THREE.BoxGeometry(1.26, h, 1.1), matStep); ped.position.set(0, baseY + h / 2, -.55); pg.add(ped);
-    const e = new THREE.LineSegments(new THREE.EdgesGeometry(ped.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .35, toneMapped: false })); e.position.copy(ped.position); pg.add(e);
+  O.steps = [];
+  const baseY = -1.24, OW = 1.24, heights = [.95, 1.3, 1.65];
+  for (let k = 0; k < 3; k++) {
+    const pg = new THREE.Group(); pg.position.set((k - 1) * OW, 0, 0); O.root.add(pg);
+    const h = heights[k], top = baseY + h;
+    const ped = new THREE.Mesh(new THREE.BoxGeometry(OW, h, 1.1), matStep); ped.position.set(0, baseY + h / 2, -.55); pg.add(ped);
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(ped.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .26, toneMapped: false })); e.position.copy(ped.position); pg.add(e);
     const tr = TIERS[k];
-    const lab = label(316, 250, 2, x => {
-      x.textBaseline = 'alphabetic'; x.fillStyle = '#fff';
-      x.font = '800 76px Poppins'; x.textAlign = 'center';
-      x.shadowColor = 'rgba(255,255,255,.45)'; x.shadowBlur = 12; x.fillText(`${tr.gift} €`, 158, 76); x.shadowBlur = 0;
-      x.fillStyle = '#e6e6e6'; x.font = '500 19px Poppins';
-      spacedText(x, 'GESCHENKT', 158, 112, 5); spacedText(x, 'AB ' + tr.min, 158, 140, 5);
-      x.strokeStyle = 'rgba(255,255,255,.95)'; x.lineWidth = 2.5; x.strokeRect(22, 166, 272, 62);
-      x.fillStyle = '#fff'; x.font = '700 30px Poppins'; x.textBaseline = 'middle';
-      spacedText(x, tr.code, 158, 199, 3);
-    });
-    lab.material.color.set(0xf0f0f0); lab.position.set(0, baseY + 250 / U / 2 + .03, .01); pg.add(lab);
-    const im = IMG[p.key], ph = [.66, .48, .9][k], pw = ph * im.aspect;
-    const prod = plane(pw, ph, new THREE.MeshBasicMaterial({ map: im.tex, transparent: true, toneMapped: false, color: 0xeeeeee }));
-    prod.position.set(0, baseY + h + ph / 2 - .01, -.45); pg.add(prod);
-    const sh = sprite(texShadow, pw * 1.1, .35, .9, false); sh.rotation.x = -Math.PI / 2; sh.position.set(0, baseY + h + .003, -.45); pg.add(sh);
-    const gl = sprite(texGlow, 1.9, 1.5, k === 1 ? .14 : .06); gl.position.set(0, baseY + h + ph * .5, -1.05); pg.add(gl);
-    O.peds.push({ pg, h, k });
-  });
-  O.gifts = [];
-  for (let i = 0; i < 7; i++) {
-    const b = giftBox(); O.root.add(b);
-    O.gifts.push({ b, x: [-2.3, 2.4, -1.7, 1.9, -2.8, 2.9, .2][i], y: [1.0, 1.6, -.1, .4, 2.6, -.6, 2.9][i], z: -3.5 - hash(i, 41) * 4, s: .35 + hash(i, 42) * .3, sp: hash(i, 43) * 2 - 1 });
-  }
-  // confetti
-  O.conf = [];
-  const confGeo = new THREE.PlaneGeometry(.07, .12);
-  for (let i = 0; i < 70; i++) {
-    const m = new THREE.Mesh(confGeo, new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, toneMapped: false }));
-    O.root.add(m); O.conf.push({ m, x: (hash(i, 51) - .5) * 5.5, z: (hash(i, 52) - .5) * 4, d: hash(i, 53) * 1.6, v: .9 + hash(i, 54) * .8, r: hash(i, 55) * 6 });
+    const fw = OW * .94, fh = fw * 220 / 300;
+    const face = panel(fw, fh, 300, 220, 2, x => {
+      x.fillStyle = '#0b0b0b'; x.fillRect(0, 0, 300, 220);
+      x.textBaseline = 'alphabetic'; x.fillStyle = '#a6a6a6'; x.font = '500 16px Poppins';
+      spacedText(x, 'AB ' + tr.min, 150, 34, 4);
+      x.fillStyle = '#e2e2e2'; x.font = '800 60px Poppins'; x.textAlign = 'center'; x.fillText(`${tr.gift} €`, 150, 100);
+      x.fillStyle = '#bdbdbd'; x.font = '500 15px Poppins'; spacedText(x, 'GESCHENKT', 150, 128, 4);
+      x.strokeStyle = 'rgba(230,230,230,.9)'; x.lineWidth = 2; x.strokeRect(24, 150, 252, 50);
+      x.fillStyle = '#e2e2e2'; x.font = '700 25px Poppins'; x.textBaseline = 'middle'; spacedText(x, tr.code, 150, 176, 3);
+    }, 0xdadada);
+    face.position.set(0, baseY + fh / 2 + .05, .003); pg.add(face);
+    OUT_SET[k].forEach(([idx, ph, x, z]) => { const m = productMesh(idx, ph); m.position.set(x, top, z); pg.add(m); });
+    O.steps.push({ pg, k });
   }
 
-  ['b_l1', 'b_l2', 'b_l3', 'b_l4', 'f_l1', 'f_l2', 'f_l3', 'f_l4', 's0_min', 's1_min', 's2_min'].forEach(id => fit($(id), 930));
+  ['b_l1', 'b_l2', 'b_l3', 'b_l4', 's0_min', 's1_min', 's2_min'].forEach(id => fit($(id), 930));
+  fit($('f_t1'), 760, $('f_t1')); fit($('f_t2'), 760, $('f_t2'));
   ready = true;
+}
+
+/* =================== receipt on the step front =================== */
+function drawReceipt(x, w, h, k, s) {
+  x.fillStyle = '#0b0b0b'; x.fillRect(0, 0, w, h);
+  x.strokeStyle = 'rgba(255,255,255,.14)'; x.lineWidth = 2; x.strokeRect(1, 1, w - 2, h - 2);
+  x.textBaseline = 'alphabetic';
+  x.fillStyle = '#9a9a9a'; x.font = '500 17px Poppins'; x.letterSpacing = '4px';
+  x.fillText('DEIN WARENKORB', 40, 50);
+  const n = (s.rows || []).filter(a => a > 0).length;
+  x.textAlign = 'right'; x.fillText(`${n} ${n === 1 ? 'ARTIKEL' : 'ARTIKEL'}`, w - 36, 50); x.textAlign = 'left'; x.letterSpacing = '0px';
+  x.fillStyle = 'rgba(255,255,255,.14)'; x.fillRect(40, 68, w - 80, 1.5);
+  (s.rows || []).forEach((a, i) => {
+    if (a <= 0) return;
+    const p = PRODUCTS[i], y = 108 + i * 40 + (1 - a) * 8;
+    x.globalAlpha = a;
+    x.fillStyle = '#d6d6d6'; x.font = '600 23px Poppins'; x.fillText(p.name, 40, y);
+    x.textAlign = 'right'; x.font = '700 23px Poppins'; x.fillText(eur(p.price), w - 40, y); x.textAlign = 'left';
+    x.globalAlpha = 1;
+  });
+  const dy = 108 + k * 40 + 24;
+  x.fillStyle = 'rgba(255,255,255,.3)'; x.fillRect(40, dy, w - 80, 1.5);
+  x.fillStyle = '#9a9a9a'; x.font = '500 17px Poppins'; x.letterSpacing = '4px'; x.fillText('SUMME', 40, dy + 44); x.letterSpacing = '0px';
+  x.fillStyle = '#e2e2e2'; x.font = '800 34px Poppins'; x.textAlign = 'right'; x.fillText(eur(s.sum || 0), w - 40, dy + 46); x.textAlign = 'left';
 }
 
 /* =================== checkout panel drawing =================== */
 function drawCheckout(x, w, h, st) {
   x.fillStyle = '#0b0b0b'; x.fillRect(0, 0, w, h);
   x.textBaseline = 'alphabetic';
-  x.fillStyle = '#ffffff'; x.font = '600 18px Poppins'; spacedText(x, 'WARENKORB', 112, 46, 5);
+  x.fillStyle = '#dcdcdc'; x.font = '600 18px Poppins'; spacedText(x, 'WARENKORB', 112, 46, 5);
   x.fillStyle = '#9a9a9a'; x.font = '500 16px Poppins'; x.textAlign = 'right'; x.fillText('3 Artikel', w - 34, 46); x.textAlign = 'left';
   x.fillStyle = 'rgba(255,255,255,.14)'; x.fillRect(34, 64, w - 68, 1);
   PRODUCTS.forEach((p, i) => {
     const y = 78 + i * 92;
-    x.fillStyle = '#f2f2f2'; x.fillRect(34, y, 76, 76);
+    x.fillStyle = '#e8e8e8'; x.fillRect(34, y, 76, 76);
     const im = IMG[p.key].img, a = im.width / im.height;
     let iw = 66, ih = 66 / a; if (ih > 66) { ih = 66; iw = 66 * a; }
     x.drawImage(im, 34 + (76 - iw) / 2, y + (76 - ih) / 2, iw, ih);
-    x.fillStyle = '#ffffff'; x.font = '600 21px Poppins'; x.fillText(p.name, 128, y + 32);
+    x.fillStyle = '#dcdcdc'; x.font = '600 21px Poppins'; x.fillText(p.name, 128, y + 32);
     x.fillStyle = '#9a9a9a'; x.font = '500 15px Poppins'; x.fillText(p.variant + ' · Menge 1', 128, y + 58);
-    x.fillStyle = '#ffffff'; x.font = '700 22px Poppins'; x.textAlign = 'right'; x.fillText(eur(p.price), w - 34, y + 44); x.textAlign = 'left';
+    x.fillStyle = '#dcdcdc'; x.font = '700 22px Poppins'; x.textAlign = 'right'; x.fillText(eur(p.price), w - 34, y + 44); x.textAlign = 'left';
   });
   const fy = 372;
   x.fillStyle = '#9a9a9a'; x.font = '500 14px Poppins'; spacedText(x, 'GUTSCHEINCODE', 104, fy, 4);
-  x.strokeStyle = 'rgba(255,255,255,.6)'; x.lineWidth = 2; x.strokeRect(35, fy + 14, 560, 66);
-  x.fillStyle = '#fff'; x.font = '700 30px Poppins'; x.letterSpacing = '3px'; x.fillText(st.typed || '', 58, fy + 58); x.letterSpacing = '0px';
-  if (st.cursor) { const tw = x.measureText(st.typed || '').width + (st.typed ? (st.typed.length * 3) : 0); x.fillRect(60 + tw, fy + 28, 3, 38); }
+  x.strokeStyle = 'rgba(255,255,255,.55)'; x.lineWidth = 2; x.strokeRect(35, fy + 14, 560, 66);
+  x.fillStyle = '#e0e0e0'; x.font = '700 30px Poppins'; x.letterSpacing = '3px'; x.fillText(st.typed || '', 58, fy + 58);
+  const tw = st.typed ? x.measureText(st.typed).width : 0; x.letterSpacing = '0px';
+  if (st.cursor) x.fillRect(60 + tw, fy + 28, 3, 38);
   const bp = st.press ? 1 : 0;
-  x.fillStyle = bp ? '#0b0b0b' : '#ffffff'; x.fillRect(595, fy + 14, w - 34 - 595, 66);
-  if (bp) { x.strokeStyle = '#fff'; x.strokeRect(596, fy + 15, w - 34 - 597, 64); }
-  x.fillStyle = bp ? '#fff' : '#0b0b0b'; x.font = '600 17px Poppins'; spacedText(x, 'EINLÖSEN', 595 + (w - 34 - 595) / 2, fy + 54, 4);
+  x.fillStyle = bp ? '#0b0b0b' : '#dcdcdc'; x.fillRect(595, fy + 14, w - 34 - 595, 66);
+  if (bp) { x.strokeStyle = '#dcdcdc'; x.strokeRect(596, fy + 15, w - 34 - 597, 64); }
+  x.fillStyle = bp ? '#dcdcdc' : '#0b0b0b'; x.font = '600 17px Poppins'; spacedText(x, 'EINLÖSEN', 595 + (w - 34 - 595) / 2, fy + 54, 4);
   if (st.ok > 0) {
     x.globalAlpha = st.ok;
-    x.strokeStyle = '#fff'; x.lineWidth = 2; x.strokeRect(36, fy + 100, 20, 20);
+    x.strokeStyle = '#dcdcdc'; x.lineWidth = 2; x.strokeRect(36, fy + 100, 20, 20);
     x.beginPath(); x.moveTo(40, fy + 111); x.lineTo(45, fy + 116); x.lineTo(52, fy + 105); x.lineWidth = 2.6; x.stroke();
-    x.fillStyle = '#fff'; x.font = '600 15px Poppins'; x.letterSpacing = '3px'; x.fillText('BLACK150 EINGELÖST · 150 € GESCHENKT', 68, fy + 116); x.letterSpacing = '0px';
+    x.fillStyle = '#dcdcdc'; x.font = '600 15px Poppins'; x.letterSpacing = '3px'; x.fillText('BLACK150 EINGELÖST · 150 € GESCHENKT', 68, fy + 116); x.letterSpacing = '0px';
     x.globalAlpha = 1;
   }
   const ry = 528;
@@ -635,212 +683,181 @@ function drawCheckout(x, w, h, st) {
   x.textAlign = 'right'; x.font = '600 20px Poppins'; x.fillText(eur(1017), w - 34, ry); x.textAlign = 'left';
   if (st.gift > 0) {
     x.globalAlpha = st.gift;
-    x.font = '500 15px Poppins'; x.fillStyle = '#fff'; x.letterSpacing = '3px'; x.fillText('GESCHENK (BLACK150)', 36, ry + 36); x.letterSpacing = '0px';
+    x.font = '500 15px Poppins'; x.fillStyle = '#dcdcdc'; x.letterSpacing = '3px'; x.fillText('GESCHENK (BLACK150)', 36, ry + 36); x.letterSpacing = '0px';
     x.textAlign = 'right'; x.font = '800 22px Poppins'; x.fillText('−' + eur(150), w - 34, ry + 36); x.textAlign = 'left';
     x.globalAlpha = 1;
   }
-  x.fillStyle = 'rgba(255,255,255,.3)'; x.fillRect(36, ry + 56, w - 70, 1.5);
-  x.font = '600 17px Poppins'; x.fillStyle = '#fff'; x.letterSpacing = '4px'; x.fillText('GESAMT', 36, ry + 96); x.letterSpacing = '0px';
-  x.textAlign = 'right'; x.font = '800 36px Poppins'; x.shadowColor = 'rgba(255,255,255,.5)'; x.shadowBlur = 10; x.fillText(eur(st.total ?? 1017), w - 34, ry + 98); x.shadowBlur = 0; x.textAlign = 'left';
+  x.fillStyle = 'rgba(255,255,255,.28)'; x.fillRect(36, ry + 56, w - 70, 1.5);
+  x.font = '600 17px Poppins'; x.fillStyle = '#dcdcdc'; x.letterSpacing = '4px'; x.fillText('GESAMT', 36, ry + 96); x.letterSpacing = '0px';
+  x.textAlign = 'right'; x.font = '800 36px Poppins'; x.fillStyle = '#e2e2e2'; x.fillText(eur(st.total ?? 1017), w - 34, ry + 98); x.textAlign = 'left';
 }
 
 /* =================== per-frame updates =================== */
 const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
-function setVis(obj, t, [a, b]) { obj.visible = t >= a && t < b + OUT; return obj.visible; }
-function outQ(t, [a, b]) { return t >= b ? clamp((t - b) / OUT) : 0; }
+function on(obj, t, [a, b]) { obj.visible = t >= a && t < b; return obj.visible; }
+function preCut(t, [a, b]) { return t >= b - OUT ? clamp((t - (b - OUT)) / OUT) : 0; }
+function faceCam(obj, worldX, worldZ) { obj.rotation.y = Math.atan2(camPos.x - worldX, camPos.z - worldZ) * .9; }
 
 function updA(t) {
   const A = G.A;
-  if (!setVis(A.root, t, SC.A)) return;
+  if (!on(A.root, t, SC.A)) return;
   const shift = E.inOut(prog(t, 2.45, .5));
   A.bw.position.set(0, lerp(.52, 1.42, shift), 0);
   A.bw.rotation.set(Math.sin(t * .7) * .05 - .04, Math.sin(t * .55) * .16, 0);
   animLetters(A.w1, t, .3, .07, { dur: .6, z: -5, rx: -1.3, dy: .4 });
   animLetters(A.w2, t, .62, .07, { dur: .65, z: -5, rx: 1.3, dy: -.4 });
-  // flicker C
   A.w1.letters[3].mat.opacity *= (t >= 5.0 && t < 5.1) ? .35 : 1;
-  // amount count-up
   const p = prog(t, 3.5, .75), v = Math.round(E.out(p) * 150);
   A.amt.geometry = amountGeo(v, .78, .3);
   A.amt.visible = t >= 3.5;
   A.amtMat.opacity = clamp((t - 3.5) / .12);
   A.amt.position.set(0, wy(1190) + (1 - E.out(p)) * -.4, (1 - E.back(prog(t, 3.5, .6))) * -3);
   A.amt.rotation.set(0, Math.sin(t * .8) * .14 + (1 - E.out(p)) * .9, 0);
-  // gifts burst
-  const out = outQ(t, SC.A);
+  const from = new THREE.Vector3(0, 1.0, -4);
   A.gifts.forEach((gf, i) => {
-    const tt = Math.max(0, t - gf.t0);
-    const r = gf.R * (1 - Math.exp(-2.6 * tt)) + tt * .12 + E.inQ(out) * 6;
-    gf.b.position.set(gf.dir.x * r, gf.dir.y * r + .2 + Math.sin(t * .8 + i) * .1, gf.z0 + gf.dir.z * r * 1.3 + 2);
-    gf.b.rotation.set(gf.spin.x * t + i, gf.spin.y * t, gf.spin.z * t);
-    const s = gf.s * E.back(prog(t, gf.t0, .5));
-    gf.b.scale.setScalar(Math.max(.001, s));
+    const q = prog(t, gf.t0, 1.15), e = E.out(q);
     gf.b.visible = t >= gf.t0;
+    gf.b.position.copy(from).lerp(gf.to, e);
+    gf.b.position.x += Math.sin(t * .8 + i) * .05; gf.b.position.y += Math.cos(t * .6 + i) * .07;
+    gf.b.rotation.set(gf.spin.x * (t * .7 + i), gf.spin.y * (t * .6 + i), gf.spin.z * .5);
+    gf.b.scale.setScalar(Math.max(.001, gf.s * E.back(prog(t, gf.t0, .55))));
   });
-  // camera
-  const push = E.inOut(prog(t, 0, 5.85));
+  const push = E.inOut(prog(t, 0, CUT.AB));
   camPos.set(Math.sin(t * .5) * .7, .25 + Math.sin(t * .4) * .1, lerp(12.6, 10.9, push));
   camLook.set(0, .25, 0);
-  if (out > 0) { camPos.z -= E.inQ(out) * 6; camPos.y += out * 1.2; }
+  camPos.z -= E.inQ(preCut(t, SC.A)) * 1.2;
 }
 
 function updB(t) {
   const B = G.B;
-  if (!setVis(B.root, t, SC.B)) return;
-  const pIn = prog(t, 6.15, .7);
+  if (!on(B.root, t, SC.B)) return;
+  camPos.set(Math.sin(t * .45) * .45, -.1, 12);
+  camLook.set(0, -.25, 0);
+  const w = 1 - E.out(prog(t, CUT.AB, .5)); camPos.y += w * 2.0; camPos.x += w * 1.2;
+  camPos.z -= E.inQ(preCut(t, SC.B)) * 1.4;
+  const pIn = prog(t, CUT.AB, .75);
   B.root.position.y = (1 - E.out(pIn)) * -2.2;
   B.root.rotation.x = (1 - E.out(pIn)) * .4;
   B.ticks.rotation.y = t * .35;
-  B.prod.position.y = B.prodY + Math.sin(t * 2.1) * .025;
-  const hop = prog(t, 9.62, .5); B.prod.scale.setScalar(1 + Math.sin(hop * Math.PI) * .06);
-  B.shadow.material.opacity = .9 - Math.sin(t * 2.1) * .1;
-  B.cone.material.opacity = .04 + Math.sin(t * 3) * .004;
-  // tile
+  B.prod.userData.holder.position.y = B.prod.userData.ph / 2 - .01 + Math.sin(t * 2.1) * .02;
+  const hop = prog(t, 9.62, .5); B.prod.scale.setScalar(1 + Math.sin(hop * Math.PI) * .05);
   const tp = prog(t, 7.9, .55);
   B.tile.material.opacity = clamp(tp * 1.8);
-  B.tile.position.set(0, wy(1425) + (1 - E.out(tp)) * -.5, .9 + (1 - E.out(tp)) * 1.5);
-  B.tile.rotation.set(-.1 + (1 - E.out(tp)) * -.8, Math.sin(t * .9) * .06, 0);
+  B.tile.position.set(0, B.tileY + (1 - E.out(tp)) * -.5, B.tileZ + (1 - E.out(tp)) * 1.2);
+  B.tile.rotation.set(-.08 + (1 - E.out(tp)) * -.8, Math.sin(t * .9) * .05, 0);
   const press = (t >= 9.5 && t < 9.62) ? 1 : 0, state = t >= 9.6 ? 1 : 0;
-  const key = state * 2 + press;
-  if (B.tile.userData.k !== key) { B.tile.userData.ct.redraw(state, press); B.tile.userData.k = key; }
+  const k = state * 2 + press;
+  if (B.tile.userData.k !== k) { B.tile.userData.ct.redraw(state, press); B.tile.userData.k = k; }
   const tapP = prog(t, 9.48, .45);
-  B.tap.material.opacity = t >= 9.48 ? (1 - tapP) * .9 : 0;
+  B.tap.material.opacity = t >= 9.48 ? (1 - tapP) * .7 : 0;
   B.tap.scale.setScalar(.4 + tapP * 1.6);
-  B.tap.position.copy(B.tile.position).add(new THREE.Vector3(wx(540 + 245), 0, .1));
-  const out = outQ(t, SC.B);
-  camPos.set(Math.sin(t * .45) * .55, -.1, 12 - E.inQ(out) * 2);
-  camLook.set(0, -.25, 0);
-  if (t < 6.4) { const w = 1 - E.out(prog(t, 5.95, .45)); camPos.y += w * 2.5; camPos.x += w * 1.5; }
+  B.tap.position.copy(B.tile.position).add(new THREE.Vector3(245 / U, 0, .1));
 }
 
+const STAGE_CUT = [CUT.BS, CUT.S12, CUT.S23];
+const STAGE_WIN = [[CUT.BS, CUT.S12], [CUT.S12, CUT.S23], [CUT.S23, CUT.SF]];
 const STAGE_T = [
-  { lab: 11.05, min: 11.5, sch: 12.8, prod: 11.75, amt: 12.95, aDur: .42, code: 15.0, cart: [12.3, 13.3] },
-  { lab: 17.1, min: 17.75, sch: 18.7, prod: 18.0, amt: 19.05, aDur: .5, code: 20.75, cart: [18.3, 19.5] },
-  { lab: 22.55, min: 23.25, sch: 24.15, prod: 23.45, amt: 24.3, aDur: .55, code: 26.25, cart: [23.7, 24.85] },
+  { lab: 11.0, min: 11.5, sch: 12.8, prod: 11.1, amt: 12.95, aDur: .42, code: 15.0 },
+  { lab: 17.0, min: 17.75, sch: 18.7, prod: 17.05, amt: 19.05, aDur: .5, code: 20.75 },
+  { lab: 22.4, min: 23.25, sch: 24.15, prod: 22.45, amt: 24.3, aDur: .55, code: 26.25 },
 ];
-const CART = [189, 588, 1017];
-function cartAt(t) {
-  let v = 0;
-  STAGE_T.forEach((s, k) => { if (t >= s.cart[0]) v = lerp(k ? CART[k - 1] : 0, CART[k], E.inOut(prog(t, s.cart[0], s.cart[1] - s.cart[0]))); });
-  return v;
-}
 function stageCam(k) {
   const o = G.S.steps[k].origin;
-  return { pos: new THREE.Vector3(o.x - .75, o.y + .12, o.z + 12), look: new THREE.Vector3(o.x + .02, o.y + .02, o.z) };
+  return { pos: new THREE.Vector3(o.x - .6, o.y + .12, o.z + 12), look: new THREE.Vector3(o.x + .02, o.y + .02, o.z) };
 }
 function updS(t) {
   const S = G.S;
-  if (!setVis(S.root, t, SC.S)) return;
-  // camera path
-  const c0 = stageCam(0), c1 = stageCam(1), c2 = stageCam(2);
-  let p, l;
-  if (t < 17.0) { p = c0.pos.clone(); l = c0.look.clone(); }
-  else if (t < 22.4) { const q = E.inOut(prog(t, 16.95, .75)); p = c0.pos.clone().lerp(c1.pos, q); l = c0.look.clone().lerp(c1.look, q); p.y += Math.sin(q * Math.PI) * .9; }
-  else { const q = E.inOut(prog(t, 22.35, .75)); p = c1.pos.clone().lerp(c2.pos, q); l = c1.look.clone().lerp(c2.look, q); p.y += Math.sin(q * Math.PI) * .9; }
-  // crane-in at the beginning
-  const ci = 1 - E.out(prog(t, 10.9, .9));
-  p.y += ci * 3.2; p.z += ci * 3; l.y += ci * .6;
-  p.x += Math.sin(t * .5) * .18;
-  const out = outQ(t, SC.S); p.z -= E.inQ(out) * 3;
-  camPos.copy(p); camLook.copy(l);
+  if (!on(S.root, t, SC.S)) return;
+  const cur = t < CUT.S12 ? 0 : t < CUT.S23 ? 1 : 2;
+  const c = stageCam(cur);
+  const d = 1 - E.out(prog(t, STAGE_CUT[cur], cur === 0 ? .9 : .7));
+  camPos.copy(c.pos); camLook.copy(c.look);
+  if (cur === 0) { camPos.y += d * 3.0; camPos.z += d * 2.6; camLook.y += d * .5; }
+  else { camPos.z += d * 1.6; camPos.x -= d * .8; camPos.y += d * .35; }
+  camPos.x += Math.sin(t * .5) * .14;
+  camPos.z -= E.inQ(preCut(t, STAGE_WIN[cur])) * 1.2;
+
   S.steps.forEach((st, k) => {
-    const T = STAGE_T[k];
-    const pp = prog(t, T.prod, .55);
-    st.prod.visible = st.sh.visible = t >= T.prod;
-    st.prod.position.y = st.topY + st.ph / 2 - .02 + (1 - E.back(pp)) * 1.6 + Math.sin(t * 1.9 + k) * .02 * pp;
-    st.prod.material.opacity = clamp(pp * 2);
-    st.sh.material.opacity = .9 * E.out(pp);
-    st.glow.material.opacity = (k === 1 ? .16 : .07) * E.out(pp);
-    st.cone.material.opacity = .04 * E.out(prog(t, T.prod - .2, .6));
-    st.lab.material.opacity = E.out(prog(t, T.prod + .3, .5)) * .95;
-    // face product to camera (y-axis)
-    st.prod.rotation.y = Math.atan2(camPos.x - (st.origin.x), camPos.z - (st.origin.z)) * .9;
-    // amount
+    st.g.visible = k === cur || k === cur + 1;
+    st.content.visible = k === cur;
+    if (k !== cur) return;
+    const T = STAGE_T[k], c0 = STAGE_CUT[k];
+    // cart items: earlier items are already there, the new one drops in
+    st.prods.forEach(({ m, idx, x, z }) => {
+      const isNew = idx === k;
+      const t0 = isNew ? T.prod : c0;
+      const pp = prog(t, t0, isNew ? .55 : .3);
+      m.visible = t >= t0;
+      m.position.y = st.topY + (isNew ? (1 - E.back(pp)) * 1.3 : 0);
+      setProductOpacity(m, clamp(pp * 2));
+      faceCam(m.userData.holder, st.origin.x + x, st.origin.z + z);
+    });
+    st.cone.material.opacity = .024 * E.out(prog(t, c0, .5));
+    // receipt rows + sum
+    const rows = [0, 1, 2].map(i => i > k ? 0 : i < k ? E.out(prog(t, c0 + .05, .3)) : E.out(prog(t, T.prod + .45, .35)));
+    const sum = Math.round(lerp(k ? SUMS[k - 1] : 0, SUMS[k], E.inOut(prog(t, T.prod + .5, .8))));
+    const fs = { rows: rows.map(r => Math.round(r * 10) / 10), sum };
+    const fk = JSON.stringify(fs);
+    if (st.face.userData.k !== fk) { st.face.userData.ct.redraw(fs); st.face.userData.k = fk; }
+    st.face.material.opacity = E.out(prog(t, c0, .3));
+    // gift amount
     const ap = prog(t, T.amt, T.aDur), v = Math.round(E.out(ap) * TIERS[k].gift);
-    st.amt.geometry = amountGeo(v, .86, .3);
+    st.amt.geometry = amountGeo(v, .82, .3);
     st.amt.visible = t >= T.amt;
     st.amtMat.opacity = clamp((t - T.amt) / .12);
-    st.amt.position.set(0, wyz(732, -.6) + (1 - E.out(ap)) * -.35, -.6 + (1 - E.back(prog(t, T.amt, .55))) * -2.5);
-    st.amt.rotation.set(0, Math.sin(t * .8 + k) * .16 + (1 - E.out(ap)) * 1.1, 0);
-    // coupon
-    const cp = prog(t, T.code, .55);
-    st.coupon.visible = t >= T.code;
-    st.coupon.position.set(0, wyz(1278, 1.0) + Math.sin(t * 1.6 + k) * .02, 1.0 + (1 - E.out(cp)) * 2.2);
-    st.coupon.rotation.set((1 - E.back(cp)) * -1.6 + .06, (1 - E.out(cp)) * .5 + Math.sin(t * .7 + k) * .05, 0);
-    const n = Math.floor(clamp((t - T.code - .15) / .5) * TIERS[k].code.length + 1e-6), seed = Math.floor(t * 24);
-    const fk = n >= TIERS[k].code.length ? 'done' : `${n}|${seed}`;
-    if (st.face.userData.k !== fk) { st.face.userData.ct.redraw(n, seed); st.face.userData.k = fk; }
-    // dim past stages when camera moved on
-    const fadeP = k < 2 ? E.out(prog(t, STAGE_T[k + 1].lab - .3, .35)) : 0;
-    st.amtMat.opacity *= 1 - .65 * fadeP;
-    st.card.material.opacity = 1 - .85 * fadeP; st.face.material.opacity = 1 - .85 * fadeP;
-    st.lab.material.opacity *= 1 - .6 * fadeP;
-    st.coupon.scale.setScalar(1 - .1 * fadeP);
+    st.amt.position.set(0, wyz(738, -.6) + (1 - E.out(ap)) * -.35, -.6 + (1 - E.back(prog(t, T.amt, .55))) * -2.5);
+    st.amt.rotation.set(0, Math.sin(t * .8 + k) * .1 + (1 - E.out(ap)) * 1.1, 0);
+    // code plate pops out of the step front
+    const pp = setPlate(st.plate, t, T.code);
+    st.plate.position.z = .63 + (1 - E.out(pp)) * -.05;
+    st.plate.scale.setScalar(.9 + .1 * E.back(pp));
   });
 }
 
 function updF(t) {
   const F = G.F;
-  if (!setVis(F.root, t, SC.F)) return;
-  const ip = prog(t, 28.05, .75);
-  F.panel.rotation.set(-.08 + (1 - E.out(ip)) * .5, (1 - E.out(ip)) * -1.1 + Math.sin(t * .6) * .07, 0);
-  F.panel.position.z = (1 - E.out(ip)) * -3;
-  F.panel.position.y = wy(1150) + Math.sin(t * 1.1) * .03;
+  if (!on(F.root, t, SC.F)) return;
+  camPos.set(Math.sin(t * .4) * .45, .05, 12);
+  camLook.set(0, -.2, 0);
+  camPos.z -= E.inQ(preCut(t, SC.F)) * 1.4;
+  const ip = prog(t, CUT.SF + .02, .75);
+  F.panel.rotation.set(-.08 + (1 - E.out(ip)) * .5, (1 - E.out(ip)) * -1.1 + Math.sin(t * .6) * .05, 0);
+  F.panel.position.set(0, wy(1125) + Math.sin(t * 1.1) * .025, (1 - E.out(ip)) * -3);
   const code = 'BLACK150';
   const n = Math.floor(clamp((t - 29.0) / 1.0) * code.length + 1e-6);
   const cursor = t < 30.45 && ((t >= 29.0 && t < 30.05) || Math.floor(t * 2.6) % 2 === 0);
   const press = t >= 30.42 && t < 30.6;
   const ok = E.out(prog(t, 30.65, .3)), gift = E.out(prog(t, 30.85, .3));
-  const total = 1017 - 150 * E.inOut(prog(t, 31.2, .7));
-  const st = { typed: code.slice(0, n), cursor, press, ok: Math.round(ok * 10) / 10, gift: Math.round(gift * 10) / 10, total: Math.round(total * 100) / 100 };
+  const total = Math.round(1017 - 150 * E.inOut(prog(t, 31.2, .7)));
+  const st = { typed: code.slice(0, n), cursor, press, ok: Math.round(ok * 10) / 10, gift: Math.round(gift * 10) / 10, total };
   const k = JSON.stringify(st);
   if (F.face.userData.k !== k) { F.face.userData.ct.redraw(st); F.face.userData.k = k; }
   const bp = prog(t, 30.85, .55);
   F.badgeG.visible = t >= 30.85;
   F.badgeMat.opacity = clamp(bp * 2);
-  F.badgeLab.material.opacity = clamp((t - 31.05) / .3);
   F.badgeG.scale.setScalar(.3 + .7 * E.back(bp));
-  F.badgeG.rotation.set(0, (1 - E.out(bp)) * 2.4 + Math.sin(t * 1.2) * .12, -.1);
+  F.badgeG.rotation.set(0, (1 - E.out(bp)) * 2.4 + Math.sin(t * 1.2) * .07, -.08);
   F.badgeG.position.z = 1.3 + (1 - E.out(bp)) * 1.5;
-  const out = outQ(t, SC.F);
-  camPos.set(Math.sin(t * .4) * .6, .05, 12 - E.inQ(out) * 2.5);
-  camLook.set(0, -.2, 0);
 }
 
 function updG(t) {
   const O = G.G;
-  if (!setVis(O.root, t, SC.G)) return;
-  animLetters(O.w1, t, 33.48, .06, { dur: .6, z: -5, rx: -1.3, dy: .4 });
-  animLetters(O.w2, t, 33.75, .06, { dur: .6, z: -5, rx: 1.3, dy: -.4 });
+  if (!on(O.root, t, SC.G)) return;
+  camPos.set(Math.sin(t * .4) * .12, .25, 11.4 + (1 - E.out(prog(t, CUT.FG, .9))) * 1.1);
+  camLook.set(0, .2, 0);
+  animLetters(O.w1, t, 33.4, .06, { dur: .6, z: -5, rx: -1.3, dy: .4 });
+  animLetters(O.w2, t, 33.66, .06, { dur: .6, z: -5, rx: 1.3, dy: -.4 });
   O.w1.letters[3].mat.opacity *= (t >= 37.45 && t < 37.55) ? .35 : 1;
-  O.peds.forEach(({ pg, k }) => {
-    const p = prog(t, 33.95 + k * .12, .7);
-    pg.position.y = (1 - E.back(p)) * -2.6;
-    pg.visible = t >= 33.95 + k * .12;
+  O.steps.forEach(({ pg, k }) => {
+    const t0 = 33.75 + k * .12, p = prog(t, t0, .65);
+    pg.visible = t >= t0;
+    pg.position.y = (1 - E.out(p)) * -1.8;
   });
-  O.gifts.forEach((gf, i) => {
-    const p = prog(t, 34.2 + i * .07, .8);
-    gf.b.position.set(gf.x, gf.y + Math.sin(t * .9 + i) * .12 + (1 - E.out(p)) * -3, gf.z);
-    gf.b.rotation.set(t * .4 * gf.sp + i, t * .5 + i, .3 * gf.sp);
-    gf.b.scale.setScalar(gf.s * E.out(p) + .001);
-  });
-  O.conf.forEach((c, i) => {
-    const tt = t - 34.55 - c.d;
-    c.m.visible = tt > 0;
-    if (tt <= 0) return;
-    c.m.position.set(c.x + Math.sin(tt * 2 + i) * .25, 3.6 - tt * c.v, c.z);
-    c.m.rotation.set(tt * 3 + c.r, tt * 2.2 + c.r, tt * 1.3);
-    c.m.material.opacity = .85;
-  });
-  const a = -.13 + .24 * E.inOut(prog(t, 33.4, 4.6));
-  camPos.set(Math.sin(a) * 12.2, .35 - .2 * E.inOut(prog(t, 33.4, 4.6)), Math.cos(a) * 12.2);
-  camLook.set(0, -.05, 0);
-  const pi = 1 - E.out(prog(t, 33.35, .6)); camPos.z += pi * 4;
 }
 
 /* =================== overlay updates =================== */
 function updOverlay(t) {
-  const lg = $('logo'); bin(lg, t, .95, { dur: .6, blur: 14 }); lg.style.opacity = (parseFloat(lg.style.opacity) * .92).toFixed(3);
+  const lg = $('logo'); bin(lg, t, .95, { dur: .6, blur: 14, max: .8 });
   if (ovScene('oA', t, SC.A)) {
     const lp = E.outQ(prog(t, .03, .24)), lo = t < .45 ? 1 : 1 - prog(t, .45, .25);
     $('a_line').style.transform = `scaleX(${lp})`; $('a_line').style.opacity = lo;
@@ -853,44 +870,26 @@ function updOverlay(t) {
     bin('b_l3', t, 9.25, { dur: .45, blur: 24, dy: 24 });
     bin('b_l4', t, 9.43, { dur: .45, blur: 24, dy: 24 });
   }
-  const winS = [[10.9, 16.9], [17.0, 22.3], [22.4, 27.8]];
   STAGE_T.forEach((T, k) => {
-    if (!ovScene('oS' + k, t, winS[k])) return;
+    if (!ovScene('oS' + k, t, STAGE_WIN[k])) return;
     bin(`s${k}_lab`, t, T.lab, { dur: .45, blur: 16, dy: 10 });
     bin(`s${k}_min`, t, T.min, { dur: .45, blur: 22, dy: 16 });
     bin(`s${k}_sch`, t, T.sch, { dur: .4, blur: 16, dy: 10 });
   });
-  // HUD
-  const hud = $('hud'), hq = winState(t, SC.S);
-  if (hq < 0 || t < 11.2) hud.style.display = 'none';
-  else {
-    hud.style.display = 'block';
-    const p = bin(hud, t, 11.3, { dur: .55, blur: 18, dy: 24 });
-    if (hq > 0) { hud.style.opacity = 1 - hq; hud.style.filter = `blur(${hq * 18}px)`; }
-    const v = cartAt(t);
-    $('h_val').textContent = eur(v);
-    const f = v <= 100 ? v / 100 / 3 : v <= 500 ? 1 / 3 + (v - 100) / 400 / 3 : 2 / 3 + Math.min(1, (v - 500) / 500) / 3;
-    $('h_fill').style.width = (780 * f).toFixed(2) + 'px';
-    TIERS.forEach((tr, i) => {
-      const on = v >= tr.minV - .01;
-      const g = $('h_g' + (i + 1)), m = $('h_k' + (i + 1));
-      g.style.color = on ? '#fff' : 'rgba(255,255,255,.28)';
-      g.style.textShadow = on ? '0 0 16px rgba(255,255,255,.6)' : 'none';
-      m.style.background = on ? '#fff' : '#020202'; m.style.borderColor = on ? '#fff' : 'rgba(255,255,255,.45)';
-      m.style.boxShadow = on ? '0 0 14px rgba(255,255,255,.8)' : 'none';
-    });
-  }
   if (ovScene('oF', t, SC.F)) {
     bin('f_lab', t, 28.05, { dur: .45, blur: 16, dy: 10 });
-    bin('f_l1', t, 28.4, { dur: .45, blur: 24, dy: 22 });
-    bin('f_l2', t, 28.55, { dur: .45, blur: 24, dy: 22 });
-    bin('f_l3', t, 30.2, { dur: .45, blur: 24, dy: 22 });
-    bin('f_l4', t, 30.35, { dur: .45, blur: 24, dy: 22 });
+    // step 01 active while the code is typed, step 02 when the gift is deducted
+    const a2 = E.out(prog(t, 30.2, .35));
+    bin('f_s1', t, 28.4, { dur: .5, blur: 20, dx: -30, max: 1 - .5 * a2 });
+    $('f_dv').style.transform = `scaleX(${E.out(prog(t, 28.7, .6))})`;
+    bin('f_s2', t, 30.2, { dur: .5, blur: 20, dx: -30 });
+    const act = (el, on) => { el.style.background = on ? '#dcdcdc' : 'transparent'; el.style.color = on ? '#111' : '#dcdcdc'; };
+    act($('f_n1'), t >= 28.5 && t < 30.2); act($('f_n2'), t >= 30.3);
   }
   if (ovScene('oG', t, SC.G)) {
     const cta = $('g_cta'), cp = prog(t, 35.1, .5);
     cta.style.opacity = t < 35.1 ? 0 : clamp(cp * 2.2);
-    const gv = Math.round(70 + 185 * E.inOut(cp)); cta.style.background = `rgb(${gv},${gv},${gv})`;
+    const gv = Math.round(70 + 150 * E.inOut(cp)); cta.style.background = `rgb(${gv},${gv},${gv})`;
     cta.style.transform = `translateY(${(1 - E.out(cp)) * 20}px)`;
     bin('g_url', t, 35.6, { dur: .45, blur: 14, dy: 10 });
     bin('g_fine', t, 35.85, { dur: .45, blur: 10, dy: 8 });

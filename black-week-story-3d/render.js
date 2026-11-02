@@ -7,7 +7,7 @@ const { spawn } = require('child_process');
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader-webgl', '--enable-unsafe-swiftshader'] });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('pageerror:', e.message));
-  await page.goto('http://127.0.0.1:8765/index.html');
+  await page.goto('http://127.0.0.1:8765/' + (process.env.PAGE || 'index.html') + '');
   await page.waitForFunction(() => window.__ready === true || window.__err, null, { timeout: 180000 });
   const err = await page.evaluate(() => window.__err); if (err) { console.error('ERR', err); process.exit(1); }
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', '30', '-c:v', 'png', '-i', '-',

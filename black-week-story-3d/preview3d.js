@@ -6,7 +6,7 @@ const path = require('path');
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.log('console:', m.text().slice(0, 300)); });
   p.on('pageerror', e => console.log('pageerror:', e.message));
-  await p.goto('http://127.0.0.1:8765/index.html');
+  await p.goto('http://127.0.0.1:8765/' + (process.env.PAGE || 'index.html') + '');
   await p.waitForFunction(() => window.__ready === true || window.__err, null, { timeout: 120000 });
   const err = await p.evaluate(() => window.__err); if (err) { console.log('ERR', err); await b.close(); return; }
   console.log('minus glyph:', await p.evaluate(() => 'ok'));
