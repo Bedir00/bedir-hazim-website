@@ -1,18 +1,25 @@
-# Schwarzer unendlicher Raum – Hintergrund für das Black-Friday-Banner
+# Schwarzer unendlicher Raum (futuristisch) – Hintergrund für das Black-Friday-Banner
 
-16:9-Video (1920×1080, 60 fps) eines schwarzen Raums, der sich endlos anfühlt.
-Komplett selbst gerendert (eigener Raytracer, `render.cpp`), keine KI-Generierung, keine Stock-Assets.
+16:9-Video (1920×1080, 60 fps): Neon-Portale stehen in einer endlosen schwarzen Leere, der schwarz
+polierte Boden mit Lichtraster läuft zu den Seiten ins Nichts aus. Komplett selbst gerendert
+(eigener Raytracer, `render.cpp`), keine KI-Generierung, keine Stock-Assets.
 
 ## Die optischen Täuschungen
 
-1. **Droste-Effekt:** Der goldene Torbogen führt in eine exakte Kopie desselben Raums im halben Maßstab,
-   die wieder einen Torbogen hat – unendlich verschachtelt.
-2. **Perfekte Endlosschleife:** Die Kamera fliegt mit konstanter *logarithmischer* Geschwindigkeit auf den
-   Fluchtpunkt zu. Nach 7,5 s steht sie an exakt derselben relativen Stelle im nächsten Raum –
-   das letzte Bild geht nahtlos ins erste über (gemessen: PSNR 86 dB zwischen t = 1 und t = 0).
-3. **Spiegelwände + polierter Boden:** Lichtlinien und Lichtkugeln wiederholen sich seitlich ins Unendliche.
+1. **Unendliche Selbstähnlichkeit:** Hinter jedem Portal steht ein exakt halb so großes Portal,
+   dahinter wieder eines – ohne Ende. Auch Bodenraster und Lichtpartikel sind selbstähnlich
+   (log-polares Raster um den Fluchtpunkt), deshalb gibt es nirgends eine sichtbare „Level-Grenze“.
+2. **Perfekte Endlosschleife:** Die Kamera fliegt mit konstanter *logarithmischer* Geschwindigkeit
+   auf den Fluchtpunkt zu. Nach 7,5 s steht sie an exakt derselben relativen Stelle vor dem nächsten
+   Portal – das letzte Bild geht nahtlos ins erste über. Man schrumpft endlos, ohne es zu merken.
+3. **Leere statt Wände:** Links, rechts und oben gibt es nichts – der Boden verliert sich im Schwarz.
 4. **Ton:** Shepard-Risset-Glissando – ein Ton, der endlos zu steigen scheint, aber nie oben ankommt.
-   Er steigt genau eine Oktave pro Raum und loopt ebenfalls nahtlos.
+   Er steigt genau eine Oktave pro Portal (Portal halb so groß = Frequenz doppelt so hoch) und loopt
+   ebenfalls nahtlos.
+
+Futuristische Details: Doppel-Neonkonturen mit abgeschrägten Ecken, Energiefeld-Schimmer in den
+Öffnungen, Lichtimpulse auf der „Landebahn“, funkelnde Partikel mit Unschärfe, leichtes Rollen der
+Kamera, Bloom und chromatische Aberration.
 
 ## Dateien
 
@@ -25,12 +32,12 @@ Komplett selbst gerendert (eigener Raytracer, `render.cpp`), keine KI-Generierun
 
 ## Für das Banner
 
-- Die schwarze Fläche **über dem Torbogen** ist bewusst frei gehalten → Platz für „BLACK FRIDAY“.
-- Der Torbogen (mit Bodenspiegelung als „Kapsel“) ist das hellste Element → Rahmen für Rabatt/CTA.
+- Die obere Bildhälfte ist schwarze Leere → viel Platz für „BLACK FRIDAY“ und den Rabatt.
+- Das vorderste Portal ist das hellste Element und rahmt die Bildmitte (z. B. für den CTA).
+- Farbe umschaltbar: `PALETTE=cyan` (Standard), `PALETTE=gold` oder `PALETTE=white` vor `./build.sh`.
+- Andere Formate (9:16, 1:1) über `W`/`H` in `build.sh`, z. B. `W=1080 H=1920 ./build.sh`.
 - Website-Einbindung als Endlos-Loop:
 
 ```html
 <video src="unendlicher-raum_16x9_loop.mp4" autoplay muted loop playsinline></video>
 ```
-
-Andere Formate (z. B. 9:16, 1:1) lassen sich über `W`/`H` in `build.sh` direkt neu rendern.

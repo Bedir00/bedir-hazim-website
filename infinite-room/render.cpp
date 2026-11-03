@@ -1,19 +1,20 @@
-// Schwarzer unendlicher Raum – ein selbstähnlicher Spiegelraum als nahtlose Endlosschleife.
+// Schwarzer unendlicher Raum (futuristisch) – Portale in der Leere als nahtlose Endlosschleife.
 //
 // Optische Täuschung:
-//  1. Droste-Effekt: Der Torbogen in der Rückwand führt in eine exakte Kopie des
-//     Raums im Maßstab S (= 0.5). Diese Kopie hat wieder einen Torbogen, usw.
-//  2. Die Kamera bewegt sich auf einer Geraden zum Fixpunkt F der Ähnlichkeits-
-//     abbildung M(p) = S*p + C, mit konstanter Geschwindigkeit im logarithmischen
-//     Maß:  P(t) = F + S^t * (A - F).  Bei t = 1 steht sie an M(A), also an exakt
-//     derselben relativen Stelle im nächsten (kleineren) Raum. Da Perspektive
-//     maßstabsunabhängig ist, gilt Bild(t=1) == Bild(t=0): eine perfekte Schleife.
-//  3. Die Seitenwände sind dunkle Spiegel, der Boden ist schwarz poliert:
-//     Lichtlinien und Lichtkugeln wiederholen sich seitlich ins Unendliche.
+//  1. Selbstähnlichkeit: Hinter jedem Portal steht ein exakt halb so großes Portal, dahinter
+//     wieder eines, usw. Die ganze Szene ist invariant unter der Ähnlichkeitsabbildung
+//     M(p) = S*p + C (Streckung um den Fixpunkt F auf dem Boden) – auch das Bodenraster:
+//     Strahlen durch F und geometrisch gestaffelte Querlinien (log-polares Raster).
+//  2. Die Kamera bewegt sich mit konstanter logarithmischer Geschwindigkeit auf F zu:
+//     P(t) = F + S^t * (A - F). Bei t = 1 steht sie an M(A) – an exakt derselben relativen
+//     Stelle vor dem nächsten, halb so großen Portal. Da Perspektive maßstabsunabhängig ist,
+//     gilt Bild(t=1) == Bild(t=0): eine perfekte, nahtlose Schleife ohne Ende.
+//  3. Links und rechts gibt es keine Wände: der schwarze Spiegelboden läuft ins Leere aus.
 //
 // Build:  g++ -O3 -march=native -ffast-math -std=c++17 -pthread render.cpp -o render
 // Usage:  ./render W H FRAMES SPP_GRID                 -> rohe RGB24-Frames auf stdout
 //         ./render W H FRAMES SPP_GRID FRAME out.ppm    -> einzelnes Vorschaubild
+// Farbe:  PALETTE=cyan (Standard) | gold | white
 
 #include <algorithm>
 #include <atomic>
@@ -21,6 +22,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <thread>
 #include <vector>
 
@@ -34,303 +36,316 @@ struct V {
     V operator*(const V& o) const { return V(x * o.x, y * o.y, z * o.z); }
     V operator*(float s) const { return V(x * s, y * s, z * s); }
     V& operator+=(const V& o) { x += o.x; y += o.y; z += o.z; return *this; }
-    V& operator*=(const V& o) { x *= o.x; y *= o.y; z *= o.z; return *this; }
 };
 static inline float dot(const V& a, const V& b) { return a.x * b.x + a.y * b.y + a.z * b.z; }
 static inline V nrm(const V& a) { return a * (1.0f / std::sqrt(dot(a, a))); }
 static inline float clampf(float x, float a, float b) { return x < a ? a : (x > b ? b : x); }
 static inline V mix(const V& a, const V& b, float t) { return a * (1 - t) + b * t; }
+static const float PI = 3.14159265358979f;
+static const float LN2 = 0.69314718f;
 
-// ---------------------------------------------------------------- Szene (lokale Raum-Einheiten)
-static const float HW = 4.0f;   // halbe Breite
-static const float H = 5.0f;    // Höhe
-static const float D = 10.0f;   // Tiefe
-static const float TH = 0.6f;   // Dicke der Rückwand (Laibung des Torbogens)
-static const float S = 0.5f;    // Maßstab des nächsten Raums
-static const float DA = 1.0f;   // halbe Torbreite
-static const float DHR = 1.3f;  // Höhe des geraden Torteils (darüber Halbkreis, Radius DA)
-static const float EYE = 1.7f;  // Augenhöhe am Eingang
-static const float FZ = (D + TH) / (1.0f - S);  // Fixpunkt F = (0, 0, FZ)
-static const int MAXROOM = 20;
+// ---------------------------------------------------------------- Szene (lokale Einheiten)
+// Ein "Segment" reicht von z = 0 bis z = L; am Ende (z = D .. L) steht das Portal.
+static const float D = 10.0f;
+static const float TP = 0.35f;            // Tiefe des Portalrahmens
+static const float L = D + TP;
+static const float S = 0.5f;              // Maßstab des nächsten Segments
+static const float FZ = L / (1.0f - S);   // Fixpunkt F = (0, 0, FZ)
+static const float EYE = 1.7f;
+static const int MAXSEG = 22;
 
-static const float LW = 0.05f;      // Breite der Lichtlinien
-static const float RING = 2.0f;     // Abstand der Lichtrahmen
-static const int NRING = 4;         // Lichtrahmen bei z = 2, 4, 6, 8
+// Portal: Öffnung = Rechteck mit abgeschrägten oberen Ecken
+static const float R2 = 0.70710678f;
+static const float AI = 1.25f, HI = 3.0f, CI = 0.62f, FW = 0.2f;
+static const float KI = HI + AI - CI;            // Schräge:  y + |x| <= KI
+static const float AO = AI + FW, HO = HI + FW, KO = KI + FW * 1.41421356f;
+static const float PORTAL_TOP = HO + 0.01f;
 
-enum Mat { M_NONE, M_FLOOR, M_CEIL, M_SIDE, M_BACK, M_FRONT, M_ORB, M_TUNNEL };
+struct HP { float nx, ny, b; };
+static const HP INNER[5] = {{1, 0, AI}, {-1, 0, AI}, {0, 1, HI}, {R2, R2, KI * R2}, {-R2, R2, KI * R2}};
+static const HP OUTER[6] = {{1, 0, AO}, {-1, 0, AO}, {0, 1, HO}, {R2, R2, KO * R2}, {-R2, R2, KO * R2}, {0, -1, 0}};
 
-struct Orb { V c; float r; float I; };
-static std::vector<Orb> gOrbs;
+// Boden: log-polares Raster um F
+static const float TH_L = AI / (FZ - D);   // "Landebahn"-Linien laufen exakt durch die Portalfüße
+static const float DTH = TH_L * 0.5f;      // Abstand der Strahlen (Winkelmaß x / (FZ - z))
+static const int UCROSS = 8;               // Querlinien pro Segment (pro Halbierung)
+static const float THFADE = 0.17f;         // seitliches Auslaufen ins Leere
+static const float PULSE_SPEED = 2.0f;     // Lichtimpulse: 2 Segmente pro Schleife (Kamera: 1)
+static const int PULSES = 2;               // Impulse pro Segment
 
-static const V C_LIGHT(1.0f, 0.86f, 0.68f);   // warmweißes Licht (Kugeln)
-static const V C_GOLD(1.0f, 0.66f, 0.30f);    // goldene Lichtlinien
-static const float E_LINE = 1.9f;             // Leuchtdichte der Raum-Linien
-static const float E_ARCH = 4.8f;             // Leuchtdichte der Torbogen-Kontur (Blickfang)
-static const float E_ORB = 6.5f;              // Leuchtdichte der Kugeln
-static const V C_MIRROR(0.70f, 0.71f, 0.73f); // dunkles Spiegelglas
-static const V C_BLACK(0.018f, 0.018f, 0.02f);
-static const V C_AMB(0.010f, 0.011f, 0.014f);
+static V C_NEON(0.30f, 0.78f, 1.0f);
+static const float E_PORTAL = 5.0f;
+static const float E_GRID = 0.45f;
+static const float E_LANE = 1.0f;
+static const float E_MEMBRANE = 0.30f;  // Energiefeld-Schimmer in der Portalöffnung
+static const float E_PULSE = 7.0f;
 
-static void buildScene() {
-    // schwebende Lichtkugeln (fest platziert, abseits des Kamerapfads)
-    const float P[][4] = {
-        // x,     y,     z,    r
-        {-2.30f, 3.55f, 1.05f, 0.16f}, { 2.30f, 3.05f, 1.05f, 0.16f},
-        {-2.30f, 2.95f, 3.00f, 0.16f}, { 2.30f, 3.70f, 3.00f, 0.16f},
-        {-2.30f, 3.75f, 5.00f, 0.16f}, { 2.30f, 2.90f, 5.00f, 0.16f},
-        {-2.30f, 3.00f, 7.00f, 0.16f}, { 2.30f, 3.60f, 7.00f, 0.16f},
-        {-2.30f, 3.50f, 9.00f, 0.16f}, { 2.30f, 3.10f, 9.00f, 0.16f},
-    };
-    // Mitte über dem Torbogen bleibt frei (Platz für Headline)
-    for (auto& p : P) gOrbs.push_back({V(p[0], p[1], p[2]), p[3] * 0.85f, 1.9f});
-}
+static float gTime = 0.0f;  // Schleifenphase 0..1 (für die Lichtimpulse)
 
 // ---------------------------------------------------------------- Hilfsfunktionen
-static inline bool inDoor(float x, float y) {
-    if (y < 0) return false;
-    if (y <= DHR) return std::fabs(x) <= DA;
-    float dy = y - DHR;
-    return x * x + dy * dy <= DA * DA;
-}
-// Abstand zur Torkontur (positiv außerhalb)
-static inline float doorDist(float x, float y) {
-    if (y <= DHR) return std::fabs(x) - DA;
-    float dy = y - DHR;
-    return std::sqrt(x * x + dy * dy) - DA;
-}
-
-// Box-gefilterte Abdeckung eines Bandes [a,b] bei Koordinate u und Filterbreite w
-// (antialiasierte Lichtlinien, energieerhaltend -> kein Flimmern in der Tiefe)
 static inline float band(float u, float a, float b, float w) {
-    w = std::max(w, 1e-5f);
+    w = std::max(w, 1e-6f);
     float lo = std::max(u - 0.5f * w, a), hi = std::min(u + 0.5f * w, b);
     return clampf((hi - lo) / w, 0.0f, 1.0f);
 }
-// Linien bei z = RING*k (k = 1..NRING)
-static inline float ringLines(float z, float w) {
-    int k = (int)std::lround(z / RING);
-    k = std::max(1, std::min(NRING, k));
-    float zc = k * RING;
-    return band(z, zc - 0.5f * LW, zc + 0.5f * LW, w);
-}
-
-static inline float filteredChecker(float u, float v, float wu, float wv) {
-    wu = std::max(wu, 1e-4f); wv = std::max(wv, 1e-4f);
-    auto fi = [](float x) { x *= 0.5f; return std::fabs(x - std::floor(x) - 0.5f); };
-    float ix = 2.0f * (fi(u - 0.5f * wu) - fi(u + 0.5f * wu)) / wu;
-    float iy = 2.0f * (fi(v - 0.5f * wv) - fi(v + 0.5f * wv)) / wv;
-    return 0.5f - 0.5f * ix * iy;
-}
-
-// Pixel-Fußabdruck entlang einer Flächenachse e (Strahldifferential einer Ebene)
 static inline float footAxis(const V& d, const V& n, const V& e, float base) {
-    float dn = std::max(0.03f, std::fabs(dot(d, n)));
+    float dn = std::max(0.02f, std::fabs(dot(d, n)));
     V dt = d - n * dot(d, n);
     float lt = std::sqrt(dot(dt, dt));
     if (lt < 1e-6f) return base;
     float c = dot(e, dt) / lt;
     return base * std::sqrt(c * c / (dn * dn) + (1.0f - c * c));
 }
-
-// Licht der Kugeln im aktuellen Raum (lokal => jeder Raum identisch beleuchtet)
-static V lighting(const V& p, const V& n, const V& rd, float spec) {
-    V sum = C_AMB;
-    for (const Orb& o : gOrbs) {
-        V L = o.c - p;
-        float d2 = dot(L, L);
-        V l = L * (1.0f / std::sqrt(d2));
-        float ndl = dot(n, l);
-        if (ndl <= 0) continue;
-        float att = o.I / (d2 + 0.2f);
-        float s = 0.0f;
-        if (spec > 0) {
-            V h = nrm(l - rd);
-            float nh = std::max(0.0f, dot(n, h));
-            s = spec * std::pow(nh, 60.0f) * 6.0f;
-        }
-        sum += C_LIGHT * ((ndl + s) * att);
-    }
-    return sum;
+static inline float sdPoly(const HP* hp, int n, float x, float y) {
+    float m = -1e30f;
+    for (int i = 0; i < n; ++i) m = std::max(m, hp[i].nx * x + hp[i].ny * y - hp[i].b);
+    return m;
 }
 
-// ---------------------------------------------------------------- Schnitttests
-static inline bool hitSphere(const V& o, const V& d, const V& c, float r, float tmax, float& tOut) {
-    V oc = o - c;
-    float b = dot(oc, d);
-    float cc = dot(oc, oc) - r * r;
-    float disc = b * b - cc;
-    if (disc < 0) return false;
-    float t = -b - std::sqrt(disc);
-    if (t < 1e-4f || t > tmax) return false;
-    tOut = t;
+// Hintergrund: absolute Leere, nur ein Hauch Licht am Fluchtpunkt (nur richtungsabhängig)
+static V background(const V& d) {
+    static const V f = nrm(V(0.0f, -EYE, FZ));
+    float c = clampf(dot(d, f), -1.0f, 1.0f);
+    float a = std::acos(c);
+    return C_NEON * (0.12f * std::exp(-(a * a) / (0.05f * 0.05f)) + 0.018f * std::exp(-(a * a) / (0.3f * 0.3f)));
+}
+
+// ---------------------------------------------------------------- Portal-Schnitt
+enum Part { P_FRONT, P_WALL_IN, P_WALL_OUT };
+
+static bool hitPortal(const V& o, const V& d, float tmax, float& tHit, V& n, int& part) {
+    if (d.z <= 0) return false;
+    float t0 = 0.0f;
+    V p0 = o;
+    bool before = o.z < D;
+    if (before) {
+        t0 = (D - o.z) / d.z;
+        if (t0 > tmax) return false;
+        p0 = o + d * t0;
+    }
+    float t1 = std::min(tmax, (L - o.z) / d.z);
+    float si = sdPoly(INNER, 5, p0.x, p0.y);
+    float so = sdPoly(OUTER, 6, p0.x, p0.y);
+    if (si > 0.0f && so <= 0.0f) {
+        if (!before) return false;
+        tHit = t0; n = V(0, 0, -1); part = P_FRONT;
+        return true;
+    }
+    if (si <= 0.0f) {
+        // in der Öffnung: trifft der Strahl die Innenwand, bevor er das Portal verlässt?
+        float te = 1e30f; int best = -1;
+        for (int i = 0; i < 5; ++i) {
+            float den = INNER[i].nx * d.x + INNER[i].ny * d.y;
+            if (den > 1e-9f) {
+                float tau = (INNER[i].b - (INNER[i].nx * p0.x + INNER[i].ny * p0.y)) / den;
+                if (tau < te) { te = tau; best = i; }
+            }
+        }
+        if (best >= 0 && t0 + te < t1) {
+            tHit = t0 + te; n = V(-INNER[best].nx, -INNER[best].ny, 0); part = P_WALL_IN;
+            return true;
+        }
+        return false;
+    }
+    // außerhalb: trifft der Strahl seitlich die Außenwand des Rahmens? (Liang-Barsky)
+    float tin = 0.0f, tout = 1e30f; int bi = -1;
+    for (int i = 0; i < 6; ++i) {
+        float den = OUTER[i].nx * d.x + OUTER[i].ny * d.y;
+        float num = OUTER[i].b - (OUTER[i].nx * p0.x + OUTER[i].ny * p0.y);
+        if (std::fabs(den) < 1e-12f) { if (num < 0) return false; }
+        else if (den > 0) tout = std::min(tout, num / den);
+        else { float tau = num / den; if (tau > tin) { tin = tau; bi = i; } }
+    }
+    if (bi < 0 || tin > tout || t0 + tin >= t1) return false;
+    tHit = t0 + tin; n = V(OUTER[bi].nx, OUTER[bi].ny, 0); part = P_WALL_OUT;
     return true;
 }
 
-struct Hit { float t; Mat m; V n; int id; };
-
-static Hit intersectInterior(const V& o, const V& d) {
-    Hit h{1e30f, M_NONE, V(0.0f), -1};
-    auto take = [&](float t, Mat m, V n) { if (t > 1e-5f && t < h.t) { h.t = t; h.m = m; h.n = n; } };
-    if (d.y < 0) take(-o.y / d.y, M_FLOOR, V(0, 1, 0));
-    if (d.y > 0) take((H - o.y) / d.y, M_CEIL, V(0, -1, 0));
-    if (d.x > 0) take((HW - o.x) / d.x, M_SIDE, V(-1, 0, 0));
-    if (d.x < 0) take((-HW - o.x) / d.x, M_SIDE, V(1, 0, 0));
-    if (d.z > 0) take((D - o.z) / d.z, M_BACK, V(0, 0, -1));
-    if (d.z < 0) take(-o.z / d.z, M_FRONT, V(0, 0, 1));
-    for (size_t i = 0; i < gOrbs.size(); ++i) {
-        float t;
-        if (hitSphere(o, d, gOrbs[i].c, gOrbs[i].r, h.t, t)) {
-            h.t = t; h.m = M_ORB; h.id = (int)i;
-            h.n = nrm(o + d * t - gOrbs[i].c);
-        }
-    }
-    return h;
-}
-
-// Laibung des Torbogens: z in [D, D+TH], Querschnitt = Torform (konvex)
-static Hit intersectTunnel(const V& o, const V& d) {
-    Hit h{(d.z > 0) ? (D + TH - o.z) / d.z : 1e30f, M_NONE, V(0.0f), -1};
-    auto take = [&](float t, Mat m, V n) { if (t > 1e-5f && t < h.t) { h.t = t; h.m = m; h.n = n; } };
-    if (d.y < 0) take(-o.y / d.y, M_FLOOR, V(0, 1, 0));
-    if (d.x > 0) { float t = (DA - o.x) / d.x; if (o.y + d.y * t <= DHR) take(t, M_TUNNEL, V(-1, 0, 0)); }
-    if (d.x < 0) { float t = (-DA - o.x) / d.x; if (o.y + d.y * t <= DHR) take(t, M_TUNNEL, V(1, 0, 0)); }
-    float ox = o.x, oy = o.y - DHR;
-    float a = d.x * d.x + d.y * d.y;
-    if (a > 1e-12f) {
-        float b = ox * d.x + oy * d.y;
-        float c = ox * ox + oy * oy - DA * DA;
-        float disc = b * b - a * c;
-        if (disc >= 0) {
-            float t = (-b + std::sqrt(disc)) / a;
-            V p = o + d * t;
-            if (p.y >= DHR) take(t, M_TUNNEL, nrm(V(-p.x, -(p.y - DHR), 0)));
-        }
-    }
-    return h;
-}
-
 // ---------------------------------------------------------------- Shading
-// Leuchtende Linien (Emission) einer Fläche, antialiasiert über den Fußabdruck
-static float lineEmission(Mat m, const V& p, const V& d, const V& n, float base, float& arch) {
-    arch = 0.0f;
-    switch (m) {
-    case M_SIDE: {
-        float wy = footAxis(d, n, V(0, 1, 0), base), wz = footAxis(d, n, V(0, 0, 1), base);
-        float e = band(p.y, 0.0f, LW, wy) + band(p.y, H - LW, H, wy) + ringLines(p.z, wz);
-        return std::min(1.0f, e);
+static V shadePortal(const V& p, const V& n, const V& d, float base, int part) {
+    V body(0.006f, 0.007f, 0.009f);
+    float e = 0.0f;
+    if (part == P_FRONT) {
+        float w = std::max(footAxis(d, n, V(1, 0, 0), base), footAxis(d, n, V(0, 1, 0), base));
+        float si = sdPoly(INNER, 5, p.x, p.y);
+        float so = -sdPoly(OUTER, 6, p.x, p.y);
+        e = band(si, 0.022f, 0.062f, w) + band(so, 0.022f, 0.062f, w);
+        e += 0.06f * band(si, 0.09f, FW - 0.09f, w);  // feine Mittellinie (gedimmt)
+    } else {
+        float wz = footAxis(d, n, V(0, 0, 1), base);
+        float zc = D + 0.5f * TP;
+        e = band(p.z, zc - 0.02f, zc + 0.02f, wz);
     }
-    case M_CEIL: {
-        float wx = footAxis(d, n, V(1, 0, 0), base), wz = footAxis(d, n, V(0, 0, 1), base);
-        float e = ringLines(p.z, wz) + band(p.z, D - LW, D, wz) + band(std::fabs(p.x), HW - LW, HW, wx);
-        return std::min(1.0f, e);
-    }
-    case M_BACK: {
-        float wx = footAxis(d, n, V(1, 0, 0), base), wy = footAxis(d, n, V(0, 1, 0), base);
-        float wr = std::max(wx, wy);
-        arch = band(doorDist(p.x, p.y), 0.06f, 0.06f + 1.4f * LW, wr);        // Torbogen-Kontur
-        float e = band(std::fabs(p.x), HW - LW, HW, wx)                         // Ecken
-                + band(p.y, 0.0f, LW, wy) + band(p.y, H - LW, H, wy);           // Boden-/Deckenkante
-        return std::min(1.0f, e + arch);
-    }
-    default:
-        return 0.0f;
-    }
+    e = std::min(1.0f, e);
+    return mix(body, C_NEON * E_PORTAL, e);
 }
 
-static V shadeSurface(Mat m, const V& p, const V& n, const V& rd, float base, int id, float& emitCov) {
-    emitCov = 0.0f;
-    if (m == M_ORB) {
-        float f = std::fabs(dot(n, rd));
-        return C_LIGHT * (E_ORB * (0.6f + 0.4f * f));
-    }
-    V alb = C_BLACK;
-    float spec = 0.25f;
-    if (m == M_FLOOR) {
-        // schwarzer Marmor, kaum sichtbares Schachbrett
-        const float tile = 0.8f;
-        const float r = 0.70710678f;
-        float u = (p.x + p.z) * r / tile, v = (p.z - p.x) * r / tile;
-        float wu = footAxis(rd, n, V(r, 0, r), base) / tile;
-        float wv = footAxis(rd, n, V(-r, 0, r), base) / tile;
-        float c = filteredChecker(u + 0.5f, v + 0.5f, wu, wv);
-        alb = mix(V(0.006f, 0.006f, 0.007f), V(0.030f, 0.029f, 0.028f), c);
-        spec = 0.0f;  // Glanz kommt über die echte Spiegelung
-    }
-    V col = alb * lighting(p, n, rd, spec);
-    float arch = 0.0f;
-    float e = lineEmission(m, p, rd, n, base, arch);
-    emitCov = e;
-    float ea = (e > 0.0f) ? arch / e : 0.0f;
-    V emitCol = C_GOLD * (E_LINE * (1.0f - ea) + E_ARCH * ea);
-    return mix(col, emitCol, e);
+// Neon-Schein der Portalfüße auf dem Boden (q in lokalen Koordinaten des Portals)
+static inline float portalGlow(const V& q) {
+    float dz = std::max(0.0f, std::max(D - q.z, q.z - L));
+    float dx = std::max(0.0f, std::fabs(std::fabs(q.x) - (AI + 0.5f * FW)) - 0.5f * FW);
+    float dd = std::sqrt(dx * dx + dz * dz);
+    return std::exp(-dd / 0.28f);
+}
+
+static V shadeFloorEmission(const V& p, const V& d, float base) {
+    const V n(0, 1, 0);
+    float r = FZ - p.z;                         // > 0 vor dem Fixpunkt
+    float th = p.x / r;                         // Strahl-Koordinate (maßstabsinvariant)
+    float u = std::log2(r / (FZ - D));          // 0 am Portal, +1 je Verdopplung des Abstands zu F
+    float wth = footAxis(d, n, V(1, 0, 0), base) / r;
+    float wu = footAxis(d, n, V(0, 0, 1), base) / (r * LN2);
+    float fade = std::exp(-(th * th) / (THFADE * THFADE));
+
+    // Strahlen durch F
+    float jt = th / DTH;
+    float ft = (jt - std::round(jt)) * DTH;
+    float radial = band(ft, -0.0012f, 0.0012f, wth);
+    // geometrisch gestaffelte Querlinien
+    float ju = u * UCROSS;
+    float fu = (ju - std::round(ju)) / UCROSS;
+    float cross = band(fu, -0.0022f, 0.0022f, wu);
+    // "Landebahn": zwei hellere Linien durch alle Portalfüße + Lichtimpulse
+    float lane = band(std::fabs(th) - TH_L, -0.0016f, 0.0016f, wth);
+    float v = (u + PULSE_SPEED * gTime) * PULSES;
+    float x = v - std::floor(v);                // 0 = Kopf des Impulses, Schweif zur Kamera hin
+    float head = clampf((1.0f - x) / 0.02f, 0.0f, 1.0f);
+    float pulse = std::exp(-x * 9.0f) * head;
+
+    V e = C_NEON * (fade * E_GRID * std::min(1.0f, radial + cross));
+    e += C_NEON * (lane * (E_LANE + E_PULSE * pulse));
+    // Schein der Portalfüße (eigenes Portal und das doppelt so große davor)
+    V qprev(p.x * S, p.y * S, FZ + (p.z - FZ) * S);
+    e += C_NEON * (0.55f * (portalGlow(p) + portalGlow(qprev)));
+    return e;
 }
 
 // ---------------------------------------------------------------- Raytracing
-static const V FARCOL(0.03f, 0.026f, 0.022f);
-
-static V trace(V o, V d, float travel, int room, bool inTunnel, int reflLevel, float pixAng) {
-    V thr(1.0f), acc(0.0f);
-    for (int iter = 0; iter < 160; ++iter) {
-        if (room > MAXROOM) { acc += thr * FARCOL; break; }
-        Hit h = inTunnel ? intersectTunnel(o, d) : intersectInterior(o, d);
-        V p = o + d * h.t;
-        float trav = travel + h.t;
-        if (inTunnel && h.m == M_NONE) {
-            // durch den Bogen -> in den nächsten, halb so großen Raum
-            o = V(p.x / S, p.y / S, 0.0f);
-            travel = trav / S;
-            room++;
-            inTunnel = false;
-            continue;
+static V trace(V o, V d, float travel, int seg, int refl, float pixAng) {
+    V acc(0.0f);
+    for (int iter = 0; iter < 64; ++iter) {
+        if (seg > MAXSEG || d.z <= 0.0f) return acc + background(d);
+        if (d.y >= 0.0f && o.y > PORTAL_TOP) return acc + background(d);
+        float tSlab = (L - o.z) / d.z;
+        float tFloor = d.y < 0.0f ? -o.y / d.y : 1e30f;
+        float tP; V nP; int part;
+        if (hitPortal(o, d, std::min(tSlab, tFloor), tP, nP, part)) {
+            V p = o + d * tP;
+            return acc + shadePortal(p, nP, d, (travel + tP) * pixAng, part);
         }
-        if (h.m == M_BACK && inDoor(p.x, p.y)) {
-            o = p; travel = trav; inTunnel = true;
-            continue;
+        if (o.z < D) {
+            // Strahl passiert die Portalöffnung: weicher Energiefeld-Schimmer zum Rand hin
+            float tD = (D - o.z) / d.z;
+            if (tD < std::min(tSlab, tFloor)) {
+                V q = o + d * tD;
+                float si = sdPoly(INNER, 5, q.x, q.y);
+                if (si < 0.0f) acc += C_NEON * (E_MEMBRANE * std::exp(si / 0.11f));
+            }
         }
-        float base = trav * pixAng;
-        float cov = 0.0f;
-        V col = shadeSurface(h.m, p, h.n, d, base, h.id, cov);
-        if (h.m == M_SIDE && cov < 1.0f) {
-            // dunkler Spiegel: Rest des Strahls wird reflektiert
-            acc += thr * col * cov;
-            thr *= C_MIRROR * (1.0f - cov);
-            if (thr.x + thr.y + thr.z < 0.006f) break;
-            o = p; d.x = -d.x; travel = trav;
-            continue;
+        if (tFloor < tSlab) {
+            V p = o + d * tFloor;
+            float trav = travel + tFloor;
+            V col = shadeFloorEmission(p, d, trav * pixAng);
+            if (refl == 0) {
+                // schwarz polierter Boden: Fresnel-Spiegelung
+                float c = std::fabs(d.y);
+                float F = 0.08f + 0.92f * std::pow(1.0f - c, 5.0f);
+                V rc = trace(V(p.x, 1e-4f, p.z), V(d.x, -d.y, d.z), trav, seg, 1, pixAng);
+                col += rc * (F * 0.85f);
+            }
+            return acc + col;
         }
-        if (h.m == M_FLOOR && reflLevel == 0) {
-            float c = std::fabs(d.y);
-            float F = 0.10f + 0.90f * std::pow(1.0f - c, 5.0f);
-            V refl = trace(p + V(0, 1e-4f, 0), V(d.x, -d.y, d.z), trav, room, false, 1, pixAng);
-            col = col * (1.0f - F) + refl * (F * 0.92f);
-        }
-        acc += thr * col;
-        break;
+        // weiter ins nächste, halb so große Segment
+        V p = o + d * tSlab;
+        o = V(p.x / S, p.y / S, 0.0f);
+        travel = (travel + tSlab) / S;
+        seg++;
     }
-    return acc;
+    return acc + background(d);
 }
 
 // ---------------------------------------------------------------- Kamera & Bild
 struct Image { int w, h; std::vector<V> px; };
 
+// ---------------------------------------------------------------- Lichtpartikel in der Leere
+// Pro Segment dieselben Partikel (lokal), d. h. die Partikelwolke ist ebenfalls selbstähnlich.
+struct Particle { V p; float r, I, ph; };
+static std::vector<Particle> gParticles;
+
+static void buildParticles() {
+    uint32_t st = 12345u;
+    auto rnd = [&]() { st = st * 1664525u + 1013904223u; return (st >> 8) / 16777216.0f; };
+    while (gParticles.size() < 70) {
+        float x = (rnd() * 2.0f - 1.0f) * 7.0f;
+        float y = 0.25f + rnd() * 5.5f;
+        float z = rnd() * L;
+        if (std::fabs(x) < 0.9f && y < 2.6f) continue;          // Kamerapfad freihalten
+        if (std::fabs(x) < AO + 0.3f && y < HO + 0.3f && z > D - 0.4f) continue;  // nicht im Portal
+        float big = rnd();
+        gParticles.push_back({V(x, y, z), 0.012f + 0.03f * big * big, 0.6f + 1.6f * rnd(), rnd()});
+    }
+}
+
+static void splat(Image& img, float px, float py, float sigma, V energy) {
+    float s = std::max(sigma, 0.55f);
+    int r = (int)std::ceil(s * 3.0f);
+    int x0 = (int)std::floor(px), y0 = (int)std::floor(py);
+    float norm = 1.0f / (2.0f * PI * s * s);
+    for (int y = y0 - r; y <= y0 + r; ++y) {
+        if (y < 0 || y >= img.h) continue;
+        for (int x = x0 - r; x <= x0 + r; ++x) {
+            if (x < 0 || x >= img.w) continue;
+            float dx = x + 0.5f - px, dy = y + 0.5f - py;
+            float g = std::exp(-(dx * dx + dy * dy) / (2.0f * s * s)) * norm;
+            img.px[y * img.w + x] += energy * g;
+        }
+    }
+}
+
+static void drawParticles(Image& img, const V& cam, float tx, float ty, float shiftY, float cr, float sr, float t) {
+    const float fpx = 0.5f * img.w / tx;  // Pixel pro Einheit bei Abstand 1
+    for (int k = -1; k <= 14; ++k) {
+        float sk = std::pow(S, (float)k);
+        for (const Particle& pa : gParticles) {
+            float tw = 0.65f + 0.35f * std::sin(2.0f * PI * (2.0f * t + pa.ph));  // Funkeln (periodisch)
+            for (int mirror = 0; mirror < 2; ++mirror) {
+                V lp = pa.p;
+                if (mirror) lp.y = -lp.y;                    // Spiegelbild im Boden
+                V P(lp.x * sk, lp.y * sk, FZ + (lp.z - FZ) * sk);
+                V rel = P - cam;
+                if (rel.z < 0.08f) continue;
+                float a = rel.x / rel.z, b = rel.y / rel.z - shiftY;
+                float X = a * cr + b * sr, Y = -a * sr + b * cr;
+                float px = (X / tx + 1.0f) * 0.5f * img.w;
+                float py = (1.0f - Y / ty) * 0.5f * img.h;
+                if (px < -20 || px > img.w + 20 || py < -20 || py > img.h + 20) continue;
+                float rpx = pa.r * sk / rel.z * fpx;
+                float area = PI * rpx * rpx;                  // Energie ~ projizierte Fläche
+                V col = mix(C_NEON, V(1.0f), 0.55f) * (pa.I * 5.0f * tw * area * (mirror ? 0.22f : 1.0f));
+                splat(img, px, py, rpx * 0.7f, col);
+            }
+        }
+    }
+}
+
 static V cameraAt(float t) {
-    const float TWO_PI = 6.28318530718f;
     V A(0.0f, EYE, 0.0f);
     V F(0.0f, 0.0f, FZ);
-    V off(0.18f * std::sin(TWO_PI * t), 0.0f, 0.0f);  // sanftes, periodisches Schweben
+    V off(0.16f * std::sin(2.0f * PI * t), 0.0f, 0.0f);  // sanftes, periodisches Schweben
     return F + (A - F + off) * std::pow(S, t);
 }
 
 static void renderFrame(Image& img, float t, int grid) {
+    gTime = t;
     V cam = cameraAt(t);
-    // Sichtfeld an der kürzeren Bildseite festgemacht: 16:9 -> 74° horizontal,
-    // Hoch-/Quadratformate behalten denselben Bildausschnitt in der Breite bzw. Höhe.
-    const float tShort = std::tan(37.0f * 3.14159265f / 180.0f) * 9.0f / 16.0f;
+    // Sichtfeld an der kürzeren Bildseite festgemacht (16:9 -> 74° horizontal)
+    const float tShort = std::tan(37.0f * PI / 180.0f) * 9.0f / 16.0f;
     const float tx = img.w >= img.h ? tShort * (float)img.w / (float)img.h : tShort;
     const float ty = img.w >= img.h ? tShort : tShort * (float)img.h / (float)img.w;
     const float shiftY = -EYE / FZ;  // Fluchtpunkt F in der Bildmitte (Shift-Objektiv)
     const float pixAng = 2.0f * tx / (float)img.w / (float)grid;
-    const bool inTunnel = cam.z >= D;
+    const float roll = -0.022f * std::sin(2.0f * PI * t);  // leichtes Rollen in die Bewegung
+    const float cr = std::cos(roll), sr = std::sin(roll);
 
     std::atomic<int> nextRow(0);
     unsigned nth = std::max(1u, std::thread::hardware_concurrency());
@@ -346,8 +361,9 @@ static void renderFrame(Image& img, float t, int grid) {
                         for (int sx = 0; sx < grid; ++sx) {
                             float u = ((x + (sx + 0.5f) / grid) / img.w) * 2.0f - 1.0f;
                             float v = 1.0f - ((y + (sy + 0.5f) / grid) / img.h) * 2.0f;
-                            V d = nrm(V(u * tx, v * ty + shiftY, 1.0f));
-                            sum += trace(cam, d, 0.0f, 0, inTunnel, 0, pixAng);
+                            float X = u * tx, Y = v * ty;
+                            V d = nrm(V(X * cr - Y * sr, X * sr + Y * cr + shiftY, 1.0f));
+                            sum += trace(cam, d, 0.0f, 0, 0, pixAng);
                         }
                     img.px[y * img.w + x] = sum * (1.0f / (grid * grid));
                 }
@@ -355,9 +371,10 @@ static void renderFrame(Image& img, float t, int grid) {
         });
     }
     for (auto& tt : th) tt.join();
+    drawParticles(img, cam, tx, ty, shiftY, cr, sr, t);
 }
 
-// ---------------------------------------------------------------- Bloom + Tonemapping
+// ---------------------------------------------------------------- Post: Bloom, Farbsaum, Tonemapping
 static void blur1D(std::vector<V>& buf, int w, int h, float sigma, bool horiz) {
     int r = (int)std::ceil(sigma * 3.0f);
     std::vector<float> k(2 * r + 1);
@@ -385,10 +402,17 @@ static inline float aces(float x) {
 static inline float toSRGB(float c) {
     return c <= 0.0031308f ? 12.92f * c : 1.055f * std::pow(c, 1.0f / 2.4f) - 0.055f;
 }
-
 static inline float hashU(uint32_t x) {
     x ^= x >> 16; x *= 0x7feb352dU; x ^= x >> 15; x *= 0x846ca68bU; x ^= x >> 16;
     return (x & 0xffffff) / 16777216.0f;
+}
+static V sampleBilinear(const std::vector<V>& b, int w, int h, float fx, float fy) {
+    fx = clampf(fx, 0.0f, w - 1.001f); fy = clampf(fy, 0.0f, h - 1.001f);
+    int x0 = (int)fx, y0 = (int)fy;
+    float ax = fx - x0, ay = fy - y0;
+    const V& a = b[y0 * w + x0]; const V& bb = b[y0 * w + x0 + 1];
+    const V& c = b[(y0 + 1) * w + x0]; const V& d = b[(y0 + 1) * w + x0 + 1];
+    return mix(mix(a, bb, ax), mix(c, d, ax), ay);
 }
 
 static void postprocess(const Image& img, std::vector<uint8_t>& out, uint32_t seed) {
@@ -401,31 +425,31 @@ static void postprocess(const Image& img, std::vector<uint8_t>& out, uint32_t se
             for (int j = 0; j < ds; ++j)
                 for (int i = 0; i < ds; ++i) {
                     V c = img.px[(y * ds + j) * img.w + x * ds + i];
-                    acc += V(std::max(0.0f, c.x - 0.8f), std::max(0.0f, c.y - 0.8f), std::max(0.0f, c.z - 0.8f));
+                    acc += V(std::max(0.0f, c.x - 0.7f), std::max(0.0f, c.y - 0.7f), std::max(0.0f, c.z - 0.7f));
                 }
             bright[y * bw + x] = acc * (1.0f / (ds * ds));
         }
     std::vector<V> b1 = bright, b2 = bright;
     float scale = img.w / 1920.0f;
-    blur1D(b1, bw, bh, 2.0f * scale, true);  blur1D(b1, bw, bh, 2.0f * scale, false);
+    blur1D(b1, bw, bh, 1.8f * scale, true);  blur1D(b1, bw, bh, 1.8f * scale, false);
     blur1D(b2, bw, bh, 9.0f * scale, true);  blur1D(b2, bw, bh, 9.0f * scale, false);
 
     out.resize((size_t)img.w * img.h * 3);
-    const float exposure = 1.15f;
+    const float exposure = 1.1f;
+    const float ca = 0.0016f;  // chromatische Aberration (Farbsaum zu den Rändern)
+    const float cx = 0.5f * img.w, cy = 0.5f * img.h;
     for (int y = 0; y < img.h; ++y)
         for (int x = 0; x < img.w; ++x) {
+            float dx = x - cx, dy = y - cy;
+            V cR = sampleBilinear(img.px, img.w, img.h, cx + dx * (1 + ca), cy + dy * (1 + ca));
+            V cG = img.px[y * img.w + x];
+            V cB = sampleBilinear(img.px, img.w, img.h, cx + dx * (1 - ca), cy + dy * (1 - ca));
+            V c(cR.x, cG.y, cB.z);
             float fx = (x + 0.5f) / ds - 0.5f, fy = (y + 0.5f) / ds - 0.5f;
-            int x0 = std::clamp((int)std::floor(fx), 0, bw - 1), y0 = std::clamp((int)std::floor(fy), 0, bh - 1);
-            int x1 = std::min(x0 + 1, bw - 1), y1 = std::min(y0 + 1, bh - 1);
-            float ax = clampf(fx - x0, 0, 1), ay = clampf(fy - y0, 0, 1);
-            auto bil = [&](const std::vector<V>& b) {
-                return mix(mix(b[y0 * bw + x0], b[y0 * bw + x1], ax), mix(b[y1 * bw + x0], b[y1 * bw + x1], ax), ay);
-            };
-            V c = img.px[y * img.w + x] + bil(b1) * 0.30f + bil(b2) * 0.28f;
+            c += sampleBilinear(b1, bw, bh, fx, fy) * 0.35f + sampleBilinear(b2, bw, bh, fx, fy) * 0.32f;
             float u = (x + 0.5f) / img.w - 0.5f, v = (y + 0.5f) / img.h - 0.5f;
-            float vig = 1.0f - 0.9f * (u * u + v * v);
+            float vig = 1.0f - 1.0f * (u * u + v * v);
             c = c * (exposure * vig);
-            // dreiecksverteiltes Dithering (+-1 LSB) gegen Banding in den dunklen Verläufen
             uint32_t hs = (uint32_t)(y * img.w + x) * 2654435761U + seed * 97531U;
             float dith = hashU(hs) + hashU(hs ^ 0x9e3779b9U) - 1.0f;
             uint8_t* o = &out[((size_t)y * img.w + x) * 3];
@@ -440,13 +464,18 @@ int main(int argc, char** argv) {
         std::fprintf(stderr, "usage: %s W H FRAMES GRID [FRAME out.ppm]\n", argv[0]);
         return 1;
     }
+    if (const char* pal = std::getenv("PALETTE")) {
+        if (!std::strcmp(pal, "gold")) C_NEON = V(1.0f, 0.62f, 0.26f);
+        else if (!std::strcmp(pal, "white")) C_NEON = V(0.85f, 0.9f, 1.0f);
+    }
     int W = std::atoi(argv[1]), Hh = std::atoi(argv[2]), N = std::atoi(argv[3]), grid = std::atoi(argv[4]);
-    buildScene();
+    buildParticles();
     Image img{W, Hh, std::vector<V>((size_t)W * Hh)};
     std::vector<uint8_t> out;
     if (argc >= 7) {
-        renderFrame(img, (float)std::atoi(argv[5]) / N, grid);
-        postprocess(img, out, (uint32_t)std::atoi(argv[5]));
+        int f = std::atoi(argv[5]);
+        renderFrame(img, (float)f / N, grid);
+        postprocess(img, out, (uint32_t)f);
         FILE* fp = std::fopen(argv[6], "wb");
         if (!fp) return 1;
         std::fprintf(fp, "P6\n%d %d\n255\n", W, Hh);
