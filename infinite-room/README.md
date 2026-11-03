@@ -20,6 +20,7 @@ Komplett selbst gerendert (eigener Raytracer, `render.cpp`), keine KI-Generierun
 |---|---|
 | `unendlicher-raum_16x9_30s.mp4` | 30 s mit Ton (Social, YouTube, Präsentation) |
 | `unendlicher-raum_16x9_loop.mp4` | 7,5 s nahtlose Schleife ohne Ton (Website-Banner) |
+| `standbild_16x9.png` | Standbild (erstes Bild der Schleife) für statische Banner / Poster-Frame |
 | `render.cpp` / `audio.py` / `build.sh` | Quellcode – `./build.sh` erzeugt alles neu |
 
 ## Für das Banner
