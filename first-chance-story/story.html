@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>First Chance – Instagram Story</title>
+<script src="frames/clips.js"></script>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --gray: #6e6e73;
+    --gray-light: #86868b;
+    --grad: linear-gradient(100deg, #7a1d35 0%, #b23f2c 48%, #d4973f 100%);
+  }
+  html, body { margin: 0; background: #fff; }
+  #stage {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #fff;
+    font-family: 'Inter', sans-serif; color: var(--ink);
+    -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+  }
+  .abs { position: absolute; left: 0; width: 1080px; text-align: center; }
+  .eyebrow { font-weight: 600; font-size: 38px; letter-spacing: -0.005em; color: var(--gray); }
+  .hl {
+    font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 700; font-size: 116px;
+    line-height: 1.04; letter-spacing: -0.035em; margin: 0;
+  }
+  .hl.m { font-size: 104px; }
+  .sub { font-weight: 500; font-size: 42px; letter-spacing: -0.012em; color: var(--gray); }
+  .w { display: inline-block; white-space: pre; }
+  .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .card {
+    position: absolute; border-radius: 46px; overflow: hidden; background: #f5f5f7;
+    box-shadow: 0 50px 90px -30px rgba(0,0,0,.28), 0 14px 30px -12px rgba(0,0,0,.12);
+  }
+  .card img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Szene 2: Durchstreichen */
+  .strikewrap { position: relative; display: inline-block; }
+  .strike {
+    position: absolute; left: -10px; right: -10px; top: 54%; height: 10px; border-radius: 6px;
+    background: var(--ink); transform-origin: 0 50%; transform: scaleX(0);
+  }
+
+  /* Szene 4: Namenswechsel */
+  .hero {
+    font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 700; font-size: 196px;
+    letter-spacing: -0.045em; line-height: 230px;
+  }
+  .mask { position: relative; height: 230px; overflow: hidden; }
+  .mask > div, .stack > div { position: absolute; left: 0; width: 1080px; text-align: center; }
+  .stack { position: relative; height: 230px; }
+
+  /* Szene 5: Karussell */
+  #labels { height: 80px; overflow: hidden; }
+  #labels > div {
+    position: absolute; left: 0; width: 1080px; text-align: center;
+    font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 700; font-size: 60px; letter-spacing: -0.03em;
+  }
+
+  /* Szene 6: Abschluss */
+  .lockup {
+    font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 700; font-size: 150px;
+    letter-spacing: -0.045em; line-height: 1;
+  }
+  .place { font-weight: 600; font-size: 44px; color: var(--gray); letter-spacing: -0.01em; }
+  .place svg { width: 34px; height: 34px; vertical-align: -4px; margin-right: 10px; }
+  .thanks { font-weight: 600; font-size: 46px; letter-spacing: -0.015em; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Szene 1 -->
+  <div class="abs eyebrow" id="s1e" style="top:770px">Second Chance &amp; more</div>
+  <h1 class="abs hl" id="s1h" style="top:835px"><span class="w">Wir </span><span class="w">haben</span><br><span class="w">Neuigkeiten.</span></h1>
+
+  <!-- Szene 2 -->
+  <h1 class="abs hl" id="s2h" style="top:770px"><span class="w">Tschüss,</span><br><span class="strikewrap" id="s2sw"><span class="w" id="s2a">Second </span><span class="w" id="s2b">Hand.</span><span class="strike" id="s2strike"></span></span></h1>
+  <div class="abs sub" id="s2s" style="top:1060px">Danke für die schöne Zeit.</div>
+
+  <!-- Szene 3 -->
+  <div class="abs eyebrow" id="s3e" style="top:292px">Ihr habt gefragt.</div>
+  <h1 class="abs hl m" id="s3h" style="top:348px"><span class="w">Unsere </span><span class="w">eigenen</span><br><span class="w">Kollektionen.</span></h1>
+  <div class="card" id="s3c" style="left:230px; top:640px; width:620px; height:826px;"><img id="s3img"></div>
+
+  <!-- Szene 4 -->
+  <div class="abs eyebrow" id="s4e" style="top:640px">Neues Kapitel. Neuer Name.</div>
+  <div class="abs hero" id="s4hero" style="top:700px">
+    <div class="mask">
+      <div id="s4second">Second</div>
+      <div id="s4first" class="grad">First</div>
+    </div>
+    <div class="stack">
+      <div id="s4chanceA">Chance</div>
+      <div id="s4chanceB" class="grad">Chance</div>
+    </div>
+  </div>
+
+  <!-- Szene 5 -->
+  <div class="abs eyebrow" id="s5e" style="top:292px">Jetzt neu.</div>
+  <h1 class="abs hl m" id="s5h" style="top:345px"><span class="w">Herbst </span><span class="w">/ </span><span class="w">Winter.</span></h1>
+  <div id="track"></div>
+  <div class="abs" id="labels" style="top:1462px"></div>
+
+  <!-- Szene 6 -->
+  <h1 class="abs hl m" id="s6h" style="top:330px"><span class="w">Kommt </span><span class="w">vorbei.</span></h1>
+  <div class="card" id="s6c" style="left:250px; top:520px; width:580px; height:773px;"><img id="s6img"></div>
+  <div class="abs lockup grad" id="s6lock" style="top:760px; padding-bottom:12px">First Chance</div>
+  <div class="abs place" id="s6place" style="top:950px"><svg viewBox="0 0 24 24" fill="#6e6e73"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Espelkamp</div>
+  <div class="abs thanks" id="s6t" style="top:1090px">Wir freuen uns auf euch.</div>
+</div>
+
+<script>
+const FPS = 30;
+const DURATION = 30.0;
+
+// ---------------------------------------------------------------- Easing & Helfer
+const E = {
+  outQuint: x => 1 - Math.pow(1 - x, 5),
+  outExpo: x => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x)),
+  inCubic: x => x * x * x,
+  inOutCubic: x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+  inOutQuint: x => (x < 0.5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2),
+};
+const C01 = x => Math.max(0, Math.min(1, x));
+const P = (t, t0, d, e = E.outQuint) => e(C01((t - t0) / d));
+const $ = id => document.getElementById(id);
+const lerp = (a, b, x) => a + (b - a) * x;
+
+// Ein-/Ausblenden im Apple-Stil: von unten, aus der Unschärfe
+function fx(el, t, tin, tout, o = {}) {
+  const a = P(t, tin, o.din ?? 0.9, o.ein ?? E.outQuint);
+  const b = tout == null ? 0 : P(t, tout, o.dout ?? 0.5, E.inCubic);
+  const op = a * (1 - b);
+  el.style.opacity = op.toFixed(4);
+  el.style.visibility = op < 0.002 ? 'hidden' : 'visible';
+  const ty = (1 - a) * (o.rise ?? 44) - b * (o.riseOut ?? 26);
+  const sc = lerp(o.s0 ?? 1, 1, a) * lerp(1, o.s1 ?? 1, b);
+  el.style.transform = `translateY(${ty.toFixed(2)}px) scale(${sc.toFixed(4)})`;
+  el.style.filter = `blur(${((1 - a) * (o.blur ?? 16) + b * (o.blurOut ?? 10)).toFixed(2)}px)`;
+  return op;
+}
+function fxWords(el, t, tin, tout, o = {}) {
+  el.style.visibility = 'visible';
+  [...el.querySelectorAll('.w')].forEach((w, i) =>
+    fx(w, t, tin + i * (o.stagger ?? 0.08), tout == null ? null : tout + i * 0.03, o));
+}
+
+// Videobilder
+let pending = [];
+function setClip(img, name, localT, rate = 1) {
+  const c = window.CLIPS[name];
+  let f = Math.floor(Math.max(0, localT) * FPS * rate);
+  f = Math.min(c.n - 1, Math.max(0, f));
+  const src = `frames/${name}/${String(f + 1).padStart(4, '0')}.jpg`;
+  if (img.dataset.src !== src) { img.src = src; img.dataset.src = src; pending.push(img); }
+}
+
+// ---------------------------------------------------------------- Zeitplan (Sekunden)
+const T = {
+  s1: 0.0, s2: 2.75, s3: 6.0, s4: 10.1, s5: 14.2, s6: 22.6, s6b: 25.7,
+};
+const SHOW = [
+  { clip: 'coat',   label: 'Mäntel.',      off: 1.5 },
+  { clip: 'flower', label: 'Jacken.',      off: 0.4 },
+  { clip: 'knit',   label: 'Strick.',      off: 0.6 },
+  { clip: 'jewel',  label: 'Schmuck.',     off: 0.8 },
+  { clip: 'acc',    label: 'Accessoires.', off: 0.2 },
+];
+const CARD_W = 680, CARD_H = 906, CARD_GAP = 40, CARD_TOP = 520;
+const DWELL = 1.62, SLIDE = 0.62;
+const centerAt = k => T.s5 + 0.2 + k * DWELL;   // Zeitpunkt, an dem Karte k in die Mitte gleitet
+
+// Karussell aufbauen
+const track = $('track'), labels = $('labels');
+const cards = SHOW.map((s, k) => {
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.style.cssText = `left:${540 - CARD_W / 2}px; top:${CARD_TOP}px; width:${CARD_W}px; height:${CARD_H}px;`;
+  const img = document.createElement('img');
+  c.appendChild(img); track.appendChild(c);
+  const l = document.createElement('div');
+  l.textContent = s.label; labels.appendChild(l);
+  return { c, img, l };
+});
+
+// ---------------------------------------------------------------- Bild für Zeitpunkt t
+window.renderAt = async function (t) {
+  pending = [];
+
+  // Szene 1 – Wir haben Neuigkeiten.
+  fx($('s1e'), t, T.s1 + 0.2, T.s2 - 0.45, { rise: 20, blur: 8 });
+  fxWords($('s1h'), t, T.s1 + 0.45, T.s2 - 0.5);
+
+  // Szene 2 – Tschüss, Second Hand. (wird durchgestrichen)
+  fxWords($('s2h'), t, T.s2 + 0.15, T.s3 - 0.5);
+  const st = P(t, T.s2 + 1.35, 0.6, E.inOutCubic);
+  $('s2strike').style.transform = `scaleX(${st.toFixed(4)})`;
+  const gray = `rgb(${Math.round(lerp(29, 134, st))},${Math.round(lerp(29, 134, st))},${Math.round(lerp(31, 139, st))})`;
+  $('s2a').style.color = gray; $('s2b').style.color = gray;
+  $('s2strike').style.opacity = $('s2b').style.opacity;
+  $('s2strike').style.filter = $('s2b').style.filter;
+  fx($('s2s'), t, T.s2 + 1.85, T.s3 - 0.45, { rise: 24, blur: 8 });
+
+  // Szene 3 – Unsere eigenen Kollektionen. + Karte
+  fx($('s3e'), t, T.s3 + 0.05, T.s4 - 0.5, { rise: 20, blur: 8 });
+  fxWords($('s3h'), t, T.s3 + 0.2, T.s4 - 0.5);
+  const c3 = fx($('s3c'), t, T.s3 + 0.55, T.s4 - 0.55, { din: 1.1, rise: 90, s0: 0.92, blur: 0, blurOut: 0, s1: 0.96 });
+  if (c3 > 0) {
+    const lt = t - (T.s3 + 0.55);
+    setClip($('s3img'), 'vest', lt, 0.86);
+    $('s3img').style.transform = `scale(${lerp(1.1, 1.0, C01(lt / 3.6)).toFixed(4)})`;
+  }
+
+  // Szene 4 – Second Chance -> First Chance
+  fx($('s4e'), t, T.s4 + 0.1, T.s5 - 0.5, { rise: 20, blur: 8 });
+  const heroIn = fx($('s4hero'), t, T.s4 + 0.25, T.s5 - 0.55, { din: 1.0, rise: 50, blur: 18, s1: 0.97 });
+  const sw = P(t, T.s4 + 1.55, 0.85, E.inOutQuint);          // Second -> First
+  $('s4second').style.transform = `translateY(${(-sw * 230).toFixed(2)}px)`;
+  $('s4second').style.filter = `blur(${(sw * 6).toFixed(2)}px)`;
+  $('s4first').style.transform = `translateY(${((1 - sw) * 230).toFixed(2)}px)`;
+  $('s4first').style.filter = `blur(${((1 - sw) * 6).toFixed(2)}px)`;
+  const cg = P(t, T.s4 + 1.85, 0.8, E.inOutCubic);           // Chance färbt sich ein
+  $('s4chanceA').style.opacity = (1 - cg).toFixed(4);
+  $('s4chanceB').style.opacity = cg.toFixed(4);
+  if (heroIn > 0) {
+    const grow = lerp(1, 1.035, P(t, T.s4 + 1.9, 2.2, E.inOutCubic));
+    $('s4hero').style.transform += ` scale(${grow.toFixed(4)})`;
+  }
+
+  // Szene 5 – Herbst / Winter. Karussell
+  fx($('s5e'), t, T.s5 + 0.0, T.s6 - 0.45, { rise: 20, blur: 8 });
+  fxWords($('s5h'), t, T.s5 + 0.12, T.s6 - 0.5);
+  let idx = 0;
+  for (let k = 1; k < SHOW.length; k++) idx += P(t, centerAt(k) - SLIDE, SLIDE, E.inOutCubic);
+  const trackIn = P(t, T.s5 + 0.3, 1.0, E.outQuint);
+  const trackOut = P(t, T.s6 - 0.55, 0.5, E.inCubic);
+  const trackOp = trackIn * (1 - trackOut);
+  track.style.visibility = trackOp < 0.002 ? 'hidden' : 'visible';
+  cards.forEach((cd, k) => {
+    const pos = k - idx + (1 - trackIn) * 0.6;
+    const ap = Math.min(1, Math.abs(pos));
+    const x = pos * (CARD_W + CARD_GAP);
+    const sc = (1 - 0.1 * ap) * lerp(1, 0.96, trackOut);
+    cd.c.style.transform = `translateX(${x.toFixed(2)}px) translateY(${(trackOut * -20).toFixed(2)}px) scale(${sc.toFixed(4)})`;
+    cd.c.style.opacity = ((1 - 0.6 * ap) * trackOp).toFixed(4);
+    cd.c.style.zIndex = String(10 - Math.round(Math.abs(pos)));
+    if (Math.abs(pos) < 1.6 && trackOp > 0) {
+      const lt = t - (centerAt(k) - SLIDE - 0.3) + SHOW[k].off;
+      setClip(cd.img, SHOW[k].clip, lt, 1);
+      cd.img.style.transform = `scale(${lerp(1.08, 1.0, C01((t - centerAt(k) + SLIDE) / (DWELL + SLIDE))).toFixed(4)})`;
+    }
+    // Label wechselt mit (maskiert, von unten)
+    const lp = k - idx;
+    cd.l.style.transform = `translateY(${(lp * 80).toFixed(2)}px)`;
+    cd.l.style.opacity = (C01(1 - Math.abs(lp)) * trackOp).toFixed(4);
+  });
+
+  // Szene 6 – Kommt vorbei. -> First Chance · Espelkamp
+  fxWords($('s6h'), t, T.s6 + 0.1, T.s6b - 0.45);
+  const c6 = fx($('s6c'), t, T.s6 + 0.35, T.s6b - 0.5, { din: 1.1, rise: 90, s0: 0.92, blur: 0, blurOut: 0, s1: 0.94 });
+  if (c6 > 0) {
+    const lt = t - (T.s6 + 0.35);
+    setClip($('s6img'), 'window', lt, 1);
+    $('s6img').style.transform = `scale(${lerp(1.1, 1.0, C01(lt / 3.4)).toFixed(4)})`;
+  }
+  fx($('s6lock'), t, T.s6b + 0.15, null, { din: 1.2, rise: 50, blur: 20, s0: 0.96 });
+  fx($('s6place'), t, T.s6b + 0.6, null, { rise: 24, blur: 8 });
+  fx($('s6t'), t, T.s6b + 1.3, null, { rise: 24, blur: 8 });
+  // feiner Glanz, der über "First Chance" läuft
+  const sh = P(t, T.s6b + 1.4, 1.6, E.inOutCubic);
+  $('s6lock').style.backgroundImage =
+    `linear-gradient(100deg, rgba(255,255,255,0) ${lerp(-30, 110, sh) - 12}%, rgba(255,255,255,.55) ${lerp(-30, 110, sh)}%, rgba(255,255,255,0) ${lerp(-30, 110, sh) + 12}%), var(--grad)`;
+
+  await Promise.all(pending.map(i => i.decode().catch(() => {})));
+};
+window.DURATION = DURATION;
+window.FPS = FPS;
+</script>
+</body>
+</html>
