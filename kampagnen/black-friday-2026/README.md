@@ -1,59 +1,74 @@
 # Home Deluxe – Black Friday TikTok-Spot (25 % auf alles)
 
 **Datei:** `HomeDeluxe_BlackFriday_TikTok_Untertitel_MotionGraphics.mp4`
-1080×1920 · 30 fps · H.264 + AAC 48 kHz · 29,9 s · Lautheit −14 LUFS / True Peak ≤ −1 dBTP (TikTok-Norm)
+1080×1920 · 30 fps · H.264 + AAC 48 kHz · 29,9 s · Lautheit −14 LUFS / Peak ≤ −1,5 dBFS (TikTok-Norm)
+
+## Version 3
+- **Neues Voiceover:** muttersprachlich-deutsche Stimme ohne englischen Akzent
+- **Neue Übergänge:** aufwendiger und actiongeladener
 
 ## Was eingebaut wurde
 
+### Voiceover (ab 4,1 s)
+- **Stimme und Herkunft:** Neue Stimme „Orus“ aus Gemini TTS, deutsch und akzentfrei, im kraftvollen TV-Werbesprecher-Stil. Die Creatorin am Anfang (0–4 s) bleibt im Original.
+- **Schnitt auf das Bild:** Der Take wird phrasenweise geschnitten (Whisper-Wortgrenzen und Energie-Minimum zwischen den Wörtern). Jede Phrase liegt exakt auf ihrem Bild-Moment, etwa „25 %“ auf dem Slam und die Produktnamen auf den Landungen.
+- **Tempo:** Wo nötig, wurde das Tempo formant-erhaltend angepasst, maximal um 12 %.
+- **Synchronität:** Untertitel, Spar-Zähler, Kinetic-Typo und Soundeffekte werden automatisch aus dem VO-Timing (`vo_timing.json`) abgeleitet. So bleibt alles synchron.
+
+### Übergänge
+| Zeit | Übergang |
+|---|---|
+| 0,0 s | Burst-In aus Zoom-Blur mit Flash und RGB-Split |
+| 4,03 s | Freeze-Hit: Punch, Flash, RGB-Split, Shake, Kameraverschluss-Klick |
+| 4,93–5,65 s | **Zoom-Through:** beschleunigte Fahrt in ihr Gesicht, Weißblende, Ausbruch in den Garten mit Light-Streak, alles auf dem Beat-Drop |
+| 7,4 s | „25 %“-Slam mit Shockwave-Verzerrung des Hintergrunds |
+| 13,33–13,77 s | **Whip-Pan:** Zaun-Shot und Sauna-Shot nebeneinander, Motion-Blur, Lichtblitz |
+| 15,2 / 18,95 s | Landungen von Sauna und Whirlpool: Shockwave-Ring am Aufprallpunkt, Shake, RGB-Split, Impact-Sound |
+| 21,11–21,63 s | **Spin-Zoom:** Rotation mit Zoom aus dem Whirlpool-Shot hinaus und in den Weitwinkel hinein |
+| 25,98–26,37 s | **Match-Cut:** Zoom in die navyblaue „2.700 €“-Box, die zur Endcard wird; danach Settle-Zoom |
+
 ### TikTok-Untertitel (klassisch)
-- Box `#fefefe`, Text `#0f2334`, Poppins Bold 56 px, je Zeile eine abgerundete Box (klassischer TikTok-Look)
-- Phrasenweise und wortgenau auf die Sprache getimt (Whisper-Wort-Timestamps), kurzer Pop-In
-- Produktnamen korrekt geschrieben: Zaun **Alira**, Sauna **Lagom Deluxe**, Whirlpool **Stream Big**
-- Position y ≈ 1300 px: innerhalb der TikTok-Safe-Zone, frei von UI und Produkten
+- **Look:** Box `#fefefe`, Text `#0f2334`, Poppins Bold 56 px, je Zeile eine abgerundete Box, kurzer Pop-In.
+- **Timing:** Die Untertitel starten jeweils mit dem Phrasenbeginn und überlappen nie.
+- **Schreibweise:** Zaun **Alira**, Sauna **Lagom Deluxe**, Whirlpool **Stream Big**.
 
 ### Motion Graphics (CI: Navy/Weiß, Poppins, eckige Boxen)
-| Zeit | Element |
+| Element | Inhalt |
 |---|---|
-| 0,0 s | Zoom-Punch-In |
-| 1,26 s | „BLACK FRIDAY“-Badge, der mit Kamerawackler ins Bild knallt |
-| 2,24 s | „10 % RABATT“-Sticker; ab 4,03 s durchgestrichen, dann fällt er aus dem Bild |
-| 4,03 s | Freeze in Schwarz-Weiß mit Vignette, Filmkorn und langsamem Push-In |
-| 5,23 s | Weißer Flash und Zoom-Punch auf den Beat-Drop |
-| 5,7–7,2 s | „15 %“ und „20 %“ erscheinen, werden durchgestrichen und fliegen raus |
-| 7,24 s | „25 %“-Slam mit Druckwelle, danach „AUF ALLES“ |
-| 10,5 s | Produktkarte Zaun ALIRA mit Callout-Linie und Zähler „ÜBER 280 € GESPART“ |
-| 15,25 s | Produktkarte Fasssauna LAGOM DELUXE mit Zähler „ÜBER 1.200 € GESPART“ |
-| 18,55 s | Produktkarte Outdoor-Whirlpool STREAM BIG mit Zähler „ÜBER 1.200 € GESPART“ (Linie folgt der Kamera) |
-| 21,4 s | Drei Spar-Chips verschmelzen zur Gesamtsumme „ZUSAMMEN ÜBER 2.700 € GESPART“ (Zähler) |
-| 24,05 s | Banner „NUR AM BLACK-FRIDAY-WOCHENENDE“ |
-| 26,05 s | Navy-Wipe in die Endcard |
-| 26,4 s | Animierte Endcard: Logo, Balken, 25 %-Slam, Staffelung, CTA-Pop, Puls und Tap-Animation |
-
-Die Zähler landen jeweils genau, wenn die Sprecherin den Betrag nennt. Kamerawackler sitzen auf jedem Aufprall (Zaunelemente, Sauna, Whirlpool).
+| Hook | „BLACK FRIDAY“-Badge; „10 % RABATT“-Sticker, der durchgestrichen wird und herausfällt; S/W-Freeze mit Vignette und Filmkorn |
+| Kinetic Typo | „15 %“ und „20 %“ werden durchgestrichen und fliegen raus. „25 %“ knallt mit Druckwelle ins Bild, dazu „AUF ALLES“. Alles folgt dem Voiceover. |
+| Produktkarten | ALIRA, LAGOM DELUXE und STREAM BIG mit Callout-Linie und Spar-Zähler. Der Zähler landet, während der Betrag gesprochen wird. |
+| Summe | Drei Spar-Chips verschmelzen zu „ZUSAMMEN ÜBER 2.700 € GESPART“, dazu das Banner „NUR AM BLACK-FRIDAY-WOCHENENDE“. |
+| Endcard | Logo, Balken, „25 %“-Slam, gestaffelte Texte, CTA-Pop, Puls und Tap-Animation |
 
 ### Sound
-- **Eigene Musik**, synthetisch erzeugt, damit sie lizenzfrei ist. Future House mit ca. 125 BPM in f-Moll. Das Tempo ist so gewählt, dass genau 11 Takte zwischen Drop (5,23 s) und Endcard (26,37 s) passen.
-  - Intro mit verspieltem Pizzicato-Groove
-  - Bei 4,03 s Scratch und Record-Stop
-  - Drop auf den Garten-Schnitt
-  - Kurzer Break bei 20,6 s, Re-Drop auf „2.700“
-  - Schluss-Hit auf der Endcard
-- **Sounddesign:** Whooshes, Impacts, Riser, Reverse-Cymbal, dumpfe Aufpralle der Zaunelemente, Wasser-Splash, Zähler-Ticks, Ka-Ching, Pops, Funkeln und Klick auf den CTA
-- **Mix:** Die Stimme wurde mit EQ und Kompressor bearbeitet. Die Musik duckt automatisch unter die Sprache (ca. −9 dB), dadurch liegt die Stimme im Schnitt rund 12 dB über dem Bett. Zum Schluss Normalisierung auf −14 LUFS.
+- **Eigene Musik**, synthetisch und lizenzfrei: Future House mit ca. 125 BPM, genau 11 Takte von Drop zu Endcard. Bei 4,03 s Scratch und Record-Stop, Drop auf den Zoom-Through, Re-Drop auf „2.700“.
+- **Sounddesign pro Übergang:**
+  - Riser, Reverse-Cymbal und Whooshes
+  - Whip-Swoosh beim Whip-Pan, Spin-Swell beim Spin-Zoom
+  - Impacts auf den Landungen, Wasser-Splash
+  - Zähler-Ticks, Ka-Ching, Pops, Funkeln und CTA-Klick
+- **Mix:** Die Musik duckt unter die Sprache (ca. −9 dB), die Stimme liegt im Schnitt rund 11 dB über dem Bett. Zum Schluss −14 LUFS und Limiter.
 
 ## Neu rendern
 
-Benötigt: Python 3 mit `numpy`, `scipy`, `opencv-python-headless`, `Pillow`, dazu `ffmpeg` und Poppins (400–900, TTF) in einem Ordner.
+Benötigt: Python 3 mit `numpy`, `scipy`, `opencv-python-headless`, `Pillow`, `faster-whisper`, dazu `ffmpeg` (mit rubberband) und Poppins (400–900, TTF).
 
 ```bash
 cd build
 ffmpeg -i ORIGINAL.mp4 -vn -c:a pcm_s16le orig.wav
-ffmpeg -i orig.wav -af "highpass=f=75,equalizer=f=3500:t=q:w=1.2:g=2,acompressor=threshold=-22dB:ratio=3:attack=6:release=140:makeup=3" -ar 48000 -ac 2 voice.wav
-python3 audio.py voice.wav ./out
-ffmpeg -i out/mix.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 out/mix_final.wav
+# 1) Voiceover auf das Bild legen (erzeugt vo_track.wav + vo_timing.json)
+python3 vo_assemble.py orig.wav assets/voiceover_orus_take2.wav ./out
+cp out/vo_timing.json .
+ffmpeg -i out/vo_track.wav -af "highpass=f=80,equalizer=f=300:t=q:w=1.0:g=-2,equalizer=f=3500:t=q:w=1.2:g=2.5,acompressor=threshold=-22dB:ratio=3:attack=5:release=120:makeup=3" -ar 48000 -ac 2 out/vo_proc.wav
+# 2) Musik + SFX + Mix
+python3 audio.py out/vo_proc.wav ./out
+ffmpeg -i out/mix.wav -af "loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.87:level=disabled" -ar 48000 out/mix_final.wav
+# 3) Bild
 python3 render.py ORIGINAL.mp4 /pfad/zu/poppins out/mix_final.wav final.mp4
 # Vorschau-Standbilder:
-python3 render.py ORIGINAL.mp4 /pfad/zu/poppins --stills 2.7,7.6,16.2 ./stills
+python3 render.py ORIGINAL.mp4 /pfad/zu/poppins --stills 5.17,13.5,21.3,26.2 ./stills
 ```
 
-Alle Zeiten (Schnitte, Aufpralle, Untertitel) stehen zentral in `build/timeline.py`.
+- **Neuer VO-Take:** `tts.py` erzeugt ihn über die Gemini-API (Stimme `Orus`, Modell `gemini-3.1-flash-tts-preview`).
+- **Zeiten:** Schnitte, Landungen und Musikraster stehen in `build/timeline.py`. Die VO-abhängigen Zeiten kommen aus `vo_timing.json`.

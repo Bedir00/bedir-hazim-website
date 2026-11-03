@@ -542,61 +542,80 @@ def main():
 
     # ---------------------------------------------------------- SFX bus
     sfx = np.zeros((N, 2))
-    place(sfx, whoosh(0.45, 2000, 300, 0.35, peak=0.15), 0.0)
+
+    def ticks(t0, t1, gain=0.3, step=0.05):
+        k = 0
+        while t0 + k * step < t1 - 0.02:
+            place(sfx, tick(gain), t0 + k * step)
+            k += 1
+
+    # intro: burst in from the zoom blur
+    place(sfx, whoosh(0.30, 5000, 400, 0.4, peak=0.05), 0.0)
+    place(sfx, impact(0.35, 0.6), 0.0)
     place(sfx, impact(0.55, 0.7), 1.26)
     place(sfx, pop(0.5, 520), 2.24)
-    place(sfx, swish(0.6), CUT_FREEZE + 0.02)
+    # freeze-frame hit: shutter click + impact + swish for the strike
+    place(sfx, click(0.7), CUT_FREEZE)
+    place(sfx, impact(0.6, 0.8), CUT_FREEZE)
+    place(sfx, swish(0.6), CUT_FREEZE + 0.03)
+    # zoom-through into the garden (accelerating whoosh -> drop)
     place(sfx, reverse_cymbal(1.1, 0.45), CUT_GARDEN - 1.1)
     place(sfx, riser(1.0, 0.28), CUT_GARDEN - 1.0)
-    place(sfx, impact(1.0, 1.2), CUT_GARDEN)
-    place(sfx, whoosh(0.5, 4000, 400, 0.4, peak=0.1), CUT_GARDEN)
-    # kinetic numbers
-    place(sfx, pop(0.45, 480), 5.74)
-    place(sfx, swish(0.45), 6.24)
-    place(sfx, pop(0.45, 560), 6.40)
-    place(sfx, swish(0.45), 6.98)
-    place(sfx, impact(0.85, 1.0), 7.24)
-    place(sfx, pop(0.35, 640), 8.38)
+    place(sfx, whoosh(0.34, 300, 7000, 0.55, peak=0.95), CUT_GARDEN - 0.32)
+    place(sfx, impact(1.0, 1.3), CUT_GARDEN)
+    place(sfx, whoosh(0.5, 5000, 300, 0.45, peak=0.08), CUT_GARDEN)
+    # kinetic numbers (follow the voice-over)
+    place(sfx, pop(0.45, 480), T["n15_in"])
+    place(sfx, swish(0.45), T["n15_strike"])
+    place(sfx, pop(0.45, 560), T["n20_in"])
+    place(sfx, swish(0.45), T["n20_strike"])
+    place(sfx, impact(0.85, 1.0), T["slam25"])
+    place(sfx, pop(0.35, 640), T["auf"])
     for t in FENCE_THUDS:
         place(sfx, thud(0.5), t, pan=float(rng.uniform(-0.4, 0.4)))
-    place(sfx, whoosh(0.45, 800, 5000, 0.35), 10.18)
-    # fence card
+    place(sfx, whoosh(0.45, 800, 5000, 0.35), T["out25"])
+    # fence card + counter
+    c0, c1 = COUNTERS["fence"]
     place(sfx, swish(0.5), 10.50)
-    for k in range(17):
-        place(sfx, tick(0.3), 10.85 + k * 0.05)
-    place(sfx, kaching(0.75), 11.72)
-    place(sfx, whoosh(0.4, 3000, 600, 0.3), 13.25)
-    # sauna
-    place(sfx, whoosh(0.7, 5000, 250, 0.5, peak=0.2), CUT_SAUNA - 0.05)
+    ticks(c0, c1)
+    place(sfx, kaching(0.75), c1 + 0.02)
+    # whip pan fence -> sauna
+    place(sfx, whoosh(0.46, 900, 7500, 0.42, peak=0.5), CUT_SAUNA - 0.16)
+    place(sfx, impact(0.4, 0.7), CUT_SAUNA + 0.02)
+    # sauna landing + card
     place(sfx, impact(1.0, 1.3), SAUNA_LAND)
     place(sfx, thud(0.6), SAUNA_LAND + 0.05)
     place(sfx, swish(0.5), 15.25)
-    for k in range(8):
-        place(sfx, tick(0.3), 15.57 + k * 0.05)
-    place(sfx, kaching(0.75), 15.97)
+    c0, c1 = COUNTERS["sauna"]
+    ticks(c0, c1)
+    place(sfx, kaching(0.75), c1 + 0.02)
     place(sfx, whoosh(0.4, 3000, 600, 0.3), 17.10)
-    # whirlpool
+    # whirlpool fly-in + landing + card
     place(sfx, whoosh(0.8, 300, 4000, 0.45, peak=0.7), WHIRL_IN - 0.3)
     place(sfx, splash(1.2, 0.35), WHIRL_IN + 0.15)
     place(sfx, impact(0.9, 1.2), WHIRL_LAND)
     place(sfx, splash(0.9, 0.25), WHIRL_LAND + 0.02)
     place(sfx, swish(0.5), 18.55)
-    for k in range(19):
-        place(sfx, tick(0.3), 18.90 + k * 0.05)
-    place(sfx, kaching(0.75), 19.87)
-    # summary
-    place(sfx, whoosh(0.5, 4000, 400, 0.35, peak=0.15), CUT_WIDE)
-    for k, t in enumerate([21.38, 21.50, 21.62]):
+    c0, c1 = COUNTERS["whirl"]
+    ticks(c0, c1)
+    place(sfx, kaching(0.75), c1 + 0.02)
+    # spin-zoom into the wide shot
+    place(sfx, reverse_cymbal(0.5, 0.4), CUT_WIDE - 0.5)
+    place(sfx, whoosh(0.5, 250, 6000, 0.55, peak=0.5), CUT_WIDE - 0.25)
+    place(sfx, impact(0.7, 1.0), CUT_WIDE)
+    # summary: chips, merge, total counter
+    for k, t in enumerate([21.62, 21.74, 21.86]):
         place(sfx, pop(0.35, 520 + 80 * k), t)
-    place(sfx, whoosh(0.35, 600, 3000, 0.3), 21.88)
-    for k in range(20):
-        place(sfx, tick(0.32), 22.12 + k * 0.05)
-    place(sfx, kaching(0.95), 23.12)
-    place(sfx, impact(0.45, 0.8), 23.12)
-    place(sfx, swish(0.5), 24.05)
-    # transition into the end card
+    place(sfx, whoosh(0.35, 600, 3000, 0.3), 21.90)
+    c0, c1 = COUNTERS["total"]
+    ticks(c0, c1, 0.32)
+    place(sfx, kaching(0.95), c1 + 0.02)
+    place(sfx, impact(0.45, 0.8), c1 + 0.02)
+    place(sfx, swish(0.5), T["banner"])
+    # diagonal slats into the end card
     place(sfx, riser(0.9, 0.25), CUT_END - 0.9)
-    place(sfx, whoosh(0.5, 300, 5000, 0.45, peak=0.8), CUT_END - 0.38)
+    place(sfx, reverse_cymbal(0.7, 0.45), CUT_END - 0.7)
+    place(sfx, whoosh(0.42, 200, 6500, 0.5, peak=0.92), CUT_END - 0.40)
     place(sfx, impact(0.9, 1.4), CUT_END)
     place(sfx, impact(0.22, 0.6), 26.72)
     place(sfx, pop(0.35, 600), 27.35)

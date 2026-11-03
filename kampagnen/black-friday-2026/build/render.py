@@ -12,6 +12,7 @@ import cv2
 from PIL import Image, ImageDraw
 
 import gfx
+import fx
 from gfx import (W, H, NAVY, NAVY_END, WHITE, MUTED, GREY, font, clamp, prog, lerp,
                  ease_out_cubic, ease_in_cubic, ease_in_out_cubic, ease_out_back,
                  to_sprite, supersampled, shadowed, blit, clip_sprite, fill_rect,
@@ -163,12 +164,12 @@ DOT = disc_sprite(13)
 DOT_RING = ring_sprite(26, 4)
 
 CARDS = [
-    dict(label="WPC-SICHTSCHUTZZAUN", name="ALIRA", value=280, t_in=10.50, c0=10.82, c1=11.70, t_out=13.25,
-         anchor=[(10.0, (420, 790)), (14.0, (420, 790))]),
-    dict(label="FASSSAUNA", name="LAGOM DELUXE", value=1200, t_in=15.25, c0=15.55, c1=15.95, t_out=17.10,
-         anchor=[(15.0, (560, 690)), (17.5, (560, 690))]),
-    dict(label="OUTDOOR-WHIRLPOOL", name="STREAM BIG", value=1200, t_in=18.55, c0=18.88, c1=19.85, t_out=21.08,
-         anchor=[(18.55, (560, 760)), (18.9, (560, 780)), (20.9, (520, 860)), (21.4, (515, 870))]),
+    dict(label="WPC-SICHTSCHUTZZAUN", name="ALIRA", value=280, t_in=10.50, c0=COUNTERS["fence"][0], c1=COUNTERS["fence"][1],
+         t_out=99.0, seg_end=CUT_SAUNA, anchor=[(10.0, (420, 790)), (14.0, (420, 790))]),
+    dict(label="FASSSAUNA", name="LAGOM DELUXE", value=1200, t_in=15.25, c0=COUNTERS["sauna"][0], c1=COUNTERS["sauna"][1],
+         t_out=17.10, seg_end=CUT_WIDE, anchor=[(15.0, (560, 690)), (17.5, (560, 690))]),
+    dict(label="OUTDOOR-WHIRLPOOL", name="STREAM BIG", value=1200, t_in=18.30, c0=COUNTERS["whirl"][0], c1=COUNTERS["whirl"][1],
+         t_out=99.0, seg_end=CUT_WIDE, anchor=[(18.30, (560, 740)), (18.55, (560, 760)), (18.9, (560, 780)), (20.9, (520, 860)), (21.4, (515, 870))]),
 ]
 for c in CARDS:
     c["card"] = card(c["label"], c["name"])
@@ -182,7 +183,7 @@ SUM_CHIPS = [
     sticker([("SAUNA", "600", 24, 3), ("–1.200 €", "800", 50, 0)], WHITE, NAVY, 26, 18, 10),
     sticker([("WHIRLPOOL", "600", 24, 3), ("–1.200 €", "800", 50, 0)], WHITE, NAVY, 26, 18, 10),
 ]
-SUM_T = [21.38, 21.50, 21.62]
+SUM_T = [21.62, 21.74, 21.86]
 TOTAL_W, TOTAL_H = 740, 300
 BANNER = badge("NUR AM BLACK-FRIDAY-WOCHENENDE", "800", 38, WHITE, NAVY, 30, 20, tracking=1)
 _total_cache = {}
@@ -248,13 +249,19 @@ GRAIN = [cv2.GaussianBlur(rng.normal(0, 0.045, (H // 2, W // 2)).astype(np.float
 GRAIN = [cv2.resize(g, (W, H), interpolation=cv2.INTER_LINEAR)[..., None] for g in GRAIN]
 del yy, xx, r
 
-SHAKES = [(1.26, 9, 11), (CUT_GARDEN, 18, 8), (7.24, 14, 9), (SAUNA_LAND, 22, 7.5), (WHIRL_LAND, 18, 8),
-          (23.12, 7, 11)] + [(t, 4, 14) for t in FENCE_THUDS]
+SHAKES = [(1.26, 9, 11), (CUT_FREEZE, 16, 10), (CUT_GARDEN, 20, 8), (T["slam25"], 14, 9), (SAUNA_LAND, 24, 7.5),
+          (WHIRL_LAND, 20, 8), (CUT_WIDE, 10, 10), (COUNTERS["total"][1], 8, 11)] + [(t, 4, 14) for t in FENCE_THUDS]
 SHAKE_PH = [(rng.random() * 6.28, rng.random() * 6.28, rng.random() * 6.28) for _ in SHAKES]
-PUNCHES = [(0.0, 1.12, 0.40), (CUT_GARDEN, 1.16, 0.45), (7.24, 1.045, 0.30), (CUT_SAUNA, 1.10, 0.40),
-           (SAUNA_LAND, 1.03, 0.25), (WHIRL_LAND, 1.03, 0.25), (CUT_WIDE, 1.08, 0.45)]
-FLASHES = [(CUT_FREEZE, 0.55, 0.18), (CUT_GARDEN, 0.9, 0.26), (7.24, 0.2, 0.15), (CUT_SAUNA, 0.5, 0.22),
-           (CUT_WIDE, 0.4, 0.25)]
+PUNCHES = [(0.0, 1.14, 0.40), (CUT_FREEZE, 1.14, 0.30), (T["slam25"], 1.05, 0.30),
+           (SAUNA_LAND, 1.035, 0.25), (WHIRL_LAND, 1.035, 0.25), (COUNTERS["total"][1], 1.02, 0.25)]
+FLASHES = [(0.0, 0.7, 0.16), (CUT_FREEZE, 0.6, 0.18), (CUT_GARDEN, 0.75, 0.24), (T["slam25"], 0.22, 0.15),
+           (CUT_SAUNA, 0.28, 0.18), (SAUNA_LAND, 0.18, 0.14), (WHIRL_LAND, 0.16, 0.14), (CUT_WIDE, 0.45, 0.22)]
+# impact distortions on the background plate: (t0, cx, cy, max radius, duration, amplitude)
+SHOCKS = [(T["slam25"] + 0.02, 540, 350, 900, 0.45, 16), (SAUNA_LAND, 540, 1000, 1100, 0.55, 30),
+          (WHIRL_LAND, 585, 1150, 1100, 0.55, 26)]
+# chromatic-aberration pulses: (t0, px, duration)
+CHROMA = [(0.0, 12, 0.30), (1.26, 6, 0.15), (CUT_FREEZE, 14, 0.25), (T["slam25"], 10, 0.20), (SAUNA_LAND, 10, 0.22),
+          (WHIRL_LAND, 9, 0.22), (COUNTERS["total"][1], 7, 0.18)]
 
 
 def segment_end(t):
@@ -342,52 +349,54 @@ def freeze_fx(f, t, idx):
 
 
 def draw_numbers(f, t):
-    if not (5.6 <= t < 10.5):
+    if not (5.5 <= t < T["out25"] + 0.3):
         return
     cx, cy = W / 2, 350
+    a15, s15, o15 = T["n15_in"], T["n15_strike"], T["n15_out"]
+    a20, s20, o20 = T["n20_in"], T["n20_strike"], T["n20_out"]
+    sl, au, wb, ou = T["slam25"], T["auf"], T["wobble"], T["out25"]
     # 15 %
-    if 5.74 <= t < 6.6:
-        u = prog(t, 5.74, 5.96)
+    if a15 <= t < o15 + 0.24:
+        u = prog(t, a15, a15 + 0.22)
         sc = max(0, ease_out_back(u, 2.0))
-        x, rot, al = cx, -4, prog(t, 5.74, 5.80)
-        if t >= 6.36:
-            k = ease_in_cubic(prog(t, 6.36, 6.58))
+        x, rot, al = cx, -4, prog(t, a15, a15 + 0.06)
+        if t >= o15:
+            k = ease_in_cubic(prog(t, o15, o15 + 0.22))
             x -= 1000 * k
             rot -= 30 * k
             al *= 1 - k
-        blit(f, strike_onto(N15, ease_out_cubic(prog(t, 6.22, 6.32))), x, cy, scale=sc, rot=rot, alpha=al)
+        blit(f, strike_onto(N15, ease_out_cubic(prog(t, s15, s15 + 0.10))), x, cy, scale=sc, rot=rot, alpha=al)
     # 20 %
-    if 6.40 <= t < 7.32:
-        u = prog(t, 6.40, 6.62)
+    if a20 <= t < o20 + 0.22:
+        u = prog(t, a20, a20 + 0.22)
         sc = max(0, ease_out_back(u, 2.0))
-        x, rot, al = cx, 4, prog(t, 6.40, 6.46)
-        if t >= 7.10:
-            k = ease_in_cubic(prog(t, 7.10, 7.30))
+        x, rot, al = cx, 4, prog(t, a20, a20 + 0.06)
+        if t >= o20:
+            k = ease_in_cubic(prog(t, o20, o20 + 0.20))
             x += 1000 * k
             rot += 30 * k
             al *= 1 - k
-        blit(f, strike_onto(N20, ease_out_cubic(prog(t, 6.98, 7.08)), angle=14), x, cy, scale=sc, rot=rot, alpha=al)
+        blit(f, strike_onto(N20, ease_out_cubic(prog(t, s20, s20 + 0.10)), angle=14), x, cy, scale=sc, rot=rot, alpha=al)
     # 25 % slam + AUF ALLES
-    if t >= 7.24:
-        u = prog(t, 7.24, 7.40)
+    if t >= sl:
+        u = prog(t, sl, sl + 0.16)
         sc = 1 + 1.6 * (1 - u) ** 2
-        if t > 7.40:
-            sc = 1 - 0.05 * math.sin(math.pi * prog(t, 7.40, 7.56))
-        sc *= 1 + 0.07 * math.sin(math.pi * prog(t, 9.46, 9.72))
-        rot = -2 + 3.5 * math.sin(2 * math.pi * 3 * (t - 9.46)) * (1 - prog(t, 9.46, 10.0)) * (t >= 9.46)
-        al = prog(t, 7.24, 7.29)
-        ex = ease_in_cubic(prog(t, 10.18, 10.40))
+        if t > sl + 0.16:
+            sc = 1 - 0.05 * math.sin(math.pi * prog(t, sl + 0.16, sl + 0.32))
+        sc *= 1 + 0.07 * math.sin(math.pi * prog(t, wb, wb + 0.26))
+        rot = -2 + 3.5 * math.sin(2 * math.pi * 3 * (t - wb)) * (1 - prog(t, wb, wb + 0.54)) * (t >= wb)
+        al = prog(t, sl, sl + 0.05)
+        ex = ease_in_cubic(prog(t, ou, ou + 0.22))
         sc_ex, dy_ex, al_ex = lerp(1, 0.5, ex), -90 * ex, 1 - ex
-        # shock ring
-        if 7.28 <= t < 7.80:
-            v = prog(t, 7.28, 7.80)
+        if sl + 0.04 <= t < sl + 0.56:
+            v = prog(t, sl + 0.04, sl + 0.56)
             blit(f, RING, cx, cy, scale=lerp(0.35, 1.7, ease_out_cubic(v)), alpha=0.85 * (1 - v))
         blit(f, N25["spr"], cx, cy + dy_ex, scale=sc * sc_ex, rot=rot, alpha=al * al_ex)
-        if t >= 8.38:
-            v = prog(t, 8.38, 8.62)
+        if t >= au:
+            v = prog(t, au, au + 0.24)
             ay = cy + 150 + 60 * (1 - ease_out_cubic(v))
             blit(f, AUF["spr"], cx, ay + dy_ex * 1.2, scale=max(0, ease_out_back(v, 1.8)) * sc_ex, rot=rot - 1,
-                 alpha=prog(t, 8.38, 8.46) * al_ex)
+                 alpha=prog(t, au, au + 0.08) * al_ex)
 
 
 def anchor_at(kf, t):
@@ -410,7 +419,7 @@ def chip_sprite(c, v):
 def draw_cards(f, t):
     X0, Y0 = 70, 190
     for c in CARDS:
-        if not (c["t_in"] <= t < c["t_out"] + 0.3):
+        if not (c["t_in"] <= t < min(c["t_out"] + 0.3, c["seg_end"])):
             continue
         cd = c["card"]
         ex = ease_in_cubic(prog(t, c["t_out"], c["t_out"] + 0.24))
@@ -440,9 +449,10 @@ def draw_cards(f, t):
             spr = clip_sprite(spr, 0, reveal, 0, 1)
             blit(f, spr, X0 - pad + dx_ex + (1 - u) * -30, Y0 - pad, anchor=(0, 0), alpha=al_ex * prog(t, c["t_in"], c["t_in"] + 0.06))
         # savings chip with counter
-        if t >= c["t_in"] + 0.30:
-            v = prog(t, c["t_in"] + 0.30, c["t_in"] + 0.55)
-            val = c["value"] * ease_out_cubic(prog(t, c["c0"], c["c1"]))
+        chip_t = max(c["t_in"] + 0.30, c["c0"] - 0.22)
+        if t >= chip_t:
+            v = prog(t, chip_t, chip_t + 0.25)
+            val = c["value"] * ease_out_cubic(prog(t, chip_t + 0.04, c["c1"]))
             cs = chip_sprite(c, round(val / 10) * 10 if t < c["c1"] else c["value"])
             punch = 1 + 0.12 * math.sin(math.pi * prog(t, c["c1"] + 0.03, c["c1"] + 0.25))
             cx = X0 + 30 + cs["w"] / 2 + dx_ex
@@ -453,38 +463,31 @@ def draw_cards(f, t):
 def draw_summary(f, t):
     if not (CUT_WIDE <= t < CUT_END):
         return
-    fade = 1 - prog(t, 26.18, 26.33)
+    fade = 1.0
     # three chips pop in, then merge into the total
     xs = [205, 540, 875]
     cy = 300
-    merge = ease_in_cubic(prog(t, 21.92, 22.12))
+    merge = ease_in_cubic(prog(t, 21.92, 22.10))
     for k, (st, t0) in enumerate(zip(SUM_CHIPS, SUM_T)):
         if t >= t0 and merge < 1:
             v = prog(t, t0, t0 + 0.24)
             x = lerp(xs[k], W / 2, merge)
             blit(f, st["spr"], x, cy, scale=max(0, ease_out_back(v, 2.2)) * lerp(1, 0.4, merge),
                  rot=(-3, 2, -2)[k] * (1 - merge), alpha=(1 - merge) * fade)
-    if t >= 22.02:
-        v = prog(t, 22.02, 22.30)
-        val = 2700 * ease_out_cubic(prog(t, 22.10, 23.10))
-        ts = total_sprite(round(val / 10) * 10 if t < 23.10 else 2700)
-        punch = 1 + 0.10 * math.sin(math.pi * prog(t, 23.12, 23.35))
-        blit(f, ts["spr"], W / 2, 318, scale=max(0, ease_out_back(v, 1.6)) * punch, alpha=fade * prog(t, 22.02, 22.08))
-        if 23.12 <= t < 23.60:
-            w_ = prog(t, 23.12, 23.60)
+    tc0, tc1 = COUNTERS["total"]
+    if t >= 22.00:
+        v = prog(t, 22.00, 22.26)
+        val = 2700 * ease_out_cubic(prog(t, tc0, tc1))
+        ts = total_sprite(round(val / 10) * 10 if t < tc1 else 2700)
+        punch = 1 + 0.10 * math.sin(math.pi * prog(t, tc1 + 0.02, tc1 + 0.25))
+        blit(f, ts["spr"], W / 2, 318, scale=max(0, ease_out_back(v, 1.6)) * punch, alpha=fade * prog(t, 22.00, 22.06))
+        if tc1 <= t < tc1 + 0.48:
+            w_ = prog(t, tc1, tc1 + 0.48)
             blit(f, RING, W / 2, 318, scale=lerp(0.6, 2.0, ease_out_cubic(w_)), alpha=0.7 * (1 - w_) * fade)
-    if t >= 24.05:
-        v = ease_out_cubic(prog(t, 24.05, 24.35))
+    if t >= T["banner"]:
+        v = ease_out_cubic(prog(t, T["banner"], T["banner"] + 0.30))
         x = lerp(W + 500, W / 2, v)
         blit(f, BANNER["spr"], x, 518, rot=-1.5, alpha=fade)
-
-
-def draw_wipe(f, t):
-    if 26.05 <= t < CUT_END:
-        u = ease_in_out_cubic(prog(t, 26.05, CUT_END))
-        top = H * (1 - u)
-        fill_rect(f, 0, top, W, H, NAVY_END)
-        fill_rect(f, 0, top - 10, W, top, WHITE)
 
 
 def draw_endcard(f, t):
@@ -556,59 +559,181 @@ def draw_endcard(f, t):
 
 
 # =============================================================== frame assembly
-def render_frame(src_rgb, idx):
+class FrameSource:
+    """Sequential decoder with a small random-access window (look-ahead/-behind for transitions)."""
+
+    def __init__(self, path):
+        self.p = subprocess.Popen(["ffmpeg", "-v", "error", "-i", path, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                                  stdout=subprocess.PIPE, bufsize=W * H * 3 * 4)
+        self.n = W * H * 3
+        self.cache = {}
+        self.next = 0
+
+    def get(self, idx):
+        idx = max(0, min(idx, SRC_FRAMES - 1))
+        while self.next <= idx:
+            buf = self.p.stdout.read(self.n)
+            if len(buf) < self.n:
+                break
+            self.cache[self.next] = np.frombuffer(buf, np.uint8).reshape(H, W, 3)
+            self.next += 1
+        if idx not in self.cache:
+            idx = max(k for k in self.cache if k <= idx)
+        return self.cache[idx]
+
+    def trim(self, keep_from):
+        for k in [k for k in self.cache if k < keep_from]:
+            del self.cache[k]
+
+
+SRCF = None
+_compose_cache = {}
+CI_GARDEN, CI_SAUNA, CI_WIDE = round(CUT_GARDEN * FPS), round(CUT_SAUNA * FPS), round(CUT_WIDE * FPS)
+SLAT_T0 = 25.98                # start of the zoom-into-box match cut
+
+
+def bg_fx(f, t):
+    for t0, cx, cy, rmax, dur, amp in SHOCKS:
+        if t0 <= t < t0 + dur and segment_end(t0) == segment_end(t):
+            u = prog(t, t0, t0 + dur)
+            f = fx.shockwave(f, cx, cy, lerp(30, rmax, ease_out_cubic(u)), lerp(40, 120, u), amp * (1 - u) ** 1.3)
+    return f
+
+
+def compose(idx):
+    """Picture + camera + motion graphics for frame idx (no subtitles, no transition FX). Cached; do not mutate."""
+    if idx in _compose_cache:
+        return _compose_cache[idx]
     t = idx / FPS
     if t >= CUT_END:
         f = np.empty((H, W, 3), np.float32)
         draw_endcard(f, t)
-        return f
-    f = src_rgb.astype(np.float32) / 255.0
-    f = apply_camera(f, t)
-    freeze_fx(f, t, idx)
-    for t0, amp, dur in FLASHES:
+    else:
+        f = SRCF.get(idx).astype(np.float32) / 255.0
+        f = apply_camera(f, t)
+        f = bg_fx(f, t)
+        freeze_fx(f, t, idx)
+        for t0, amp, dur in FLASHES:
+            if t0 <= t < t0 + dur:
+                a = amp * (1 - prog(t, t0, t0 + dur)) ** 1.5
+                f *= 1 - a
+                f += a
+        draw_hook(f, t)
+        draw_numbers(f, t)
+        draw_cards(f, t)
+        draw_summary(f, t)
+    _compose_cache[idx] = f
+    if len(_compose_cache) > 28:
+        for k in sorted(_compose_cache)[: len(_compose_cache) - 28]:
+            del _compose_cache[k]
+    return f
+
+
+def tr_zoom_through(idx, t):
+    """Freeze frame -> garden: accelerate INTO her face, burst out of the garden."""
+    if t < CUT_GARDEN:
+        e = ease_in_cubic(prog(t, CUT_GARDEN - 0.30, CUT_GARDEN))
+        f = fx._scale_about(compose(idx), 1 + 1.35 * e, 540, 540)
+        f = fx.radial_blur(f, 0.32 * e, 540, 540)
+        f = fx.chroma(f, 20 * e, 540, 540)
+        return fx.brighten(f, 0.6 * e ** 3)
+    e = 1 - ease_out_cubic(prog(t, CUT_GARDEN, CUT_GARDEN + 0.42))
+    f = fx._scale_about(compose(idx), 1 + 0.5 * e, W / 2, H * 0.45)
+    f = fx.radial_blur(f, 0.24 * e, W / 2, H * 0.45)
+    f = fx.chroma(f, 16 * e)
+    return fx.light_streak(f, H * 0.42, 1.3 * e ** 1.4)
+
+
+def tr_whip(idx, t):
+    """Fence -> sauna: horizontal whip pan, both shots side by side with motion blur."""
+    t0, t1 = CUT_SAUNA - 0.20, CUT_SAUNA + 0.24
+
+    def pos(tt):
+        return ease_in_out_cubic(prog(tt, t0, t1))
+    p = pos(t)
+    speed = abs(pos(t + 0.5 / FPS) - pos(t - 0.5 / FPS)) * W
+    out_f = compose(idx if idx < CI_SAUNA else CI_SAUNA - 1)
+    in_f = compose(idx if idx >= CI_SAUNA else CI_SAUNA)
+    o = int(round(p * W))
+    res = np.empty_like(out_f)
+    res[:, : W - o] = out_f[:, o:]
+    res[:, W - o:] = in_f[:, :o]
+    res = fx.motion_blur_x(res, min(speed * 0.95, 300))
+    m = math.sin(math.pi * prog(t, t0, t1))
+    res = fx.chroma(res, 10 * m)
+    return fx.brighten(res, 0.22 * m)
+
+
+def tr_spin(idx, t):
+    """Whirlpool -> wide shot: spin-zoom out of one shot and into the next."""
+    if t < CUT_WIDE:
+        u = prog(t, CUT_WIDE - 0.22, CUT_WIDE)
+        e = ease_in_cubic(u)
+        dang = 28 * 3 * u * u / (0.22 * FPS)
+        f = fx._scale_about(compose(idx), 1 + 0.55 * e, W / 2, H / 2, rot=28 * e)
+        f = fx.spin_blur(f, dang * 1.3)
+        f = fx.radial_blur(f, 0.22 * e)
+        f = fx.chroma(f, 14 * e)
+        return fx.brighten(f, 0.4 * e ** 3)
+    v = prog(t, CUT_WIDE, CUT_WIDE + 0.30)
+    e = 1 - ease_out_cubic(v)
+    dang = 28 * 3 * (1 - v) ** 2 / (0.30 * FPS)
+    f = fx._scale_about(compose(idx), 1 + 0.5 * e, W / 2, H / 2, rot=-28 * e)
+    f = fx.spin_blur(f, dang * 1.3)
+    f = fx.radial_blur(f, 0.2 * e)
+    return fx.chroma(f, 12 * e)
+
+
+def frame_out(idx):
+    t = idx / FPS
+    if CUT_SAUNA - 0.20 <= t < CUT_SAUNA + 0.24:
+        f = tr_whip(idx, t)
+    elif CUT_WIDE - 0.22 <= t < CUT_WIDE + 0.30:
+        f = tr_spin(idx, t)
+    elif CUT_GARDEN - 0.30 <= t < CUT_GARDEN + 0.42:
+        f = tr_zoom_through(idx, t)
+    else:
+        f = compose(idx)
+        if t < 0.30:                                   # intro: burst in from a zoom blur
+            f = fx.radial_blur(f, 0.24 * (1 - ease_out_cubic(prog(t, 0, 0.30))), W / 2, H * 0.3)
+        if CUT_FREEZE <= t < CUT_FREEZE + 0.22:          # freeze-frame hit
+            f = fx.radial_blur(f, 0.12 * (1 - prog(t, CUT_FREEZE, CUT_FREEZE + 0.22)) ** 2, 520, 450)
+        if SLAT_T0 <= t < CUT_END:                       # match cut: zoom INTO the navy savings box
+            u = prog(t, SLAT_T0, CUT_END)
+            e = u * u
+            zx, zy = 215, 320                            # navy area left of the number
+            f = fx._scale_about(f, math.exp(math.log(30.0) * e), zx, zy)
+            f = fx.radial_blur(f, 0.30 * e, zx, zy)
+            f = fx.chroma(f, 14 * e, zx, zy)
+        if CUT_END <= t < CUT_END + 0.35:                # end card settles
+            e = 1 - ease_out_cubic(prog(t, CUT_END, CUT_END + 0.35))
+            f = fx._scale_about(f, 1 + 0.08 * e, W / 2, H / 2, border=cv2.BORDER_REPLICATE)
+            f = fx.radial_blur(f, 0.07 * e)
+    for t0, px, dur in CHROMA:
         if t0 <= t < t0 + dur:
-            a = amp * (1 - prog(t, t0, t0 + dur)) ** 1.5
-            f *= 1 - a
-            f += a
-    draw_hook(f, t)
-    draw_numbers(f, t)
-    draw_cards(f, t)
-    draw_summary(f, t)
-    draw_subtitles(f, t)
-    draw_wipe(f, t)
+            f = fx.chroma(f, px * (1 - prog(t, t0, t0 + dur)) ** 1.5)
+    if any(f is v for v in _compose_cache.values()):
+        f = f.copy()
+    if t < 26.02:
+        draw_subtitles(f, t)
     np.clip(f, 0, 1, out=f)
     return f
 
 
-def read_frames():
-    p = subprocess.Popen(["ffmpeg", "-v", "error", "-i", SRC, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
-                         stdout=subprocess.PIPE, bufsize=W * H * 3 * 4)
-    n = W * H * 3
-    while True:
-        buf = p.stdout.read(n)
-        if len(buf) < n:
-            break
-        yield np.frombuffer(buf, np.uint8).reshape(H, W, 3)
-    p.wait()
+def render_frame(idx):
+    return frame_out(idx)
 
 
 def main():
+    global SRCF
+    SRCF = FrameSource(SRC)
     if sys.argv[3] == "--stills":
-        times = [float(x) for x in sys.argv[4].split(",")]
+        times = sorted(float(x) for x in sys.argv[4].split(","))
         out_dir = sys.argv[5]
-        want = {int(round(t * FPS)): t for t in times}
-        last = None
-        for idx, fr in enumerate(read_frames()):
-            if idx in want:
-                img = (render_frame(fr, idx) * 255).astype(np.uint8)
-                Image.fromarray(img).save(f"{out_dir}/still_{want[idx]:06.2f}.png")
-            last = fr
-            if idx > max(want):
-                break
-        for idx in want:
-            if idx >= SRC_FRAMES:
-                img = (render_frame(last, idx) * 255).astype(np.uint8)
-                Image.fromarray(img).save(f"{out_dir}/still_{want[idx]:06.2f}.png")
+        for tt in times:
+            idx = int(round(tt * FPS))
+            img = (frame_out(idx) * 255).astype(np.uint8)
+            Image.fromarray(img).save(f"{out_dir}/still_{tt:06.2f}.png")
         return
 
     audio, out = sys.argv[3], sys.argv[4]
@@ -621,21 +746,12 @@ def main():
         "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
         "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
         "-t", f"{OUT_DURATION:.3f}", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
-    last = None
-    idx = 0
-    for fr in read_frames():
-        if idx >= OUT_FRAMES:
-            break
-        img = render_frame(fr, idx)
+    for idx in range(OUT_FRAMES):
+        img = frame_out(idx)
         enc.stdin.write((img * 255 + 0.5).astype(np.uint8).tobytes())
-        last = fr
-        idx += 1
-        if idx % 60 == 0:
-            print(f"frame {idx}/{OUT_FRAMES}", flush=True)
-    while idx < OUT_FRAMES:
-        img = render_frame(last, idx)
-        enc.stdin.write((img * 255 + 0.5).astype(np.uint8).tobytes())
-        idx += 1
+        SRCF.trim(idx - 30)
+        if (idx + 1) % 60 == 0:
+            print(f"frame {idx + 1}/{OUT_FRAMES}", flush=True)
     enc.stdin.close()
     enc.wait()
     print("done", out)
