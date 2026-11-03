@@ -13,7 +13,7 @@
   }
   html, body { margin: 0; background: #fff; }
   #stage {
-    position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #fff;
+    position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #fff; /* Höhe je Format per JS */
     font-family: 'Inter', sans-serif; color: var(--ink);
     -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
   }
@@ -71,21 +71,21 @@
 <div id="stage">
 
   <!-- Szene 1 -->
-  <div class="abs eyebrow" id="s1e" style="top:770px">Second Chance &amp; more</div>
-  <h1 class="abs hl" id="s1h" style="top:835px"><span class="w">Wir </span><span class="w">haben</span><br><span class="w">Neuigkeiten.</span></h1>
+  <div class="abs eyebrow" id="s1e">Second Chance &amp; more</div>
+  <h1 class="abs hl" id="s1h"><span class="w">Wir </span><span class="w">haben</span><br><span class="w">Neuigkeiten.</span></h1>
 
   <!-- Szene 2 -->
-  <h1 class="abs hl" id="s2h" style="top:770px"><span class="w">Tschüss,</span><br><span class="strikewrap" id="s2sw"><span class="w" id="s2a">Second </span><span class="w" id="s2b">Hand.</span><span class="strike" id="s2strike"></span></span></h1>
-  <div class="abs sub" id="s2s" style="top:1060px">Danke für die schöne Zeit.</div>
+  <h1 class="abs hl" id="s2h"><span class="w">Tschüss,</span><br><span class="strikewrap" id="s2sw"><span class="w" id="s2a">Second </span><span class="w" id="s2b">Hand.</span><span class="strike" id="s2strike"></span></span></h1>
+  <div class="abs sub" id="s2s">Danke für die schöne Zeit.</div>
 
   <!-- Szene 3 -->
-  <div class="abs eyebrow" id="s3e" style="top:292px">Ihr habt gefragt.</div>
-  <h1 class="abs hl m" id="s3h" style="top:348px"><span class="w">Unsere </span><span class="w">eigenen</span><br><span class="w">Kollektionen.</span></h1>
-  <div class="card" id="s3c" style="left:230px; top:640px; width:620px; height:826px;"><img id="s3img"></div>
+  <div class="abs eyebrow" id="s3e">Ihr habt gefragt.</div>
+  <h1 class="abs hl m" id="s3h"><span class="w">Unsere </span><span class="w">eigenen</span><br><span class="w">Kollektionen.</span></h1>
+  <div class="card" id="s3c"><img id="s3img"></div>
 
   <!-- Szene 4 -->
-  <div class="abs eyebrow" id="s4e" style="top:640px">Neues Kapitel. Neuer Name.</div>
-  <div class="abs hero" id="s4hero" style="top:700px">
+  <div class="abs eyebrow" id="s4e">Neues Kapitel. Neuer Name.</div>
+  <div class="abs hero" id="s4hero">
     <div class="mask">
       <div id="s4second">Second</div>
       <div id="s4first" class="grad">First</div>
@@ -97,17 +97,17 @@
   </div>
 
   <!-- Szene 5 -->
-  <div class="abs eyebrow" id="s5e" style="top:292px">Jetzt neu.</div>
-  <h1 class="abs hl m" id="s5h" style="top:345px"><span class="w">Herbst </span><span class="w">/ </span><span class="w">Winter.</span></h1>
+  <div class="abs eyebrow" id="s5e">Jetzt neu.</div>
+  <h1 class="abs hl m" id="s5h"><span class="w">Herbst </span><span class="w">/ </span><span class="w">Winter.</span></h1>
   <div id="track"></div>
-  <div class="abs" id="labels" style="top:1462px"></div>
+  <div class="abs" id="labels"></div>
 
   <!-- Szene 6 -->
-  <h1 class="abs hl m" id="s6h" style="top:330px"><span class="w">Kommt </span><span class="w">vorbei.</span></h1>
-  <div class="card" id="s6c" style="left:250px; top:520px; width:580px; height:773px;"><img id="s6img"></div>
-  <div class="abs lockup grad" id="s6lock" style="top:760px; padding-bottom:12px">First Chance</div>
-  <div class="abs place" id="s6place" style="top:950px"><svg viewBox="0 0 24 24" fill="#6e6e73"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Espelkamp</div>
-  <div class="abs thanks" id="s6t" style="top:1090px">Wir freuen uns auf euch.</div>
+  <h1 class="abs hl m" id="s6h"><span class="w">Kommt </span><span class="w">vorbei.</span></h1>
+  <div class="card" id="s6c"><img id="s6img"></div>
+  <div class="abs lockup grad" id="s6lock" style="padding-bottom:12px">First Chance</div>
+  <div class="abs place" id="s6place"><svg viewBox="0 0 24 24" fill="#6e6e73"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Espelkamp</div>
+  <div class="abs thanks" id="s6t">Wir freuen uns auf euch.</div>
 </div>
 
 <script>
@@ -167,7 +167,32 @@ const SHOW = [
   { clip: 'jewel',  label: 'Schmuck.',     off: 0.8 },
   { clip: 'acc',    label: 'Accessoires.', off: 0.2 },
 ];
-const CARD_W = 680, CARD_H = 906, CARD_GAP = 40, CARD_TOP = 520;
+// ---------------------------------------------------------------- Layouts je Format
+// 916 = Instagram Story 1080x1920 (Safe-Zones oben 250 px / unten 300 px)
+// 34  = Instagram Feed 1080x1440 (3:4)
+const LAYOUTS = {
+  '916': {
+    H: 1920,
+    top: { s1e: 770, s1h: 835, s2h: 770, s2s: 1060, s3e: 292, s3h: 348, s4e: 640, s4hero: 700,
+           s5e: 292, s5h: 345, labels: 1462, s6h: 330, s6lock: 760, s6place: 950, s6t: 1090 },
+    box: { s3c: [230, 640, 620, 826], s6c: [250, 520, 580, 773] },
+    card: { W: 680, H: 906, TOP: 520 },
+  },
+  '34': {
+    H: 1440,
+    top: { s1e: 562, s1h: 627, s2h: 548, s2s: 838, s3e: 118, s3h: 172, s4e: 468, s4hero: 528,
+           s5e: 108, s5h: 160, labels: 1196, s6h: 190, s6lock: 548, s6place: 738, s6t: 866 },
+    box: { s3c: [240, 452, 600, 800], s6c: [270, 368, 540, 720] },
+    card: { W: 624, H: 832, TOP: 320 },
+  },
+};
+const FORMAT = new URLSearchParams(location.search).get('format') || '916';
+const LAY = LAYOUTS[FORMAT];
+$('stage').style.height = LAY.H + 'px';
+for (const [id, top] of Object.entries(LAY.top)) $(id).style.top = top + 'px';
+for (const [id, [l, tp, w, h]] of Object.entries(LAY.box))
+  Object.assign($(id).style, { left: l + 'px', top: tp + 'px', width: w + 'px', height: h + 'px' });
+const CARD_W = LAY.card.W, CARD_H = LAY.card.H, CARD_GAP = 40, CARD_TOP = LAY.card.TOP;
 const DWELL = 1.62, SLIDE = 0.62;
 const centerAt = k => T.s5 + 0.2 + k * DWELL;   // Zeitpunkt, an dem Karte k in die Mitte gleitet
 
@@ -276,6 +301,7 @@ window.renderAt = async function (t) {
 };
 window.DURATION = DURATION;
 window.FPS = FPS;
+window.STAGE_H = LAY.H;
 </script>
 </body>
 </html>

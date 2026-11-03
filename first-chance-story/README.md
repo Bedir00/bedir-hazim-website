@@ -1,6 +1,12 @@
 # First Chance – Instagram Story (Apple-Stil)
 
-1080×1920 (9:16), 30 fps, 30 s · `first-chance_instagram-story.mp4`
+| Datei | Format | Einsatz |
+|---|---|---|
+| `first-chance_instagram-story.mp4` | 1080×1920 (9:16), 30 fps, 30 s | Story / Reel |
+| `first-chance_instagram-feed_3x4.mp4` | 1080×1440 (3:4), 30 fps, 30 s | Feed-Post |
+
+Das 3:4-Format ist eigens neu angeordnet (nicht beschnitten): alle Texte und Karten sitzen
+zentriert mit Weißraum, Inhalte und Timing sind identisch zur Story.
 
 ## Script (überarbeitet – für Voiceover oder Caption)
 
@@ -24,14 +30,16 @@
 | 22,5–25,7 s | **Kommt vorbei.** | Schaufenster (IMG_8433) |
 | 25,7–30 s | **First Chance** · Espelkamp · Wir freuen uns auf euch. | – |
 
-Instagram-Safe-Zones beachtet: oben 250 px und unten 300 px bleiben frei von wichtigen Inhalten.
+Story: Instagram-Safe-Zones beachtet – oben 250 px und unten 300 px bleiben frei von wichtigen Inhalten.
 
 ## Neu erzeugen
 
 ```bash
 ./prepare.sh /pfad/zu/den/IMG_xxxx.mov-clips   # Clips -> Bildfolgen (frames/)
-node render.js first-chance_instagram-story.mp4  # benötigt Playwright + ffmpeg
-node render.js --preview 4.6 12.9 28.5           # einzelne Vorschaubilder
+node render.js first-chance_instagram-story.mp4                  # 9:16 (benötigt Playwright + ffmpeg)
+node render.js --format 34 first-chance_instagram-feed_3x4.mp4   # 3:4
+node render.js --format 34 --preview 4.6 12.9 28.5               # einzelne Vorschaubilder
 ```
 
-Texte, Timing und Farben stehen in `story.html` (Abschnitt „Zeitplan“ bzw. `:root`).
+Texte, Timing und Farben stehen in `story.html` (Abschnitt „Zeitplan“ bzw. `:root`),
+die Positionen je Format in `LAYOUTS`.

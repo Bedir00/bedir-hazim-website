@@ -1,16 +1,23 @@
 // Rendert story.html Bild für Bild (deterministisch) und kodiert es mit ffmpeg.
-//   node render.js out.mp4              -> komplettes Video (1080x1920, 30 fps)
-//   node render.js --preview 1.5 4.2 …  -> Einzelbilder als PNG in preview/
+//   node render.js out.mp4                       -> Story 9:16 (1080x1920, 30 fps)
+//   node render.js --format 34 out.mp4           -> Feed 3:4 (1080x1440, 30 fps)
+//   node render.js [--format 34] --preview 1.5 4.2 …  -> Einzelbilder als PNG in preview/
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 (async () => {
-  const args = process.argv.slice(2);
+  let args = process.argv.slice(2);
+  let format = '916';
+  const fi = args.indexOf('--format');
+  if (fi >= 0) { format = args[fi + 1]; args.splice(fi, 2); }
+  const height = { '916': 1920, '34': 1440 }[format];
+  if (!height) throw new Error(`unbekanntes Format: ${format}`);
+
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
-  await page.goto('file://' + path.join(__dirname, 'story.html'));
+  const page = await browser.newPage({ viewport: { width: 1080, height }, deviceScaleFactor: 1 });
+  await page.goto('file://' + path.join(__dirname, 'story.html') + `?format=${format}`);
   await page.evaluate(() => document.fonts.ready);
   const fps = await page.evaluate(() => window.FPS);
   const dur = await page.evaluate(() => window.DURATION);
@@ -20,13 +27,13 @@ const path = require('path');
     for (const s of args.slice(1)) {
       const t = parseFloat(s);
       await page.evaluate(t => window.renderAt(t), t);
-      await page.screenshot({ path: path.join(__dirname, 'preview', `t${t.toFixed(2)}.png`) });
+      await page.screenshot({ path: path.join(__dirname, 'preview', `${format}_t${t.toFixed(2)}.png`) });
     }
     await browser.close();
     return;
   }
 
-  const out = args[0] || 'story.mp4';
+  const out = args[0] || `story_${format}.mp4`;
   const ff = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
     '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
