@@ -1,7 +1,43 @@
 # Home Deluxe – Black Friday TikTok-Spot (25 % auf alles)
 
-**Datei:** `HomeDeluxe_BlackFriday_TikTok_Untertitel_MotionGraphics.mp4`
-1080×1920 · 24 fps · H.264 + AAC 48 kHz · 34,4 s · Lautheit −14 LUFS / Peak ≤ −1,5 dBFS (TikTok-Norm)
+| Datei | Version |
+|---|---|
+| `HomeDeluxe_BlackFriday_TikTok_Untertitel_MotionGraphics.mp4` | **v4:** alle Szenen neu in Higgsfield |
+| `HomeDeluxe_BlackFriday_TikTok_Mix_UGC-neu_Produktszenen-original.mp4` | **Mix:** neue UGC-Szene, Produktszenen aus dem Original-Spot |
+
+Beide Dateien: 1080×1920 · 24 fps · H.264 + AAC 48 kHz · 34,4 s · −14 LUFS, Peak ≤ −1,5 dBFS (TikTok-Norm)
+
+## Mix-Version: neue UGC-Szene + Original-Produktszenen
+
+| Zeit | Bild | Herkunft |
+|---|---|---|
+| 0,0–5,4 s | UGC-Hook der Creatorin | neu (v4, Higgsfield) |
+| 5,4–7,4 s | Kamerafahrt durchs Wohnzimmer auf die Terrassentür zu, mit Speed-Ramp (erst langsam, dann beschleunigend) | neu (v4, Kling 4.0) |
+| 7,4 s | Durchbruch durch die Tür in den Garten: Zoom mit Gegenlicht-Bloom und Light-Streak, genau auf dem Beat-Drop | Übergang |
+| 7,4–13,1 s | Zaun-Elemente fallen, in Echtzeit | Original-Spot |
+| 13,1–18,75 s | fertiger Zaun in Zeitlupe (Motion-Interpolation), langsame Kamerafahrt | Original-Spot |
+| 18,75–26,2 s | Sauna und Whirlpool fallen in den Garten. Der Whirlpool fliegt wie im Original ohne Schnitt herein. | Original-Spot |
+| 26,2–31,3 s | Totale mit allen Produkten, langsame Kamerafahrt | Original-Spot |
+| 31,3–34,4 s | Endcard | wie v4 |
+
+**Gleich wie in v4:**
+- Voiceover (Nora und Vlad), Untertitel, Motion Graphics, Musik und Mix
+- Übergänge Whip-Pan, Spin-Zoom und Match-Cut
+
+**Angepasst auf die Originalbilder:**
+- **Tempo:** Die Original-Szenen wurden auf das Voiceover-Raster getimt.
+- **Grafik:** Die Produktkarten zeigen auf das Produkt im Originalbild.
+- **Aufprall:** Shockwaves und Impact-Sounds liegen auf den gemessenen Einschlägen im Original.
+- **Kamera:** Die fest stehenden Original-Shots haben eine langsame digitale Kamerafahrt bekommen.
+
+Die Skripte liegen in `mix/build/`. Neu rendern wie bei v4, nur der Bildschnitt kommt aus `assemble_v5.py`:
+
+```bash
+cd mix/build
+python3 assemble_v5.py ../../v4/build/clips ORIGINAL_SPOT.mp4 ./edit   # erzeugt edit/base_mix.mp4
+python3 audio.py ../../v4/build/edit/vo_v4_proc.wav ./out              # danach Loudness wie bei v4
+END_SRC=ORIGINAL_SPOT.mp4 python3 render.py edit/base_mix.mp4 /pfad/zu/poppins out/mix_final.wav mix.mp4
+```
 
 ## Version 4: komplett neu in Higgsfield gedreht
 
