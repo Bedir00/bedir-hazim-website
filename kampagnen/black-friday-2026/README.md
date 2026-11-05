@@ -1,74 +1,147 @@
 # Home Deluxe – Black Friday TikTok-Spot (25 % auf alles)
 
 **Datei:** `HomeDeluxe_BlackFriday_TikTok_Untertitel_MotionGraphics.mp4`
-1080×1920 · 30 fps · H.264 + AAC 48 kHz · 29,9 s · Lautheit −14 LUFS / Peak ≤ −1,5 dBFS (TikTok-Norm)
+1080×1920 · 24 fps · H.264 + AAC 48 kHz · 34,4 s · Lautheit −14 LUFS / Peak ≤ −1,5 dBFS (TikTok-Norm)
 
-## Version 3
-- **Neues Voiceover:** muttersprachlich-deutsche Stimme ohne englischen Akzent
-- **Neue Übergänge:** aufwendiger und actiongeladener
+## Version 4: komplett neu in Higgsfield gedreht
 
-## Was eingebaut wurde
+Alle Bewegtbilder und beide Stimmen sind neu und in Higgsfield entstanden. Vom alten Spot sind nur Endcard-Elemente (Logo, Balken) übrig.
 
-### Voiceover (ab 4,1 s)
-- **Stimme und Herkunft:** Neue Stimme „Orus“ aus Gemini TTS, deutsch und akzentfrei, im kraftvollen TV-Werbesprecher-Stil. Die Creatorin am Anfang (0–4 s) bleibt im Original.
-- **Schnitt auf das Bild:** Der Take wird phrasenweise geschnitten (Whisper-Wortgrenzen und Energie-Minimum zwischen den Wörtern). Jede Phrase liegt exakt auf ihrem Bild-Moment, etwa „25 %“ auf dem Slam und die Produktnamen auf den Landungen.
-- **Tempo:** Wo nötig, wurde das Tempo formant-erhaltend angepasst, maximal um 12 %.
-- **Synchronität:** Untertitel, Spar-Zähler, Kinetic-Typo und Soundeffekte werden automatisch aus dem VO-Timing (`vo_timing.json`) abgeleitet. So bleibt alles synchron.
+- **UGC-Szene:** Die Creatorin ist natürlicher, filmt sich selbst mit Handkamera und hat echte Wohnzimmer-Details.
+- **Übergang aus der UGC-Szene:** Die Kamera fliegt durch die Terrassentür in den Garten. Es gibt keinen harten Schnitt mehr.
+- **Gartenszenen:** fotoreal und mit bewegter Kamera (Drohne, Gimbal, Kran). Die Produkte fallen mit echtem Gewicht ins Bild.
+- **Stimmen:** Beide sind muttersprachlich und ohne Versprecher. Die Produktszenen spricht eine tiefe Männerstimme.
+
+### Arbeitsweise: zuerst die Keyframes, dann das Video
+Für jede Szene wurden zuerst die Start- und Endframes als Standbild gebaut und abgenommen (`v4/keyframes/`, Übersicht in `00_storyboard.jpg`). Erst danach wurde animiert.
+
+- **Image-to-Video:** Die Videomodelle bekamen diese Frames als Start- bzw. Endbild.
+- **Produkttreue:** Form, Farbe und Proportionen der Produkte stimmen dadurch mit den echten Home-Deluxe-Produkten überein.
+- **Durchgehender Garten:** In allen Szenen ist es derselbe Garten, derselbe Rasen und dasselbe Licht.
+
+### Welches KI-Modell für welche Szene
+
+| Szene | Zeit | Keyframe-Modell | Video-Modell | Warum |
+|---|---|---|---|---|
+| S1 UGC-Hook („Leute, Leute, Black Friday …“) | 0,0–5,4 s | **Soul 2** (fotoreale Personen, iPhone-Selfie-Look) | **Intone** (Talking Head), danach **Sync Lipsync 3** | Intone liefert die natürlichste Mimik und Handkamera. Sync Lipsync 3 legt die Lippen exakt auf die saubere Sprachaufnahme. |
+| S2 Kamerafahrt durch die Terrassentür | 5,4–7,4 s | **Nano Banana Pro** (Innenraum, Garten-Masterplate) | **Kling 4.0** (Start- + Endframe) | Kling hält eine Kamerafahrt zwischen zwei vorgegebenen Bildern am saubersten. |
+| S3a Zaun ALIRA fällt Element für Element | 7,4–13,1 s | Nano Banana Pro (mit Produktfotos als Referenz) | **Kling 4.0** (Start- + Endframe) | Das Ende muss exakt auf dem fertigen Zaun landen, deshalb mit Endframe. |
+| S3b Zaun-Hero (Gimbal-Fahrt an den Lamellen) | 13,1–18,75 s | identischer Frame wie Ende S3a | **Kling 4.0** | nahtloser Anschluss an S3a, ruhige Produktfahrt |
+| S4 Sauna LAGOM DELUXE kracht in den Garten | 18,75–22,4 s | Nano Banana Pro | **MiniMax H3** (Bake-off-Sieger) | höchste Produkttreue, glaubwürdigster Aufprall |
+| S5 Whirlpool STREAM BIG mit Wasserkrone | 22,4–26,2 s | Nano Banana Pro | **MiniMax H3** | beste Wassersimulation, Wanne bleibt formstabil |
+| S6 Blue-Hour-Hero (Drohne steigt auf) | 26,2–31,3 s | Nano Banana Pro | **MiniMax H3** (gegen Kling 4.0 getestet) | Alle drei Produkte bleiben sichtbar und unverformt. |
+| Endcard | 31,3–34,4 s | Originalelemente | Motion Graphics | |
+
+**Bake-off an der Sauna-Szene:** Drei Modelle haben denselben Prompt mit denselben Keyframes bekommen. Die Ergebnisse wurden Bild für Bild und zusätzlich mit einer KI-VFX-Bewertung verglichen.
+
+| Modell | Credits | Ergebnis |
+|---|---|---|
+| Veo 3.1 | 60 | Schöner Staub, aber Rasenstücke schweben unphysikalisch. |
+| Kling 4.0 | 19,5 | Gute Dynamik, aber das Saunadach verformt sich beim Aufprall. |
+| **MiniMax H3** | 12 | **Sieger:** Die Sauna bleibt formstabil, der Aufprall wirkt glaubwürdig. |
+
+### Stimmen
+Beide Stimmen kommen aus **ElevenLabs v4 in Higgsfield**.
+
+**Auswahl (Casting):**
+- **Vorgehen:** Pro Rolle wurden mehrere Stimmen und Takes erzeugt.
+- **Akzent:** Eine KI hat die Takes auf Akzent geprüft.
+- **Versprecher:** Ein Whisper-Transkript hat die Takes auf Versprecher geprüft.
+- **Tiefe:** Die Stimmlage wurde per Grundfrequenz-Analyse (F0) gemessen.
+
+| Rolle | Stimme | Charakter |
+|---|---|---|
+| Creatorin (UGC-Hook) | **Nora** | junge, natürliche Muttersprachlerin, ironisch-genervt, wie gesprochen und nicht vorgelesen |
+| Produktsprecher | **Vlad** | tief, ruhig und autoritär, Trailer- bzw. Werbesprecher. Die Betonung wurde pro Satz über Regie-Tags gesteuert. |
+
+**Regie pro Szene (Produktsprecher):**
+| Szene | Regie |
+|---|---|
+| Einstieg | bestimmt und tief |
+| „Nicht 15, nicht 20“ | Spannung aufbauen |
+| „25 %“ | kraftvoll und punchy |
+| „Klingt nach wenig?“ | verschmitzt |
+| Zaun | selbstbewusst |
+| Sauna | warm und entspannt |
+| Whirlpool | energisch |
+| Summe | groß und beeindruckend |
+| „Nur am Black-Friday-Wochenende“ | dringlich |
+| „Home Deluxe“ | warmer Sign-off |
+
+**Versprecher-Prüfung:** Die komplette Tonspur wurde mit Whisper transkribiert. Das Ergebnis stimmt Wort für Wort mit dem Skript überein, auch „Zaun Alira“, „Sauna Lagom Deluxe“ und „Whirlpool Stream Big“.
+
+**UGC-Szene:**
+- **Lippen:** Intone synthetisiert beim Lip-Sync die Stimme neu, mit leicht metallischem Klang und einem Versprecher. Deshalb wurde das Video mit **Sync Lipsync 3** noch einmal auf die **unveränderte Originalaufnahme** gelippt.
+- **Ton:** Im Spot läuft die saubere Aufnahme.
 
 ### Übergänge
 | Zeit | Übergang |
 |---|---|
-| 0,0 s | Burst-In aus Zoom-Blur mit Flash und RGB-Split |
-| 4,03 s | Freeze-Hit: Punch, Flash, RGB-Split, Shake, Kameraverschluss-Klick |
-| 4,93–5,65 s | **Zoom-Through:** beschleunigte Fahrt in ihr Gesicht, Weißblende, Ausbruch in den Garten mit Light-Streak, alles auf dem Beat-Drop |
-| 7,4 s | „25 %“-Slam mit Shockwave-Verzerrung des Hintergrunds |
-| 13,33–13,77 s | **Whip-Pan:** Zaun-Shot und Sauna-Shot nebeneinander, Motion-Blur, Lichtblitz |
-| 15,2 / 18,95 s | Landungen von Sauna und Whirlpool: Shockwave-Ring am Aufprallpunkt, Shake, RGB-Split, Impact-Sound |
-| 21,11–21,63 s | **Spin-Zoom:** Rotation mit Zoom aus dem Whirlpool-Shot hinaus und in den Weitwinkel hinein |
-| 25,98–26,37 s | **Match-Cut:** Zoom in die navyblaue „2.700 €“-Box, die zur Endcard wird; danach Settle-Zoom |
+| 0,0 s | Burst-In aus Zoom-Blur |
+| 5,06–5,80 s | **Zoom-Through mit Bloom:** Die Kamera beschleunigt auf die Terrassentür zu. Warmes Gegenlicht überstrahlt das Bild, es gibt keine Weißblende mehr. Dann folgt die FPV-Fahrt hinaus in den Garten, mit Light-Streak. |
+| 7,4 s | **Beat-Drop:** Die Kamera landet im Garten, gleichzeitig schlägt das erste Zaunelement ein. |
+| 13,13 s | nahtloser Übergang Zaun-Drop → Zaun-Hero (identischer Frame) |
+| 18,75 s | **Whip-Pan:** Zaun und Sauna stehen kurz nebeneinander, dann fällt die Sauna ins Bild. |
+| 20,1 s | **Sauna-Aufprall:** Shockwave am Aufprallpunkt, Shake, RGB-Split |
+| 22,42 s | **Crash-Zoom** auf die Sauna, der Whirlpool fällt herein. |
+| 23,0 s | **Whirlpool-Aufprall:** Wasserkrone, Shockwave, Splash-Sound |
+| 26,17 s | **Spin-Zoom** in den Blue-Hour-Hero-Shot |
+| 30,9–31,3 s | **Match-Cut:** Zoom in die navyblaue „2.700 €“-Box, die zur Endcard wird |
 
 ### TikTok-Untertitel (klassisch)
-- **Look:** Box `#fefefe`, Text `#0f2334`, Poppins Bold 56 px, je Zeile eine abgerundete Box, kurzer Pop-In.
-- **Timing:** Die Untertitel starten jeweils mit dem Phrasenbeginn und überlappen nie.
+- **Look:** Box `#fefefe`, Text `#0f2334`, Poppins Bold, je Zeile eine Box, kurzer Pop-In.
+- **Timing:** Phrasengenau auf beide Stimmen, die Untertitel überlappen nie.
 - **Schreibweise:** Zaun **Alira**, Sauna **Lagom Deluxe**, Whirlpool **Stream Big**.
 
 ### Motion Graphics (CI: Navy/Weiß, Poppins, eckige Boxen)
 | Element | Inhalt |
 |---|---|
-| Hook | „BLACK FRIDAY“-Badge; „10 % RABATT“-Sticker, der durchgestrichen wird und herausfällt; S/W-Freeze mit Vignette und Filmkorn |
-| Kinetic Typo | „15 %“ und „20 %“ werden durchgestrichen und fliegen raus. „25 %“ knallt mit Druckwelle ins Bild, dazu „AUF ALLES“. Alles folgt dem Voiceover. |
-| Produktkarten | ALIRA, LAGOM DELUXE und STREAM BIG mit Callout-Linie und Spar-Zähler. Der Zähler landet, während der Betrag gesprochen wird. |
+| Hook | „BLACK FRIDAY“-Badge, „10 % RABATT“-Sticker, der durchgestrichen wird und herausfällt |
+| Kinetic Typo | „15 %“ und „20 %“ werden durchgestrichen. „25 %“ knallt mit Druckwelle ins Bild, dazu „AUF ALLES“. |
+| Produktkarten | ALIRA, LAGOM DELUXE und STREAM BIG mit Callout-Linie und Spar-Zähler. Die Karten sind am Produkt im Bild verankert und wandern mit der Kamera. |
 | Summe | Drei Spar-Chips verschmelzen zu „ZUSAMMEN ÜBER 2.700 € GESPART“, dazu das Banner „NUR AM BLACK-FRIDAY-WOCHENENDE“. |
 | Endcard | Logo, Balken, „25 %“-Slam, gestaffelte Texte, CTA-Pop, Puls und Tap-Animation |
 
 ### Sound
-- **Eigene Musik**, synthetisch und lizenzfrei: Future House mit ca. 125 BPM, genau 11 Takte von Drop zu Endcard. Bei 4,03 s Scratch und Record-Stop, Drop auf den Zoom-Through, Re-Drop auf „2.700“.
-- **Sounddesign pro Übergang:**
-  - Riser, Reverse-Cymbal und Whooshes
-  - Whip-Swoosh beim Whip-Pan, Spin-Swell beim Spin-Zoom
-  - Impacts auf den Landungen, Wasser-Splash
-  - Zähler-Ticks, Ka-Ching, Pops, Funkeln und CTA-Klick
-- **Mix:** Die Musik duckt unter die Sprache (ca. −9 dB), die Stimme liegt im Schnitt rund 11 dB über dem Bett. Zum Schluss −14 LUFS und Limiter.
+- **Musik:** synthetisch und lizenzfrei, ca. 120 BPM. Genau 12 Takte vom Drop (Kamera landet im Garten) bis zur Endcard. Unter dem Spin-Zoom liegt ein Break, auf „2.700“ folgt der Re-Drop.
+- **Sounddesign:**
+  - Tür-Whoosh und FPV-Whoosh mit Reverse-Cymbal und Riser in den Drop
+  - Aufprall-Thuds auf den gemessenen Einschlägen der Zaunelemente
+  - Fall-Whoosh und Impact der Sauna
+  - Crash-Zoom, dazu Whirlpool-Impact mit Wasser-Splash
+  - Whip und Spin
+  - Zähler-Ticks, Ka-Ching und Pops
+- **Mix:** Die Musik duckt unter die Sprache, zum Schluss −14 LUFS (zweistufig) und Limiter.
 
-## Neu rendern
+## Neu rendern (v4)
 
-Benötigt: Python 3 mit `numpy`, `scipy`, `opencv-python-headless`, `Pillow`, `faster-whisper`, dazu `ffmpeg` (mit rubberband) und Poppins (400–900, TTF).
+Benötigt:
+- **Python 3** mit `numpy`, `scipy`, `opencv-python-headless`, `Pillow` und `faster-whisper`
+- **ffmpeg** mit rubberband und minterpolate
+- **Schrift:** Poppins (400–900, TTF)
+
+Die Higgsfield-Clips liegen nicht im Repo, weil sie zu groß sind. Sie stehen im Higgsfield-Projekt „Home Deluxe – Black Friday TikTok v4“.
 
 ```bash
-cd build
-ffmpeg -i ORIGINAL.mp4 -vn -c:a pcm_s16le orig.wav
-# 1) Voiceover auf das Bild legen (erzeugt vo_track.wav + vo_timing.json)
-python3 vo_assemble.py orig.wav assets/voiceover_orus_take2.wav ./out
-cp out/vo_timing.json .
-ffmpeg -i out/vo_track.wav -af "highpass=f=80,equalizer=f=300:t=q:w=1.0:g=-2,equalizer=f=3500:t=q:w=1.2:g=2.5,acompressor=threshold=-22dB:ratio=3:attack=5:release=120:makeup=3" -ar 48000 -ac 2 out/vo_proc.wav
-# 2) Musik + SFX + Mix
-python3 audio.py out/vo_proc.wav ./out
+cd v4/build
+# 1) Bild: Clips auf das VO-Raster schneiden (Speed je Szene automatisch, Zeitlupe mit Motion-Interpolation)
+python3 assemble_v4.py ./clips ./edit
+# 2) Voiceover: UGC-Hook + Produktsprecher phrasenweise montieren (erzeugt vo_v4.wav + vo_v4.json)
+WHISPER_DIR=./models python3 vo_v4.py assets/vo_female_nora_hook.mp3 assets/vo_male_vlad_take.mp3 ./edit
+ffmpeg -i edit/vo_v4.wav -af "highpass=f=80,equalizer=f=300:t=q:w=1.0:g=-1.5,equalizer=f=3500:t=q:w=1.2:g=2,acompressor=threshold=-22dB:ratio=3:attack=5:release=120:makeup=3" -ar 48000 -ac 2 edit/vo_v4_proc.wav
+# 3) Musik + SFX + Mix, dann Loudness
+python3 audio.py edit/vo_v4_proc.wav ./out
 ffmpeg -i out/mix.wav -af "loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.87:level=disabled" -ar 48000 out/mix_final.wav
-# 3) Bild
-python3 render.py ORIGINAL.mp4 /pfad/zu/poppins out/mix_final.wav final.mp4
+# 4) Grafik, Untertitel und Übergänge rendern
+END_SRC=ORIGINAL_SPOT.mp4 python3 render.py edit/base_v4.mp4 /pfad/zu/poppins out/mix_final.wav final.mp4
 # Vorschau-Standbilder:
-python3 render.py ORIGINAL.mp4 /pfad/zu/poppins --stills 5.17,13.5,21.3,26.2 ./stills
+END_SRC=ORIGINAL_SPOT.mp4 python3 render.py edit/base_v4.mp4 /pfad/zu/poppins --stills 5.4,7.5,20.1,23.1,28.0 ./stills
 ```
 
-- **Neuer VO-Take:** `tts.py` erzeugt ihn über die Gemini-API (Stimme `Orus`, Modell `gemini-3.1-flash-tts-preview`).
-- **Zeiten:** Schnitte, Landungen und Musikraster stehen in `build/timeline.py`. Die VO-abhängigen Zeiten kommen aus `vo_timing.json`.
+| Datei | Inhalt |
+|---|---|
+| `timeline.py` | alle Schnitte, gemessenen Aufprall-Zeiten, Musikraster, Untertitel und Grafik-Anker |
+| `assemble_v4.py` | Szenentabelle: Clip, In- und Out-Punkt, Slot auf der Timeline |
+| `align_voice.py` | Hilfswerkzeug (DTW + WSOLA), um eine saubere Aufnahme auf das Timing eines gelippten Videos zu legen |
+
+Die v3-Skripte liegen weiter unter `build/`.
