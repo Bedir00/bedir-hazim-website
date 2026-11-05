@@ -575,7 +575,7 @@ def main():
     # fence hero + ALIRA card
     c0, c1 = COUNTERS["fence"]
     place(sfx, swish(0.5), T["fence_card"])
-    ticks(c0, c1)
+    ticks(max(c0, c1 - 0.45), c1)
     place(sfx, kaching(0.75), c1 + 0.02)
     # whip pan -> sauna drop
     place(sfx, whoosh(0.46, 900, 7500, 0.45, peak=0.5), CUT_SAUNA - 0.16)
@@ -584,7 +584,7 @@ def main():
     place(sfx, thud(0.7), SAUNA_LAND + 0.04)
     c0, c1 = COUNTERS["sauna"]
     place(sfx, swish(0.5), T["sauna_card"])
-    ticks(c0, c1)
+    ticks(max(c0, c1 - 0.45), c1)
     place(sfx, kaching(0.75), c1 + 0.02)
     # crash zoom -> whirlpool drop with splash
     place(sfx, whoosh(0.30, 500, 6000, 0.45, peak=0.8), CUT_WHIRL - 0.22)
@@ -594,7 +594,7 @@ def main():
     place(sfx, splash(1.0, 0.30), WHIRL_LAND + 0.35)
     c0, c1 = COUNTERS["whirl"]
     place(sfx, swish(0.5), T["whirl_card"])
-    ticks(c0, c1)
+    ticks(max(c0, c1 - 0.45), c1)
     place(sfx, kaching(0.75), c1 + 0.02)
     # spin-zoom into the blue-hour hero shot, summary
     place(sfx, reverse_cymbal(0.5, 0.4), CUT_WIDE - 0.5)
@@ -604,7 +604,7 @@ def main():
         place(sfx, pop(0.35, 520 + 80 * k), t)
     place(sfx, whoosh(0.35, 600, 3000, 0.3), T["merge"][0] - 0.05)
     c0, c1 = COUNTERS["total"]
-    ticks(c0, c1, 0.32)
+    ticks(T["total_in"], c1, 0.32)
     place(sfx, kaching(0.95), c1 + 0.02)
     place(sfx, impact(0.45, 0.8), c1 + 0.02)
     place(sfx, swish(0.5), T["banner"])

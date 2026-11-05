@@ -454,15 +454,19 @@ def draw_cards(f, t):
             spr = clip_sprite(spr, 0, reveal, 0, 1)
             blit(f, spr, X0 - pad + dx_ex + (1 - u) * -30, Y0 - pad, anchor=(0, 0), alpha=al_ex * prog(t, c["t_in"], c["t_in"] + 0.06))
         # savings chip with counter
-        chip_t = max(c["t_in"] + 0.30, c["c0"] - 0.22)
+        # the chip pops in together with the count (never shows a static "0 €")
+        chip_t = max(c["t_in"] + 0.30, c["c1"] - COUNT_DUR)
         if t >= chip_t:
             v = prog(t, chip_t, chip_t + 0.25)
-            val = c["value"] * ease_out_cubic(prog(t, max(chip_t + 0.04, c["c1"] - 0.45), c["c1"]))
+            val = c["value"] * ease_out_cubic(prog(t, chip_t, c["c1"]))
             cs = chip_sprite(c, round(val / 10) * 10 if t < c["c1"] else c["value"])
             punch = 1 + 0.12 * math.sin(math.pi * prog(t, c["c1"] + 0.03, c["c1"] + 0.25))
             cx = X0 + 30 + cs["w"] / 2 + dx_ex
             cy = Y0 + cd["h"] - 10
             blit(f, cs["spr"], cx, cy, scale=max(0, ease_out_back(v, 2.0)) * punch, rot=-1.5, alpha=al_ex)
+
+
+COUNT_DUR = 0.45   # duration of the savings count on the product cards
 
 
 def draw_summary(f, t):
@@ -482,7 +486,7 @@ def draw_summary(f, t):
     tc0, tc1 = COUNTERS["total"]
     if t >= T["total_in"]:
         v = prog(t, T["total_in"], T["total_in"] + 0.26)
-        val = 2700 * ease_out_cubic(prog(t, max(tc0, tc1 - 0.50), tc1))
+        val = 2700 * ease_out_cubic(prog(t, T["total_in"], tc1))   # counts from the moment the box appears
         ts = total_sprite(round(val / 10) * 10 if t < tc1 else 2700)
         punch = 1 + 0.10 * math.sin(math.pi * prog(t, tc1 + 0.02, tc1 + 0.25))
         blit(f, ts["spr"], W / 2, 318, scale=max(0, ease_out_back(v, 1.6)) * punch, alpha=fade * prog(t, T["total_in"], T["total_in"] + 0.06))
@@ -755,7 +759,7 @@ def main():
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
         "-i", audio,
         "-map", "0:v", "-map", "1:a",
-        "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-profile:v", "high", "-pix_fmt", "yuv420p",
+        "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-profile:v", "high", "-pix_fmt", "yuv420p",
         "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
         "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
         "-t", f"{OUT_DURATION:.3f}", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
